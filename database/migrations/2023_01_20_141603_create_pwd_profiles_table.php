@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('care_giver_relationship')->nullable();
             $table->string('care_giver_dob')->nullable();
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
