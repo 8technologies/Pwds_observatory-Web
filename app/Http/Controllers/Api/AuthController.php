@@ -15,6 +15,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|min:3|max:255',
             'email' => 'required|email|unique:users',
+            'phone' => 'required|string|unique:users',
             'password' => 'required|string|min:4',
             'account_type' => 'required|in:["pwd", "admin", "service provider"]'
         ]);
@@ -22,6 +23,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
             'password' => Hash::make($request->input('password')),
             'account_type' => $request->input('account_type'),
         ]);
