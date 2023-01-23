@@ -20,5 +20,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::middleware(['auth:sanctum'])->group(function(){
-    Route::get('/profile', [PwdProfileController::class, 'login']); 
+    Route::get('/profile', [PwdProfileController::class, 'get_pwd_profile']); 
+    Route::post('/update_profile', [PwdProfileController::class, 'update_profile']);
+    Route::post('/update_care_giver', [PwdProfileController::class, 'update_care_giver_info']);
 });
