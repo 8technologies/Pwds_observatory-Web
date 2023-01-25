@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class SiteController extends Controller
 {
@@ -21,9 +22,16 @@ class SiteController extends Controller
         return view('pages.site.services');
     }
 
-    public function opportunities(Request $request)
+    public function opportunities(Request $request, $id = null)
     {
-        return view('pages.site.opportunities');
+        if(is_null($id)){
+            $today = Carbon::today();
+            $opportunities = \App\Models\Opportunity::whereDate('expiry_date', '<=', $today)
+            ->latest()->paginate(50);
+
+            return view('pages.site.opportunities', ['opportunities' => $opportunities]);
+        }
+        
     }
 
     public function info_bank(Request $request)
