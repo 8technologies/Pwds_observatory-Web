@@ -49,10 +49,10 @@
             <!--begin::Navbar-->
             <div class="app-navbar flex-shrink-0">
                 <div class="app-navbar-item ms-1 ms-md-3">
-                    <a href="#" class="btn btn-sm fw-bold btn-danger">Login</a>
+                    <a href="{{ route('login') }}" class="btn btn-sm fw-bold btn-danger">Login</a>
                 </div>
                 <div class="app-navbar-item ms-1 ms-md-3">
-                    <a href="#" class="btn btn-sm fw-bold btn-primary">Register</a>
+                    <a href="{{ route('sign_up') }}" class="btn btn-sm fw-bold btn-primary">Register</a>
                 </div>
             </div>
             <!--end::Navbar-->

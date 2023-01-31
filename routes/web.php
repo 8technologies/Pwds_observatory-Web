@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/sign-up', [AuthController::class, 'sign_up'])->name('sign_up');
 
 Route::get('/', [SiteController::class, 'home'])->name('home');
 Route::get('/events/{id?}', [SiteController::class, 'events'])->name('events');
