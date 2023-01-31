@@ -36,4 +36,9 @@ class ResourcesController extends Controller
     {
         # code...
     }
+
+    public function get_innovations(Request $request, $id = null)
+    {
+        # code...
+    }
 }

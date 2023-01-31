@@ -58,7 +58,7 @@ class PwdProfileController extends Controller
         # code...
     }
 
-    public function get_district_list(Request $request)
+    public function get_opds_list(Request $request)
     {
         # code...
     }

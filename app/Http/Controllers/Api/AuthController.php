@@ -17,7 +17,7 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'phone' => 'required|string|unique:users',
             'password' => 'required|string|min:4',
-            'account_type' => 'required|in:["pwd", "admin", "service provider"]'
+            'account_type' => 'required'
         ]);
 
         $user = User::create([
