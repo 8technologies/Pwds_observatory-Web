@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('opportunities', function (Blueprint $table) {
             $table->id();
             $table->uuid('user_id');
+            $table->string('banner_image');
             $table->string('category');
             $table->string('title');
             $table->longText('details');
