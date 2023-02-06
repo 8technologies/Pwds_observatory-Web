@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::match(['GET', 'POST'], '/login', [AuthController::class, 'login'])->name('login');
 Route::get('/sign-up', [AuthController::class, 'sign_up'])->name('sign_up');
 
 Route::get('/', [SiteController::class, 'home'])->name('home');

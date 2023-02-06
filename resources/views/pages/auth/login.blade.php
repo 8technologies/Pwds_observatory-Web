@@ -75,7 +75,8 @@ License: For each use you must have a valid license purchased only from above li
 						<!--begin::Content-->
 						<div class="w-md-400px">
 							<!--begin::Form-->
-							<form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="{{ route('home') }}" action="#">
+							<form class="form w-100" novalidate="novalidate" action="{{ route('login') }}" method="POST">
+								@csrf
 								<!--begin::Heading-->
 								<div class="text-center mb-11">
 									<!--begin::Title-->
@@ -104,6 +105,7 @@ License: For each use you must have a valid license purchased only from above li
 								</div>
 								<!--end::Separator-->
 								<!--begin::Input group=-->
+								@include('layouts.flash')
 								<div class="fv-row mb-8">
 									<!--begin::Email-->
 									<input type="text" placeholder="Email" name="email" autocomplete="off" class="form-control bg-transparent" />
