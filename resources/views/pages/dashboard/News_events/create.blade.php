@@ -2,10 +2,14 @@
 
 @section('bread')
     @include('layouts.bread', ['current_page' => 'Post Event or News'])
+    <div class="container px-5 py-2">
+        <div class="row px-5">@include('layouts.flash')</div>
+    </div>    
 @endsection
 
 @section('content')
-<form id="kt_ecommerce_add_category_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="../../demo1/dist/apps/ecommerce/catalog/categories.html">
+<form class="form d-flex flex-column flex-lg-row" method="POST" enctype="multipart/form-data">
+    @csrf
     <!--begin::Aside column-->
     <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
         <!--begin::Thumbnail settings-->
@@ -69,7 +73,7 @@
             <!--begin::Card header-->
             <div class="card-header">
                 <div class="card-title">
-                    <h2>General</h2>
+                    <h2>Post details</h2>
                 </div>
             </div>
             <!--end::Card header-->
@@ -78,71 +82,153 @@
                 <!--begin::Input group-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="required form-label">Opportuity title</label>
+                    <label class="required form-label">Title</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" name="category_name" class="form-control mb-2" placeholder="Opportunity title" value="" />
+                    <input type="text" name="title" class="form-control mb-2" placeholder="title" value="" />
                     <!--end::Input-->
                     <!--begin::Description-->
-                    <div class="text-muted fs-7">Enter the job or opportunity title</div>
+                    @error('title')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
+                    <div class="text-muted fs-7">Enter the news or event title</div> 
+                    @enderror
                     <!--end::Description-->
                 </div>
                 <!--end::Input group-->
                 <!--begin::Input group-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="required form-label">Description</label>
+                    <label class="required form-label">Details</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <div id="kt_ecommerce_add_category_description" name="kt_ecommerce_add_category_description" class="min-h-200px mb-2"></div>
+                    <textarea name="details" id="details_editor">{{ old('details') }}</textarea>
                     <!--end::Editor-->
                     <!--begin::Description-->
-                    <div class="text-muted fs-7">Enter a description to the opportunity or job.</div>
+                    @error('details')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
+                    <div class="text-muted fs-7">Enter post details</div>
+                    @enderror
                     <!--end::Description-->
                 </div>
                 <!--end::Input group-->
                 <!--begin::Input group-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="required form-label">Opportuity Category</label>
+                    <label class="required form-label">Post type</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <select class="form-control mb-2">
-                        <option value="">Select Category</option>
-                        <option value="job">Job</option>
-                        <option value="internship">Internship</option>
-                        <option value="scholarship">Scholarship</option>
-                        <option value="conference">Conference</option>
+                    <select class="form-control mb-2" name="type">
+                        <option value="">Select post type</option>
+                        <option value="News">News</option>
+                        <option value="Event">Event</option>
                     </select>
                     <!--end::Input-->
                     <!--begin::Description-->
-                    <div class="text-muted fs-7">Select opportunity category</div>
+                    @error('type')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
+                    <div class="text-muted fs-7">Select post type</div>
+                    @enderror
+                    <!--end::Description-->
+                </div>
+                <!--end::Input group-->
+            </div>
+            <!--end::Card header-->
+        </div>
+        <div class="card card-flush py-4">
+            <!--begin::Card header-->
+            <div class="card-header">
+                <div class="card-title">
+                    <h2>For events only</h2>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Card body-->
+            <div class="card-body pt-0">
+                <!--begin::Input group-->
+                <div class="mb-10 fv-row">
+                    <!--begin::Label-->
+                    <label class="required form-label">Venue</label>
+                    <!--end::Label-->
+                    <!--begin::Input-->
+                    <input type="text" name="venue" class="form-control mb-2" placeholder="venue" value="{{ old('venue') }}" />
+                    <!--end::Input-->
+                    <!--begin::Description-->
+                    @error('venue')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
+                    <div class="text-muted fs-7">Enter event venue here</div> 
+                    @enderror
                     <!--end::Description-->
                 </div>
                 <!--end::Input group-->
                 <!--begin::Input group-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="form-label">opportunity url</label>
+                    <label class="form-label">event url</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <input type="text" name="category_name" class="form-control mb-2" placeholder="Opportunity title" value="" />
+                    <input type="text" name="event_url" class="form-control mb-2" placeholder="event url" value="{{ old('event_url') }}" />
                     <!--end::Editor-->
                     <!--begin::Description-->
-                    <div class="text-muted fs-7">Enter website link with details about this opportunity</div>
+                    @error('event_url')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
+                    <div class="text-muted fs-7">Enter event website if any</div> 
+                    @enderror
                     <!--end::Description-->
                 </div>
                 <!--end::Input group-->
                 <!--begin::Input group-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="required form-label">Expiry date</label>
+                    <label class="required form-label">Start date</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <input type="date" name="category_name" class="form-control mb-2" placeholder="Opportunity title" value="" />
+                    <input type="date" name="start_date" class="form-control mb-2" placeholder="Event start Date" value="{{ old('start_date') }}" />
                     <!--end::Editor-->
                     <!--begin::Description-->
-                    <div class="text-muted fs-7">Enter opportunity expiry date</div>
+                    @error('start_date')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
+                    <div class="text-muted fs-7">Event start date</div> 
+                    @enderror
+                    <!--end::Description-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="mb-10 fv-row">
+                    <!--begin::Label-->
+                    <label class="form-label">End date</label>
+                    <!--end::Label-->
+                    <!--begin::Editor-->
+                    <input type="date" name="end_date" class="form-control mb-2" placeholder="End Date" value="{{ old('end_date') }}" />
+                    <!--end::Editor-->
+                    <!--begin::Description-->
+                    @error('end_date')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
+                    <div class="text-muted fs-7">Event end date</div> 
+                    @enderror
+                    <!--end::Description-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="mb-10 fv-row">
+                    <!--begin::Label-->
+                    <label class="form-label">Registration fee</label>
+                    <!--end::Label-->
+                    <!--begin::Editor-->
+                    <input type="number" name="regestration_fee" class="form-control mb-2" placeholder="Registration fee" value="" />
+                    <!--end::Editor-->
+                    <!--begin::Description-->
+                    @error('regestration_fee')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
+                    <div class="text-muted fs-7">Registration/Paticipation fee if any</div> 
+                    @enderror
                     <!--end::Description-->
                 </div>
                 <!--end::Input group-->
@@ -168,5 +254,14 @@
 @endsection
 
 @section('page_js')
-<script src="{{ asset('assets/js/custom/apps/ecommerce/catalog/save-category.js') }}"></script>
+<script src="{{ asset('assets/plugins/custom/tinymce/tinymce.bundle.js') }}"></script>
+<script>
+    KTUtil.onDOMContentLoaded(function () {
+        tinymce.init({
+            selector: 'textarea#details_editor',
+            height : "480",
+            menubar: false,
+        });
+    });
+</script>
 @endsection
