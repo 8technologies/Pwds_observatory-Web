@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('bread')
-    @include('layouts.bread', ['current_page' => 'Jobs and Opportunities'])
+    @include('layouts.bread', ['current_page' => 'News and Events'])
 @endsection
 
 @section('content')
@@ -46,7 +46,7 @@
     <!--end::Card header-->
     <!--begin::Card body-->
     <div class="card-body pt-0">
-        @if ($opportunities->count() < 1)
+        @if ($events->count() < 1)
         <div class="py-5 my-5">
            <h3 class="mt-5">No Events or News have been posted yet</h3>
            <a class="btn btn-primary mt-3 mb-5" href="{{ route('post_news') }}">
@@ -70,7 +70,7 @@
                     <th class="min-w-125px">Image</th>
                     <th class="min-w-250px">Title</th>
                     <th class="min-w-250px">Category</th>
-                    <th class="min-w-125px">Expiry</th>
+                    <th class="min-w-125px">Posted AT</th>
                     <th class="text-end min-w-100px">Actions</th>
                 </tr>
                 <!--end::Table row-->
@@ -78,19 +78,19 @@
             <!--end::Table head-->
             <!--begin::Table body-->
             <tbody class="fw-semibold text-gray-600">
-                @foreach ($opportunities as $opportunity)
+                @foreach ($events as $event)
                 <tr>
                     <!--begin::Name=-->
-                    <td>{{ $opportunity->title }}</td>
+                    <td>{{ $event->title }}</td>
                     <!--end::Name=-->
                     <!--begin::Assigned to=-->
-                    <td>{{ $opportunity->title }}</td>
+                    <td>{{ $event->title }}</td>
                     <!--end::Assigned to=-->
                     <!--begin::Email=-->
-                    <td>{{ $opportunity->title }}</td>
+                    <td>{{ $event->type }}</td>
                     <!--end::Email=-->                    
                     <!--begin::Created Date-->
-                    <td>{{ $opportunity->title }}</td>
+                    <td>{{ $event->created_at->format('d M Y') }}</td>
                     <!--end::Created Date-->
                     <!--begin::Action=-->
                     <td class="text-end">

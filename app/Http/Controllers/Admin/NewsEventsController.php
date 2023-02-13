@@ -14,8 +14,8 @@ class NewsEventsController extends Controller
     public function view(Request $request, $id = null)
     {
         if(\is_null($id)){
-            $opportunities = \App\Models\Opportunity::latest()->paginate(100);
-            $data = ['opportunities' => $opportunities];
+            $events = \App\Models\NewsAndEvent::latest()->paginate(100);
+            $data = ['events' => $events];
             return view('pages.dashboard.News_events.news_and_events', $data);
         }
 

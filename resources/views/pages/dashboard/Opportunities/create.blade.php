@@ -5,7 +5,8 @@
 @endsection
 
 @section('content')
-<form id="kt_ecommerce_add_category_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="../../demo1/dist/apps/ecommerce/catalog/categories.html">
+<form  class="form d-flex flex-column flex-lg-row" method="POST" enctype="multipart/form-data">
+    @csrf
     <!--begin::Aside column-->
     <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
         <!--begin::Thumbnail settings-->
@@ -54,7 +55,11 @@
                 </div>
                 <!--end::Image input-->
                 <!--begin::Description-->
+                @error('avatar')
+                <div class="text-danger fs-7">{{ $message }}</div>
+                @else
                 <div class="text-muted fs-7">Set the post banner image. Only *.png, *.jpg and *.jpeg image files are accepted</div>
+                @enderror
                 <!--end::Description-->
             </div>
             <!--end::Card body-->
@@ -81,23 +86,30 @@
                     <label class="required form-label">Opportuity title</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" name="category_name" class="form-control mb-2" placeholder="Opportunity title" value="" />
+                    <input type="text" name="title" class="form-control mb-2" placeholder="Opportunity title" value="" />
                     <!--end::Input-->
                     <!--begin::Description-->
+                    @error('title')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
                     <div class="text-muted fs-7">Enter the job or opportunity title</div>
+                    @enderror
                     <!--end::Description-->
                 </div>
                 <!--end::Input group-->
-                <!--begin::Input group-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="required form-label">Description</label>
+                    <label class="required form-label">Details</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <div id="kt_ecommerce_add_category_description" name="kt_ecommerce_add_category_description" class="min-h-200px mb-2"></div>
+                    <textarea name="details" id="details_editor">{{ old('details') }}</textarea>
                     <!--end::Editor-->
                     <!--begin::Description-->
-                    <div class="text-muted fs-7">Enter a description to the opportunity or job.</div>
+                    @error('details')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
+                    <div class="text-muted fs-7">Enter post details</div>
+                    @enderror
                     <!--end::Description-->
                 </div>
                 <!--end::Input group-->
@@ -107,7 +119,7 @@
                     <label class="required form-label">Opportuity Category</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <select class="form-control mb-2">
+                    <select name ="category" class="form-control mb-2">
                         <option value="">Select Category</option>
                         <option value="job">Job</option>
                         <option value="internship">Internship</option>
@@ -116,7 +128,11 @@
                     </select>
                     <!--end::Input-->
                     <!--begin::Description-->
+                    @error('category')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
                     <div class="text-muted fs-7">Select opportunity category</div>
+                    @enderror
                     <!--end::Description-->
                 </div>
                 <!--end::Input group-->
@@ -126,10 +142,14 @@
                     <label class="form-label">opportunity url</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <input type="text" name="category_name" class="form-control mb-2" placeholder="Opportunity title" value="" />
+                    <input type="text" name="url" class="form-control mb-2" placeholder="Opportunity title" value="{{ old('url') }}" />
                     <!--end::Editor-->
                     <!--begin::Description-->
+                    @error('url')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
                     <div class="text-muted fs-7">Enter website link with details about this opportunity</div>
+                    @enderror
                     <!--end::Description-->
                 </div>
                 <!--end::Input group-->
@@ -139,10 +159,14 @@
                     <label class="required form-label">Expiry date</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <input type="date" name="category_name" class="form-control mb-2" placeholder="Opportunity title" value="" />
+                    <input type="date" name="expiry_date" class="form-control mb-2" value="{{ old('expiry_date') }}" />
                     <!--end::Editor-->
                     <!--begin::Description-->
+                    @error('expiry_date')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
                     <div class="text-muted fs-7">Enter opportunity expiry date</div>
+                    @enderror
                     <!--end::Description-->
                 </div>
                 <!--end::Input group-->
@@ -155,7 +179,7 @@
             <a href="{{ route('admin_opportunities') }}" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
             <!--end::Button-->
             <!--begin::Button-->
-            <button type="submit" id="kt_ecommerce_add_category_submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary">
                 <span class="indicator-label">Post Opportunity</span>
                 <span class="indicator-progress">Please wait...
                 <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
@@ -168,5 +192,14 @@
 @endsection
 
 @section('page_js')
-<script src="{{ asset('assets/js/custom/apps/ecommerce/catalog/save-category.js') }}"></script>
+<script src="{{ asset('assets/plugins/custom/tinymce/tinymce.bundle.js') }}"></script>
+<script>
+    KTUtil.onDOMContentLoaded(function () {
+        tinymce.init({
+            selector: 'textarea#details_editor',
+            height : "480",
+            menubar: false,
+        });
+    });
+</script>
 @endsection

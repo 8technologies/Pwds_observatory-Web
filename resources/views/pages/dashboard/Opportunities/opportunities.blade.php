@@ -87,10 +87,10 @@
                     <td>{{ $opportunity->title }}</td>
                     <!--end::Assigned to=-->
                     <!--begin::Email=-->
-                    <td>{{ $opportunity->title }}</td>
+                    <td>{{ $opportunity->category }}</td>
                     <!--end::Email=-->                    
                     <!--begin::Created Date-->
-                    <td>{{ $opportunity->title }}</td>
+                    <td>{{ $opportunity->expiry_date->format('d M Y') }}</td>
                     <!--end::Created Date-->
                     <!--begin::Action=-->
                     <td class="text-end">
