@@ -15,7 +15,15 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
+            $table->uuid('user_id');
+            $table->string('banner_image');
+            $table->string('title');
+            $table->longText('details');
+            $table->string('service_type');
+            $table->string('service_cost');
+            $table->string('chat_contact')->nullable();
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
