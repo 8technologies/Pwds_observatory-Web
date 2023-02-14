@@ -64,14 +64,15 @@
 						<!--begin::Content-->
 						<div class="w-md-400px">
 							<!--begin::Form-->
-							<form class="form w-100" novalidate="novalidate" id="kt_sign_up_form" data-kt-redirect-url="../../demo1/dist/authentication/layouts/overlay/sign-in.html" action="#">
+							<form class="form w-100" novalidate="novalidate" id="kt_sign_up_form" method="POST">
+								@csrf
 								<!--begin::Heading-->
 								<div class="text-center mb-11">
 									<!--begin::Title-->
 									<h1 class="text-dark fw-bolder mb-3">Sign Up</h1>
 									<!--end::Title-->
 									<!--begin::Subtitle-->
-									<div class="text-gray-500 fw-semibold fs-6">Your Social Campaigns</div>
+									<div class="text-gray-500 fw-semibold fs-6">Creata account via social</div>
 									<!--end::Subtitle=-->
 								</div>
 								<!--begin::Heading-->
@@ -93,9 +94,16 @@
 								</div>
 								<!--end::Separator-->
 								<!--begin::Input group=-->
+								@include('layouts.flash')
 								<div class="fv-row mb-8">
 									<!--begin::Email-->
-									<input type="text" placeholder="Email" name="email" autocomplete="off" class="form-control bg-transparent" />
+									<input type="text" placeholder="Name" name="name" autocomplete="off" value="{{ old('name') }}" class="form-control bg-transparent" />
+									<!--end::Email-->
+								</div>
+								<!--begin::Input group-->
+								<div class="fv-row mb-8">
+									<!--begin::Email-->
+									<input type="text" placeholder="Email" name="email" autocomplete="off" value="{{ old('email') }}" class="form-control bg-transparent" />
 									<!--end::Email-->
 								</div>
 								<!--begin::Input group-->
@@ -128,11 +136,6 @@
 								<!--end::Input group=-->
 								<!--end::Input group=-->
 								<div class="fv-row mb-8">
-									<!--begin::Repeat Password-->
-									<input placeholder="Repeat Password" name="confirm-password" type="password" autocomplete="off" class="form-control bg-transparent" />
-									<!--end::Repeat Password-->
-								</div>
-                                <div class="fv-row mb-8">
 									<!--begin::Repeat Password-->
 									<input placeholder="Repeat Password" name="confirm-password" type="password" autocomplete="off" class="form-control bg-transparent" />
 									<!--end::Repeat Password-->

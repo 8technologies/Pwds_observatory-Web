@@ -46,7 +46,7 @@
     <!--end::Card header-->
     <!--begin::Card body-->
     <div class="card-body pt-0">
-        @if ($opportunities->count() < 1)
+        @if ($services->count() < 1)
         <div class="py-5 my-5">
            <h3 class="mt-5">No services have been posted yet</h3>
            <a class="btn btn-primary mt-3 mb-5" href="{{ route('post_service') }}">
@@ -69,8 +69,8 @@
                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                     <th class="min-w-125px">Image</th>
                     <th class="min-w-250px">Title</th>
-                    <th class="min-w-250px">Category</th>
-                    <th class="min-w-125px">Expiry</th>
+                    <th class="min-w-250px">Type</th>
+                    <th class="min-w-125px">Cost</th>
                     <th class="text-end min-w-100px">Actions</th>
                 </tr>
                 <!--end::Table row-->
@@ -78,19 +78,19 @@
             <!--end::Table head-->
             <!--begin::Table body-->
             <tbody class="fw-semibold text-gray-600">
-                @foreach ($opportunities as $opportunity)
+                @foreach ($services as $service)
                 <tr>
                     <!--begin::Name=-->
-                    <td>{{ $opportunity->title }}</td>
+                    <td>{{ $service->title }}</td>
                     <!--end::Name=-->
                     <!--begin::Assigned to=-->
-                    <td>{{ $opportunity->title }}</td>
+                    <td>{{ $service->title }}</td>
                     <!--end::Assigned to=-->
                     <!--begin::Email=-->
-                    <td>{{ $opportunity->category }}</td>
+                    <td>{{ $service->service_type }}</td>
                     <!--end::Email=-->                    
                     <!--begin::Created Date-->
-                    <td>{{ $opportunity->expiry_date->format('d M Y') }}</td>
+                    <td>{{ $service->service_cost }}</td>
                     <!--end::Created Date-->
                     <!--begin::Action=-->
                     <td class="text-end">

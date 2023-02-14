@@ -3,13 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     public function sign_up(Request $request)
     {
-        return view('pages.auth.register');
+        if($request->isMethod('GET')){
+            return view('pages.auth.register');
+        } 
+        
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:4',
+            'account_type' => 'required'
+        ]); 
+        
+        \App\Models\User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'account_type' => $request->input('account_type'),
+        ]); 
+        
+        return redirect()->route("login")->with('success', 'Account created, login to proceed');
     }
 
     public function login(Request $request)
