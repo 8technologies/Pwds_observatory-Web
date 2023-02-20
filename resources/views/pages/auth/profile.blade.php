@@ -146,7 +146,24 @@
                 <!--begin::Input group-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="form-label">Email</label>
+                    <label class="required form-label">Organization Address</label>
+                    <!--end::Label-->
+                    <!--begin::Editor-->
+                    <input type="text" name="regestration_fee" class="form-control mb-2" placeholder="Registration fee" value="" />
+                    <!--end::Editor-->
+                    <!--begin::Description-->
+                    @error('regestration_fee')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
+                    <div class="text-muted fs-7">Enter organization address here</div> 
+                    @enderror
+                    <!--end::Description-->
+                </div>
+                <!--end::Input group-->                
+                <!--begin::Input group-->
+                <div class="mb-10 fv-row">
+                    <!--begin::Label-->
+                    <label class="form-label">Website</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
                     <input type="text" name="event_url" class="form-control mb-2" placeholder="event url" value="{{ old('event_url') }}" />
@@ -163,7 +180,24 @@
                 <!--begin::Input group-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="form-label">Organization Address</label>
+                    <label class="form-label">Twiter url</label>
+                    <!--end::Label-->
+                    <!--begin::Editor-->
+                    <input type="text" name="regestration_fee" class="form-control mb-2" placeholder="Registration fee" value="" />
+                    <!--end::Editor-->
+                    <!--begin::Description-->
+                    @error('regestration_fee')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
+                    <div class="text-muted fs-7">Enter organization address here</div> 
+                    @enderror
+                    <!--end::Description-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="mb-10 fv-row">
+                    <!--begin::Label-->
+                    <label class="form-label">Facebook url</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
                     <input type="text" name="regestration_fee" class="form-control mb-2" placeholder="Registration fee" value="" />
