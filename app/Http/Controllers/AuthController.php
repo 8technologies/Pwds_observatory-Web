@@ -54,6 +54,15 @@ class AuthController extends Controller
         
     }
 
+    public function profile(Request $request)
+    {
+        if($request->isMethod('GET')){
+            $user = Auth::user();
+            $data = ['user_name' => $user->name];
+            return view('pages.auth.profile', $data);
+        }
+    }
+
     public function logout(Request $request)
     {
         Auth::logout();

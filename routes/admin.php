@@ -27,3 +27,5 @@ Route::get('/news_and_events/{id?}', [NewsEventsController::class, 'view'])->nam
 Route::match(['GET', 'POST'], '/post_news_and_event', [NewsEventsController::class, 'create'])->name('post_news');
 Route::get('/services/{id?}', [ServicesController::class, 'view'])->name('admin_services');
 Route::match(['GET', 'POST'], '/post_service', [ServicesController::class, 'create'])->name('post_service');
+
+Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
