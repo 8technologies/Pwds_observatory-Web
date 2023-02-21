@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('bread')
-    @include('layouts.bread', ['current_page' => 'Post Event or News'])
+    @include('layouts.bread', ['current_page' => 'Post Innovation'])
     <div class="container px-5 py-2">
         <div class="row px-5">@include('layouts.flash')</div>
     </div>    
@@ -77,7 +77,7 @@
             <!--begin::Card header-->
             <div class="card-header">
                 <div class="card-title">
-                    <h2>Post details</h2>
+                    <h2>Innovation details</h2>
                 </div>
             </div>
             <!--end::Card header-->
@@ -120,118 +120,16 @@
                 <!--begin::Input group-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="required form-label">Post type</label>
+                    <label class="form-label">Access contact</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <select class="form-control mb-2" name="type">
-                        <option value="">Select post type</option>
-                        <option value="News">News</option>
-                        <option value="Event">Event</option>
-                    </select>
+                    <input type="text" name="access_contact" class="form-control mb-2" placeholder="access phone number" value="{{ old('access_contact') }}" />
                     <!--end::Input-->
                     <!--begin::Description-->
-                    @error('type')
+                    @error('access_contact')
                     <div class="text-danger fs-7">{{ $message }}</div>
                     @else
-                    <div class="text-muted fs-7">Select post type</div>
-                    @enderror
-                    <!--end::Description-->
-                </div>
-                <!--end::Input group-->
-            </div>
-            <!--end::Card header-->
-        </div>
-        <div class="card card-flush py-4">
-            <!--begin::Card header-->
-            <div class="card-header">
-                <div class="card-title">
-                    <h2>For events only</h2>
-                </div>
-            </div>
-            <!--end::Card header-->
-            <!--begin::Card body-->
-            <div class="card-body pt-0">
-                <!--begin::Input group-->
-                <div class="mb-10 fv-row">
-                    <!--begin::Label-->
-                    <label class="required form-label">Venue</label>
-                    <!--end::Label-->
-                    <!--begin::Input-->
-                    <input type="text" name="venue" class="form-control mb-2" placeholder="venue" value="{{ old('venue') }}" />
-                    <!--end::Input-->
-                    <!--begin::Description-->
-                    @error('venue')
-                    <div class="text-danger fs-7">{{ $message }}</div>
-                    @else
-                    <div class="text-muted fs-7">Enter event venue here</div> 
-                    @enderror
-                    <!--end::Description-->
-                </div>
-                <!--end::Input group-->
-                <!--begin::Input group-->
-                <div class="mb-10 fv-row">
-                    <!--begin::Label-->
-                    <label class="form-label">event url</label>
-                    <!--end::Label-->
-                    <!--begin::Editor-->
-                    <input type="text" name="event_url" class="form-control mb-2" placeholder="event url" value="{{ old('event_url') }}" />
-                    <!--end::Editor-->
-                    <!--begin::Description-->
-                    @error('event_url')
-                    <div class="text-danger fs-7">{{ $message }}</div>
-                    @else
-                    <div class="text-muted fs-7">Enter event website if any</div> 
-                    @enderror
-                    <!--end::Description-->
-                </div>
-                <!--end::Input group-->
-                <!--begin::Input group-->
-                <div class="mb-10 fv-row">
-                    <!--begin::Label-->
-                    <label class="required form-label">Start date</label>
-                    <!--end::Label-->
-                    <!--begin::Editor-->
-                    <input type="date" name="start_date" class="form-control mb-2" placeholder="Event start Date" value="{{ old('start_date') }}" />
-                    <!--end::Editor-->
-                    <!--begin::Description-->
-                    @error('start_date')
-                    <div class="text-danger fs-7">{{ $message }}</div>
-                    @else
-                    <div class="text-muted fs-7">Event start date</div> 
-                    @enderror
-                    <!--end::Description-->
-                </div>
-                <!--end::Input group-->
-                <!--begin::Input group-->
-                <div class="mb-10 fv-row">
-                    <!--begin::Label-->
-                    <label class="form-label">End date</label>
-                    <!--end::Label-->
-                    <!--begin::Editor-->
-                    <input type="date" name="end_date" class="form-control mb-2" placeholder="End Date" value="{{ old('end_date') }}" />
-                    <!--end::Editor-->
-                    <!--begin::Description-->
-                    @error('end_date')
-                    <div class="text-danger fs-7">{{ $message }}</div>
-                    @else
-                    <div class="text-muted fs-7">Event end date</div> 
-                    @enderror
-                    <!--end::Description-->
-                </div>
-                <!--end::Input group-->
-                <!--begin::Input group-->
-                <div class="mb-10 fv-row">
-                    <!--begin::Label-->
-                    <label class="form-label">Registration fee</label>
-                    <!--end::Label-->
-                    <!--begin::Editor-->
-                    <input type="number" name="regestration_fee" class="form-control mb-2" placeholder="Registration fee" value="" />
-                    <!--end::Editor-->
-                    <!--begin::Description-->
-                    @error('regestration_fee')
-                    <div class="text-danger fs-7">{{ $message }}</div>
-                    @else
-                    <div class="text-muted fs-7">Registration/Paticipation fee if any</div> 
+                    <div class="text-muted fs-7">Enter innovation access contact (optional)</div> 
                     @enderror
                     <!--end::Description-->
                 </div>
@@ -242,7 +140,7 @@
         <!--end::General options-->
         <div class="d-flex justify-content-end">
             <!--begin::Button-->
-            <a href="{{ route('admin_news') }}" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
+            <a href="{{ route('admin_innovations') }}" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
             <!--end::Button-->
             <!--begin::Button-->
             <button type="submit" id="kt_ecommerce_add_category_submit" class="btn btn-primary">
