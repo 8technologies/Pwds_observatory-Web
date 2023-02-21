@@ -27,7 +27,11 @@
             <div class="card-body text-center pt-0">
                 <!--begin::Image input-->
                 <!--begin::Image input placeholder-->
-                <style>.image-input-placeholder { background-image: url({{asset('assets/media/svg/files/blank-image.svg') }}); }</style>
+                @if ($avator == 'default.png')
+                <style>.image-input-placeholder { background-image: url({{asset('assets/media/svg/files/blank-image.svg') }}); }</style>    
+                @else
+                <style>.image-input-placeholder { background-image: url({{asset('storage/'.$avator) }}); }</style>     
+                @endif
                 <!--end::Image input placeholder-->
                 <!--begin::Image input-->
                 <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3" data-kt-image-input="true">
@@ -85,10 +89,10 @@
                     <label class="required form-label">Organization Name</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" name="title" class="form-control mb-2" placeholder="title" value="{{ $user_name }}" />
+                    <input type="text" name="name" class="form-control mb-2" placeholder="title" value="{{ old('name', $user_name) }}" />
                     <!--end::Input-->
                     <!--begin::Description-->
-                    @error('title')
+                    @error('name')
                     <div class="text-danger fs-7">{{ $message }}</div>
                     @else
                     <div class="text-muted fs-7">Enter Organization name here</div> 
@@ -102,13 +106,13 @@
                     <label class="required form-label">About Organization</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <textarea name="details" id="details_editor">{{ old('details') }}</textarea>
+                    <textarea name="about" id="details_editor">{{ old('about', $profile->about ?? null) }}</textarea>
                     <!--end::Editor-->
                     <!--begin::Description-->
-                    @error('details')
+                    @error('about')
                     <div class="text-danger fs-7">{{ $message }}</div>
                     @else
-                    <div class="text-muted fs-7">Enter post details</div>
+                    <div class="text-muted fs-7">Enter breif company description</div>
                     @enderror
                     <!--end::Description-->
                 </div>
@@ -132,13 +136,13 @@
                     <label class="required form-label">Phone Number</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" name="venue" class="form-control mb-2" placeholder="venue" value="{{ old('venue') }}" />
+                    <input type="text" name="phone" class="form-control mb-2" placeholder="phone number" value="{{ old('phone', $profile->phone ?? null) }}" />
                     <!--end::Input-->
                     <!--begin::Description-->
-                    @error('venue')
+                    @error('phone')
                     <div class="text-danger fs-7">{{ $message }}</div>
                     @else
-                    <div class="text-muted fs-7">Enter event venue here</div> 
+                    <div class="text-muted fs-7">Enter organization phone number</div> 
                     @enderror
                     <!--end::Description-->
                 </div>
@@ -149,10 +153,10 @@
                     <label class="required form-label">Organization Address</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <input type="text" name="regestration_fee" class="form-control mb-2" placeholder="Registration fee" value="" />
+                    <input type="text" name="address" class="form-control mb-2" placeholder="Registration fee" value="{{ old('address', $profile->address ?? null) }}" />
                     <!--end::Editor-->
                     <!--begin::Description-->
-                    @error('regestration_fee')
+                    @error('address')
                     <div class="text-danger fs-7">{{ $message }}</div>
                     @else
                     <div class="text-muted fs-7">Enter organization address here</div> 
@@ -166,13 +170,13 @@
                     <label class="form-label">Website</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <input type="text" name="event_url" class="form-control mb-2" placeholder="event url" value="{{ old('event_url') }}" />
+                    <input type="text" name="website" class="form-control mb-2" placeholder="website url" value="{{ old('website', $profile->website ?? null) }}" />
                     <!--end::Editor-->
                     <!--begin::Description-->
-                    @error('event_url')
+                    @error('website')
                     <div class="text-danger fs-7">{{ $message }}</div>
                     @else
-                    <div class="text-muted fs-7">Enter event website if any</div> 
+                    <div class="text-muted fs-7">Enter organisation website url (optional)</div> 
                     @enderror
                     <!--end::Description-->
                 </div>
@@ -183,13 +187,13 @@
                     <label class="form-label">Twiter url</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <input type="text" name="regestration_fee" class="form-control mb-2" placeholder="Registration fee" value="" />
+                    <input type="text" name="twitter" class="form-control mb-2" placeholder="Twitter url" value="{{ old('twitter', $profile->twitter ?? null) }}" />
                     <!--end::Editor-->
                     <!--begin::Description-->
-                    @error('regestration_fee')
+                    @error('twitter')
                     <div class="text-danger fs-7">{{ $message }}</div>
                     @else
-                    <div class="text-muted fs-7">Enter organization address here</div> 
+                    <div class="text-muted fs-7">Enter twitter url (optional)</div> 
                     @enderror
                     <!--end::Description-->
                 </div>
@@ -200,13 +204,13 @@
                     <label class="form-label">Facebook url</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <input type="text" name="regestration_fee" class="form-control mb-2" placeholder="Registration fee" value="" />
+                    <input type="text" name="facebook" class="form-control mb-2" placeholder="facebook url" value="{{ old('facebook', $profile->facebook ?? null) }}" />
                     <!--end::Editor-->
                     <!--begin::Description-->
-                    @error('regestration_fee')
+                    @error('facebook')
                     <div class="text-danger fs-7">{{ $message }}</div>
                     @else
-                    <div class="text-muted fs-7">Enter organization address here</div> 
+                    <div class="text-muted fs-7">Enter facebook url (optional)</div> 
                     @enderror
                     <!--end::Description-->
                 </div>

@@ -30,4 +30,4 @@ Route::middleware(['profile.incomplete'])->group(function () {
 });
 
 Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+Route::match(['GET', 'POST'], '/profile', [AuthController::class, 'profile'])->name('profile');
