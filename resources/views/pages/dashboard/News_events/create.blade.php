@@ -58,7 +58,11 @@
                 </div>
                 <!--end::Image input-->
                 <!--begin::Description-->
+                @error('avatar')
+                <div class="text-danger fs-7">{{ $message }}</div>
+                @else
                 <div class="text-muted fs-7">Set the post banner image. Only *.png, *.jpg and *.jpeg image files are accepted</div>
+                @enderror
                 <!--end::Description-->
             </div>
             <!--end::Card body-->

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('bread')
-    @include('layouts.bread', ['current_page' => 'User profile'])
+    @include('layouts.bread', ['current_page' => 'Post Innovation'])
     <div class="container px-5 py-2">
         <div class="row px-5">@include('layouts.flash')</div>
     </div>    
@@ -18,7 +18,7 @@
             <div class="card-header">
                 <!--begin::Card title-->
                 <div class="card-title">
-                    <h2 class="required">Profile Image</h2>
+                    <h2 class="required">Banner Image</h2>
                 </div>
                 <!--end::Card title-->
             </div>
@@ -27,11 +27,7 @@
             <div class="card-body text-center pt-0">
                 <!--begin::Image input-->
                 <!--begin::Image input placeholder-->
-                @if ($avator == 'default.png')
-                <style>.image-input-placeholder { background-image: url({{asset('assets/media/svg/files/blank-image.svg') }}); }</style>    
-                @else
-                <style>.image-input-placeholder { background-image: url({{asset('storage/'.$avator) }}); }</style>     
-                @endif
+                <style>.image-input-placeholder { background-image: url({{asset('assets/media/svg/files/blank-image.svg') }}); }</style>
                 <!--end::Image input placeholder-->
                 <!--begin::Image input-->
                 <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3" data-kt-image-input="true">
@@ -62,7 +58,11 @@
                 </div>
                 <!--end::Image input-->
                 <!--begin::Description-->
+                @error('avatar')
+                <div class="text-danger fs-7">{{ $message }}</div>
+                @else
                 <div class="text-muted fs-7">Set the post banner image. Only *.png, *.jpg and *.jpeg image files are accepted</div>
+                @enderror
                 <!--end::Description-->
             </div>
             <!--end::Card body-->
@@ -77,7 +77,7 @@
             <!--begin::Card header-->
             <div class="card-header">
                 <div class="card-title">
-                    <h2>Profile details</h2>
+                    <h2>Innovation details</h2>
                 </div>
             </div>
             <!--end::Card header-->
@@ -86,16 +86,16 @@
                 <!--begin::Input group-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="required form-label">Organization Name</label>
+                    <label class="required form-label">Title</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" name="name" class="form-control mb-2" placeholder="title" value="{{ old('name', $user_name) }}" />
+                    <input type="text" name="title" class="form-control mb-2" placeholder="title" value="" />
                     <!--end::Input-->
                     <!--begin::Description-->
-                    @error('name')
+                    @error('title')
                     <div class="text-danger fs-7">{{ $message }}</div>
                     @else
-                    <div class="text-muted fs-7">Enter Organization name here</div> 
+                    <div class="text-muted fs-7">Enter the news or event title</div> 
                     @enderror
                     <!--end::Description-->
                 </div>
@@ -103,114 +103,33 @@
                 <!--begin::Input group-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="required form-label">About Organization</label>
+                    <label class="required form-label">Details</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <textarea name="about" id="details_editor">{{ old('about', $profile->about ?? null) }}</textarea>
+                    <textarea name="details" id="details_editor">{{ old('details') }}</textarea>
                     <!--end::Editor-->
                     <!--begin::Description-->
-                    @error('about')
+                    @error('details')
                     <div class="text-danger fs-7">{{ $message }}</div>
                     @else
-                    <div class="text-muted fs-7">Enter breif company description</div>
+                    <div class="text-muted fs-7">Enter post details</div>
                     @enderror
                     <!--end::Description-->
                 </div>
                 <!--end::Input group-->
-            </div>
-            <!--end::Card header-->
-        </div>
-        <div class="card card-flush py-4">
-            <!--begin::Card header-->
-            <div class="card-header">
-                <div class="card-title">
-                    <h2>Contact Information</h2>
-                </div>
-            </div>
-            <!--end::Card header-->
-            <!--begin::Card body-->
-            <div class="card-body pt-0">
                 <!--begin::Input group-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="required form-label">Phone Number</label>
+                    <label class="form-label">Access contact</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" name="phone" class="form-control mb-2" placeholder="phone number" value="{{ old('phone', $profile->phone ?? null) }}" />
+                    <input type="text" name="access_contact" class="form-control mb-2" placeholder="access phone number" value="{{ old('access_contact') }}" />
                     <!--end::Input-->
                     <!--begin::Description-->
-                    @error('phone')
+                    @error('access_contact')
                     <div class="text-danger fs-7">{{ $message }}</div>
                     @else
-                    <div class="text-muted fs-7">Enter organization phone number</div> 
-                    @enderror
-                    <!--end::Description-->
-                </div>
-                <!--end::Input group-->
-                <!--begin::Input group-->
-                <div class="mb-10 fv-row">
-                    <!--begin::Label-->
-                    <label class="required form-label">Organization Address</label>
-                    <!--end::Label-->
-                    <!--begin::Editor-->
-                    <input type="text" name="address" class="form-control mb-2" placeholder="Registration fee" value="{{ old('address', $profile->address ?? null) }}" />
-                    <!--end::Editor-->
-                    <!--begin::Description-->
-                    @error('address')
-                    <div class="text-danger fs-7">{{ $message }}</div>
-                    @else
-                    <div class="text-muted fs-7">Enter organization address here</div> 
-                    @enderror
-                    <!--end::Description-->
-                </div>
-                <!--end::Input group-->                
-                <!--begin::Input group-->
-                <div class="mb-10 fv-row">
-                    <!--begin::Label-->
-                    <label class="form-label">Website</label>
-                    <!--end::Label-->
-                    <!--begin::Editor-->
-                    <input type="text" name="website" class="form-control mb-2" placeholder="website url" value="{{ old('website', $profile->website ?? null) }}" />
-                    <!--end::Editor-->
-                    <!--begin::Description-->
-                    @error('website')
-                    <div class="text-danger fs-7">{{ $message }}</div>
-                    @else
-                    <div class="text-muted fs-7">Enter organisation website url (optional)</div> 
-                    @enderror
-                    <!--end::Description-->
-                </div>
-                <!--end::Input group-->
-                <!--begin::Input group-->
-                <div class="mb-10 fv-row">
-                    <!--begin::Label-->
-                    <label class="form-label">Twiter url</label>
-                    <!--end::Label-->
-                    <!--begin::Editor-->
-                    <input type="text" name="twitter" class="form-control mb-2" placeholder="Twitter url" value="{{ old('twitter', $profile->twitter ?? null) }}" />
-                    <!--end::Editor-->
-                    <!--begin::Description-->
-                    @error('twitter')
-                    <div class="text-danger fs-7">{{ $message }}</div>
-                    @else
-                    <div class="text-muted fs-7">Enter twitter url (optional)</div> 
-                    @enderror
-                    <!--end::Description-->
-                </div>
-                <!--end::Input group-->
-                <!--begin::Input group-->
-                <div class="mb-10 fv-row">
-                    <!--begin::Label-->
-                    <label class="form-label">Facebook url</label>
-                    <!--end::Label-->
-                    <!--begin::Editor-->
-                    <input type="text" name="facebook" class="form-control mb-2" placeholder="facebook url" value="{{ old('facebook', $profile->facebook ?? null) }}" />
-                    <!--end::Editor-->
-                    <!--begin::Description-->
-                    @error('facebook')
-                    <div class="text-danger fs-7">{{ $message }}</div>
-                    @else
-                    <div class="text-muted fs-7">Enter facebook url (optional)</div> 
+                    <div class="text-muted fs-7">Enter innovation access contact (optional)</div> 
                     @enderror
                     <!--end::Description-->
                 </div>
@@ -221,8 +140,11 @@
         <!--end::General options-->
         <div class="d-flex justify-content-end">
             <!--begin::Button-->
+            <a href="{{ route('admin_innovations') }}" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
+            <!--end::Button-->
+            <!--begin::Button-->
             <button type="submit" id="kt_ecommerce_add_category_submit" class="btn btn-primary">
-                <span class="indicator-label">Update Profile</span>
+                <span class="indicator-label">Sumit Item</span>
                 <span class="indicator-progress">Please wait...
                 <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
             </button>
