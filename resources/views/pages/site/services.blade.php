@@ -22,8 +22,8 @@
                             <div class="separator separator-dashed mb-5"></div>
                             @if ($services->count() == 0)
                             <div class="my-5 px-5 py-5">
-                                <h1>No Innovations</h1>
-                                <p>No innovations have been posted yet, please come again later</p>
+                                <h1>No Services</h1>
+                                <p>No services have been posted yet, please come again later</p>
                             </div>                                    
                             @else
                                 @foreach ($services as $service)
