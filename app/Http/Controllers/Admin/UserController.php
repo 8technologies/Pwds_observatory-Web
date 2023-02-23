@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\StoreImageTrait;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    use StoreImageTrait;
     function __construct(Request $request) {
         $this->middleware(function ($request, $next) {
             if(Auth::user()->account_type != 'OPD'){
@@ -37,8 +39,16 @@ class UserController extends Controller
             if($request->has('action') == 'delete' && $user_pwd->district_organisation == Auth::user()->id){
                 $user_id = $user_pwd->user_id;
                 $user_pwd->delete();
-                \App\Models\User::find($user_id)->delete();
-                return "sucess";
+
+                $user = \App\Models\User::find($user_id);
+                if($user->avator != "default.png"){
+                    $delete_file = $this->deleteFile($user->avator);
+                    if(!$delete_file){
+                        return abort(500);  
+                    }
+                }
+                $user->delete();
+                return "success";
             }
             return abort(403);
         }

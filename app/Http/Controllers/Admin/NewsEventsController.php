@@ -20,6 +20,24 @@ class NewsEventsController extends Controller
             return view('pages.dashboard.News_events.news_and_events', ['events' => $events]);
         }
 
+        $event = \App\Models\NewsAndEvent::find($id);
+        if(!$event){
+            return abort(404);
+        }
+
+        if($request->has('action')){
+            if($request->has('action') == 'delete' && $event->user_id == Auth::user()->id){
+                $delete_file = $this->deleteFile($event->banner_image);
+                if(!$delete_file){
+                    return abort(500);  
+                }
+
+                $event->delete();
+                return "success";
+            }
+            return abort(403);
+        }
+
     }
 
     public function create(Request $request)

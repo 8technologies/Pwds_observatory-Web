@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\StoreImageTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class InfoBankController extends Controller
 {
@@ -20,6 +21,24 @@ class InfoBankController extends Controller
             $data = ['info_banks' => $info_banks];
             return view('pages.dashboard.Info_banks.info_banks', $data);
         }
+
+        $info_bank = \App\Models\InformationBank::find($id);
+        if(!$info_bank){
+            return abort(404);
+        }
+
+        if($request->has('action')){
+            if($request->has('action') == 'delete' && $info_bank->user_id == Auth::user()->id){
+                $delete_image = $this->deleteFile($info_bank->banner_image);
+                $delete_pdf = $this->deleteFile($info_bank->pdf_file);
+                if(!$delete_image || !$delete_pdf){
+                    return abort(500);  
+                }
+                $info_bank->delete();
+                return "success";
+            }
+            return abort(403);
+        }         
 
     }
 

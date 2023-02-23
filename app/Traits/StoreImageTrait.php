@@ -39,4 +39,13 @@ trait StoreImageTrait
 
         return false;
     }
+
+    public function deleteFile(String $path, String $disk = 'public')
+    {
+        if(Storage::disk($disk)->exists($path)){
+            Storage::disk($disk)->delete($path);
+            return true;
+        }
+        return false;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\StoreImageTrait;
@@ -20,6 +21,24 @@ class InnovationsController extends Controller
             $data = ['innovations' => $innovations];
             return view('pages.dashboard.Innovations.innovations', $data);
         }
+
+        $innovation = \App\Models\Innovation::find($id);
+        if(!$innovation){
+            return abort(404);
+        }
+
+        if($request->has('action')){
+            if($request->has('action') == 'delete' && $innovation->user_id == Auth::user()->id){
+                $delete_file = $this->deleteFile($innovation->banner_image);
+                if(!$delete_file){
+                    return abort(500);  
+                }
+
+                $innovation->delete();
+                return "success";
+            }
+            return abort(403);
+        }        
 
     }
 
