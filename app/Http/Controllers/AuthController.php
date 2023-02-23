@@ -107,6 +107,13 @@ class AuthController extends Controller
         return redirect()->back()->with('success', 'Profile information has been updated');
     }
 
+    public function account(Request $request)
+    {
+        if($request->isMethod('GET')){
+            return view('pages.auth.account');
+        }
+    }
+
     public function logout(Request $request)
     {
         Auth::logout();

@@ -35,6 +35,7 @@ Route::middleware(['profile.incomplete'])->group(function () {
     Route::match(['GET', 'POST'], '/post_innovation', [InnovationsController::class, 'create'])->name('post_innnovation');
     Route::get('/info_bank/{id?}', [InfoBankController::class, 'view'])->name('admin_info_bank');
     Route::match(['GET', 'POST'], '/post_info_bank', [InfoBankController::class, 'create'])->name('post_info_bank');
+    Route::match(['GET', 'POST'], '/account_settings', [AuthController::class, 'account'])->name('account');
 });
 
 Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');

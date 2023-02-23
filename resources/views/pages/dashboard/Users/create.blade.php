@@ -350,13 +350,4 @@
 
 @section('page_js')
 <script src="{{ asset('assets/plugins/custom/tinymce/tinymce.bundle.js') }}"></script>
-<script>
-    KTUtil.onDOMContentLoaded(function () {
-        tinymce.init({
-            selector: 'textarea#details_editor',
-            height : "480",
-            menubar: false,
-        });
-    });
-</script>
 @endsection
