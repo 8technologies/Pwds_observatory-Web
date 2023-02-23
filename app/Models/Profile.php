@@ -19,6 +19,7 @@ class Profile extends Model
         'user_id',
         'about',
         'phone',
+        'district',
         'address',
         'website',
         'twitter',

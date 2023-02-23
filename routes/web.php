@@ -27,5 +27,5 @@ Route::get('/information_bank/{id?}', [SiteController::class, 'info_bank'])->nam
 Route::get('/innovations/{id?}', [SiteController::class, 'innovations'])->name('innovations');
 
 
-//Route::get('/run_migrations', function (){ Artisan::call('migrate'); dd("migrations"); });
+Route::get('/run_migrations', function (){ Artisan::call('migrate'); dd("migrations"); });
 //Route::get('/system_link', function (){ Artisan::call('storage:link'); dd("syslink cretaed"); });

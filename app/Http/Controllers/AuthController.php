@@ -74,6 +74,7 @@ class AuthController extends Controller
             'name' => 'required|string',
             'about' => 'required|string',
             'phone' => 'required|string',
+            'district' => 'required|string',
             'address' => 'required|string',
             'website' => 'nullable|url',
             'twitter' => 'nullable|url',
@@ -95,7 +96,7 @@ class AuthController extends Controller
             }
         }
 
-        $data = $request->only(['about', 'phone', 'address', 'website', 'twitter', 'facebook']);
+        $data = $request->only(['about', 'phone', 'district', 'address', 'website', 'twitter', 'facebook']);
         $data = array_merge($data, ['user_id' => $user->id]);
         \App\Models\Profile::updateOrCreate(
             ['user_id' => $user->id],

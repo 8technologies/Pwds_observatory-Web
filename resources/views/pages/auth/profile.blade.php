@@ -150,6 +150,23 @@
                 <!--begin::Input group-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
+                    <label class="required form-label">Organization District</label>
+                    <!--end::Label-->
+                    <!--begin::Input-->
+                    <input type="text" name="district" class="form-control mb-2" placeholder="E.g Kampala" value="{{ old('district', $profile->district ?? null) }}" />
+                    <!--end::Input-->
+                    <!--begin::Description-->
+                    @error('district')
+                    <div class="text-danger fs-7">{{ $message }}</div>
+                    @else
+                    <div class="text-muted fs-7">Enter organization district</div> 
+                    @enderror
+                    <!--end::Description-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="mb-10 fv-row">
+                    <!--begin::Label-->
                     <label class="required form-label">Organization Address</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
