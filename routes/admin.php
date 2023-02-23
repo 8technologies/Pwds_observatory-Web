@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['profile.incomplete'])->group(function () {
     Route::get('/', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::get('/user-accounts/{id?}', [UserController::class, 'users'])->name('users');
+    Route::match(['GET', 'POST'], '/post_member', [UserController::class, 'create'])->name('post_member');
     Route::get('/opportunities/{id?}', [OpportunitiesController::class, 'view'])->name('admin_opportunities');
     Route::match(['GET', 'POST'], '/post_opportunity', [OpportunitiesController::class, 'create'])->name('post_opportunity');
     Route::get('/news_and_events/{id?}', [NewsEventsController::class, 'view'])->name('admin_news');

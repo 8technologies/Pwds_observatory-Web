@@ -63,7 +63,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Users and Accounts</span>
+                        <span class="menu-title">Organization Members</span>
                     </a>
                     <!--end:Menu link-->
                 </div>                    
