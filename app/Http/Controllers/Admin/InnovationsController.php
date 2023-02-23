@@ -28,6 +28,7 @@ class InnovationsController extends Controller
         }
 
         $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
             'title' => 'required|string|min:10|max:2000',
             'details' => 'required|min:10',
             'access_contact' => 'nullable|string',
