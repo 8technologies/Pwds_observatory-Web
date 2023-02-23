@@ -95,7 +95,7 @@
                                 @if ($pwd_user->user->avator == 'default.png')
                                 <img src="{{ asset('assets/media/svg/avatars/001-boy.svg') }}" class="h-75 align-self-end" alt="{{ $pwd_user->user->name }}" />    
                                 @else
-                                <img src="{{ asset('storage/'.$pwd_user->user->avator ) }}" class="h-75 align-self-end" alt="{{ $pwd_user->user->name }}" />    
+                                <img src="{{ asset('storage/'.$pwd_user->user->avator) }}" class="h-75 align-self-end" alt="{{ $pwd_user->user->name }}" />    
                                 @endif
                             </div>
                             <div class="d-flex justify-content-start flex-column">
