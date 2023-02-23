@@ -49,7 +49,7 @@
                                                 <a href="#" class="fs-4 text-dark fw-bold text-hover-primary text-dark lh-base">{{ $innovation->title }}</a>
                                                 <!--end::Title-->
                                                 <!--begin::Text-->
-                                                <div class="fw-semibold fs-5 text-gray-600 text-dark mt-3">{!! Str::limit($innovation->details, 280) !!}</div>
+                                                <div class="fw-semibold fs-5 text-gray-600 text-dark mt-3">{!! Str::words($innovation->details, 50) !!}</div>
                                                 <!--end::Text-->
                                                 <!--begin::Text-->
                                                 <div class="fs-5 fw-bold">

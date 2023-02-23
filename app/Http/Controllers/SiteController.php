@@ -36,12 +36,13 @@ class SiteController extends Controller
 
     public function info_bank(Request $request)
     {
-        return view('pages.site.info_bank');
+        $info_banks = \App\Models\InformationBank::latest()->paginate(24);
+        return view('pages.site.info_bank', ['info_banks' => $info_banks]);
     }
 
     public function innovations(Request $request)
     {
-        $innovations = \App\Models\Innovation::latest()->paginate(50);
+        $innovations = \App\Models\Innovation::latest()->paginate(24);
         return view('pages.site.innovations', ['innovations' => $innovations]);
     }
 }
