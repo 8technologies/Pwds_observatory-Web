@@ -67,10 +67,8 @@
             <thead>
                 <!--begin::Table row-->
                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                    <th class="min-w-125px">Image</th>
-                    <th class="min-w-250px">Title</th>
-                    <th class="min-w-250px">Category</th>
-                    <th class="min-w-125px">Posted AT</th>
+                    <th class="min-w-125px">Info</th>
+                    <th class="min-w-125px">Posted At</th>
                     <th class="text-end min-w-100px">Actions</th>
                 </tr>
                 <!--end::Table row-->
@@ -81,14 +79,17 @@
                 @foreach ($innovations as $innovation)
                 <tr>
                     <!--begin::Name=-->
-                    <td>{{ $innovation->title }}</td>
-                    <!--end::Name=-->
-                    <!--begin::Assigned to=-->
-                    <td>{{ $innovation->title }}</td>
-                    <!--end::Assigned to=-->
-                    <!--begin::Email=-->
-                    <td>{{ $innovation->title }}</td>
-                    <!--end::Email=-->                    
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="symbol symbol-45px me-5">
+                                <img src="{{asset('storage/'.$innovation->banner_image ) }}" alt="" />
+                            </div>
+                            <div class="d-flex justify-content-start flex-column">
+                                <a href="#" class="text-dark fw-bold text-hover-primary fs-6">{{ $innovation->title }}</a>
+                            </div>
+                        </div> 
+                    </td>
+                    <!--end::Name=-->                  
                     <!--begin::Created Date-->
                     <td>{{ $innovation->created_at->format('d M Y') }}</td>
                     <!--end::Created Date-->

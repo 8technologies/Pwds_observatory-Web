@@ -14,9 +14,10 @@ class NewsEventsController extends Controller
     public function view(Request $request, $id = null)
     {
         if(\is_null($id)){
-            $events = \App\Models\NewsAndEvent::latest()->paginate(100);
-            $data = ['events' => $events];
-            return view('pages.dashboard.News_events.news_and_events', $data);
+            $events = \App\Models\NewsAndEvent::where('user_id', Auth::user()->id)
+            ->latest()->paginate(100);
+
+            return view('pages.dashboard.News_events.news_and_events', ['events' => $events]);
         }
 
     }

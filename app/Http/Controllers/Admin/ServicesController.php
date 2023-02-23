@@ -14,9 +14,10 @@ class ServicesController extends Controller
     public function view(Request $request, $id = null)
     {
         if(\is_null($id)){
-            $services = \App\Models\Service::latest()->paginate(100);
-            $data = ['services' => $services];
-            return view('pages.dashboard.Services.services', $data);
+            $services = \App\Models\Service::where('user_id', Auth::user()->id)
+            ->latest()->paginate(100);
+
+            return view('pages.dashboard.Services.services', ['services' => $services]);
         }
 
     }

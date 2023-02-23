@@ -14,7 +14,9 @@ class OpportunitiesController extends Controller
     public function view(Request $request, $id = null)
     {
         if(\is_null($id)){
-            $opportunities = \App\Models\Opportunity::latest()->paginate(100);
+            $opportunities = \App\Models\Opportunity::where('user_id', Auth::user()->id)
+            ->latest()->paginate(100);
+            
             $data = ['opportunities' => $opportunities];
             return view('pages.dashboard.Opportunities.opportunities', $data);
         }

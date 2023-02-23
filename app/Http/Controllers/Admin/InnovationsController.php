@@ -14,7 +14,9 @@ class InnovationsController extends Controller
     public function view(Request $request, $id = null)
     {
         if(\is_null($id)){
-            $innovations = \App\Models\Innovation::latest()->paginate(100);
+            $innovations = \App\Models\Innovation::where('user_id', Auth::user()->id)
+            ->latest()->paginate(100);
+            
             $data = ['innovations' => $innovations];
             return view('pages.dashboard.Innovations.innovations', $data);
         }

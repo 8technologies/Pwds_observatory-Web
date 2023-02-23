@@ -14,7 +14,9 @@ class InfoBankController extends Controller
     public function view(Request $request, $id = null)
     {
         if(\is_null($id)){
-            $info_banks = \App\Models\InformationBank::latest()->paginate(100);
+            $info_banks = \App\Models\InformationBank::where('user_id', Auth::user()->id)
+            ->latest()->paginate(100);
+            
             $data = ['info_banks' => $info_banks];
             return view('pages.dashboard.Info_banks.info_banks', $data);
         }

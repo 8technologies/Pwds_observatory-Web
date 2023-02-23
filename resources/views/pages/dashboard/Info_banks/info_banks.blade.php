@@ -67,9 +67,8 @@
             <thead>
                 <!--begin::Table row-->
                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                    <th class="min-w-125px">Image</th>
-                    <th class="min-w-250px">Title</th>
-                    <th class="min-w-125px">Posted AT</th>
+                    <th class="min-w-125px">Info</th>
+                    <th class="min-w-125px">Last Modified</th>
                     <th class="text-end min-w-100px">Actions</th>
                 </tr>
                 <!--end::Table row-->
@@ -80,13 +79,19 @@
                 @foreach ($info_banks as $info_bank)
                 <tr>
                     <!--begin::Name=-->
-                    <td>{{ $info_bank->title }}</td>
-                    <!--end::Name=-->
-                    <!--begin::Assigned to=-->
-                    <td>{{ $info_bank->title }}</td>
-                    <!--end::Assigned to=-->                   
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="symbol symbol-45px me-5">
+                                <img src="{{ asset('storage/'.$info_bank->banner_image ) }}" alt="" />
+                            </div>
+                            <div class="d-flex justify-content-start flex-column">
+                                <a href="#" class="text-dark fw-bold text-hover-primary fs-6">{{ $info_bank->title }}</a>
+                            </div>
+                        </div>
+                    </td>
+                    <!--end::Name=-->                
                     <!--begin::Created Date-->
-                    <td>{{ $info_bank->created_at->format('d M Y') }}</td>
+                    <td>{{ $info_bank->updated_at->format('d M Y') }}</td>
                     <!--end::Created Date-->
                     <!--begin::Action=-->
                     <td class="text-end">
