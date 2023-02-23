@@ -24,6 +24,8 @@ Route::get('/events/{id?}', [SiteController::class, 'events'])->name('events');
 Route::get('/services/{id?}', [SiteController::class, 'services'])->name('services');
 Route::get('/opportunities/{id?}', [SiteController::class, 'opportunities'])->name('opportunities');
 Route::get('/information_bank/{id?}', [SiteController::class, 'info_bank'])->name('info_bank');
+Route::get('/innovations/{id?}', [SiteController::class, 'innovations'])->name('innovations');
 
-Route::get('/run_migrations', function (){ Artisan::call('migrate'); dd("migrations"); });
-Route::get('/system_link', function (){ Artisan::call('storage:link'); dd("syslink cretaed"); });
+
+//Route::get('/run_migrations', function (){ Artisan::call('migrate'); dd("migrations"); });
+//Route::get('/system_link', function (){ Artisan::call('storage:link'); dd("syslink cretaed"); });

@@ -38,4 +38,10 @@ class SiteController extends Controller
     {
         return view('pages.site.info_bank');
     }
+
+    public function innovations(Request $request)
+    {
+        $innovations = \App\Models\Innovation::latest()->paginate(50);
+        return view('pages.site.innovations', ['innovations' => $innovations]);
+    }
 }

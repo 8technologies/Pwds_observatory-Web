@@ -42,6 +42,11 @@
                             <a href="{{ route('events') }}" class="menu-title">Events</a>
                         </span>
                     </div>
+                    <div class="menu-item menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
+                        <span class="menu-link">
+                            <a href="{{ route('innovations') }}" class="menu-title">Innovations</a>
+                        </span>
+                    </div>
                 </div>
                 <!--end::Menu-->
             </div>
