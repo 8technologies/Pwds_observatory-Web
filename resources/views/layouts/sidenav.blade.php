@@ -49,6 +49,7 @@
                 </div>
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
+                @if (auth()->user()->account_type == 'OPD')
                 <div class="menu-item">
                     <!--begin:Menu link-->
                     <a class="menu-link" href="{{ route('users') }}">
@@ -65,7 +66,8 @@
                         <span class="menu-title">Users and Accounts</span>
                     </a>
                     <!--end:Menu link-->
-                </div>
+                </div>                    
+                @endif
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
                 <div class="menu-item">

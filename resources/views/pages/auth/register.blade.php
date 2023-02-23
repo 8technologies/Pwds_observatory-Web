@@ -152,7 +152,7 @@
 									<select name="account_type" class="form-control bg-transparent" />
                                         <option value="">Select Account type</option>
                                         <option value="service provider">Service Provider</option>
-                                        <option value="OPD">OPD</option>
+                                        <option value="OPD">Organization for PWDs</option>
                                     <select>
 									@error('account_type')
 									<div class="text-danger mt-2 fs-7">{{ $message }}</div>
