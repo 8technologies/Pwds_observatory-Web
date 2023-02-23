@@ -12,9 +12,12 @@ class SiteController extends Controller
         return view('pages.site.index');
     }
 
-    public function events(Request $request)
+    public function events(Request $request, $id = null)
     {
-        return view('pages.site.events');
+        if(is_null($id)){
+            $events = \App\Models\NewsAndEvent::latest()->paginate(24);
+            return view('pages.site.events', ['events' => $events]);
+        }    
     }
 
     public function services(Request $request, $id = null)
