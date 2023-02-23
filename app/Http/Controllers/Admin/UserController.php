@@ -27,6 +27,22 @@ class UserController extends Controller
             return view('pages.dashboard.users.users', $data);
         }
 
+        $user_pwd = \App\Models\PwdProfile::find($id);
+        if(!$user_pwd){
+            return abort(404);
+        }
+
+        //delete user
+        if($request->has('action')){
+            if($request->has('action') == 'delete' && $user_pwd->district_organisation == Auth::user()->id){
+                $user_id = $user_pwd->user_id;
+                $user_pwd->delete();
+                \App\Models\User::find($user_id)->delete();
+                return "sucess";
+            }
+            return abort(403);
+        }
+
     }
 
     public function create(Request $request)
