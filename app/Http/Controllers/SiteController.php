@@ -19,7 +19,8 @@ class SiteController extends Controller
 
     public function services(Request $request)
     {
-        return view('pages.site.services');
+        $services = \App\Models\Service::latest()->paginate(24);
+        return view('pages.site.services', ['services' => $services]);
     }
 
     public function opportunities(Request $request, $id = null)
