@@ -15,6 +15,13 @@ php artisan make:migration create_event_tickets_table
 php artisan make:migration create_event_speakers_table
 php artisan make:migration create_jobs_table
 php artisan make:migration create_admin_roles_table
+php artisan make:migration create_service_providers_table 
+php artisan make:migration create_associations_table 
+php artisan make:migration create_groups_table 
+php artisan make:migration create_people_table 
+php artisan make:migration create_disabilities_table 
+php artisan make:migration create_institutions_table 
+php artisan make:migration create_counselling_centres_table 
 
 Encore\Admin\Auth\Database\Administrator::class,
 php artisan admin:make FormSr4Controller --model=App\FormSr4
@@ -31,6 +38,13 @@ php artisan admin:make PostCategoryController --model=App\Models\PostCategory
 php artisan admin:make NewsPostController --model=App\Models\NewsPost
 php artisan admin:make EventController --model=App\Models\Event
 php artisan admin:make EventBookingController --model=App\Models\EventBooking
+php artisan admin:make ServiceProviderController --model=App\Models\ServiceProvider
+php artisan admin:make AssociationController --model=App\Models\Association
+php artisan admin:make GroupController --model=App\Models\Group
+php artisan admin:make PersonController --model=App\Models\Person
+php artisan admin:make DisabilityController --model=App\Models\Disability
+php artisan admin:make InstitutionController --model=App\Models\Institution
+php artisan admin:make CounsellingCentreController --model=App\Models\CounsellingCentre
 
 php artisan make:factory TeacherFactory
 
@@ -59,4 +73,11 @@ php artisan make:model EventTicket
 php artisan make:model EventBooking
 php artisan make:model EventSpeaker
 php artisan make:model AdminRoleUser
+php artisan make:model ServiceProvider
+php artisan make:model Association
+php artisan make:model Group
+php artisan make:model Person
+php artisan make:model Disability
+php artisan make:model Institution
+php artisan make:model CounsellingCentre
 

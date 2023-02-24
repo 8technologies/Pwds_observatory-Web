@@ -12,6 +12,15 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index')->name('home');
+
+    $router->resource('service-providers', ServiceProviderController::class);
+    $router->resource('groups', GroupController::class);
+    $router->resource('associations', AssociationController::class);
+    $router->resource('people', PersonController::class);
+    $router->resource('disabilities', DisabilityController::class);
+    $router->resource('institutions', InstitutionController::class);
+    $router->resource('counselling-centres', CounsellingCentreController::class);
+
     $router->resource('course-categories', CourseCategoryController::class);
     $router->resource('courses', CourseController::class);
     $router->resource('settings', UserController::class);
