@@ -112,6 +112,20 @@ class AuthController extends Controller
         if($request->isMethod('GET')){
             return view('pages.auth.account');
         }
+
+        $request->validate([
+            'old_password' => 'required|string',
+            'password' => 'required|string|min:6|confirmed',
+            'password_confirmation' => 'required|same:password',
+        ]);
+
+        if( Hash::check($request->input('old_password'), Auth::user()->password) ){
+            Auth::user()->password = Hash::make($request->input('password'));
+            Auth::user()->save();
+            return redirect()->back()->with('success', 'Password has been updated');
+        }
+
+        return redirect()->back()->with('error', 'You enter a wrong old password');
     }
 
     public function logout(Request $request)

@@ -131,7 +131,7 @@
                             <input type="password" name="password_confirmation" class="form-control mb-2" />
                             <!--end::Input-->
                             <!--begin::Description-->
-                            @error('nok_relationship')
+                            @error('password_confirmation')
                             <div class="text-danger fs-7">{{ $message }}</div>
                             @else
                             <div class="text-muted fs-7">Repeat new password</div> 
