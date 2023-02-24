@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('bread')
-    @include('layouts.bread', ['current_page' => 'Post Event or News'])
+    @include('layouts.bread', ['current_page' => 'Edit Post'])
     <div class="container px-5 py-2">
         <div class="row px-5">@include('layouts.flash')</div>
     </div>    
@@ -27,7 +27,7 @@
             <div class="card-body text-center pt-0">
                 <!--begin::Image input-->
                 <!--begin::Image input placeholder-->
-                <style>.image-input-placeholder { background-image: url({{asset('assets/media/svg/files/blank-image.svg') }}); }</style>
+                <style>.image-input-placeholder { background-image: url({{ asset('storage/'.$event->banner_image) }}); }</style>
                 <!--end::Image input placeholder-->
                 <!--begin::Image input-->
                 <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3" data-kt-image-input="true">
@@ -89,7 +89,7 @@
                     <label class="required form-label">Title</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" name="title" class="form-control mb-2" placeholder="title" value="{{ old('title') }}" />
+                    <input type="text" name="title" class="form-control mb-2" placeholder="title" value="{{ old('title', $event->title) }}" />
                     <!--end::Input-->
                     <!--begin::Description-->
                     @error('title')
@@ -106,7 +106,7 @@
                     <label class="required form-label">Details</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <textarea name="details" id="details_editor">{{ old('details') }}</textarea>
+                    <textarea name="details" id="details_editor">{{ old('details', $event->details) }}</textarea>
                     <!--end::Editor-->
                     <!--begin::Description-->
                     @error('details')
@@ -125,8 +125,8 @@
                     <!--begin::Input-->
                     <select class="form-control mb-2" name="type">
                         <option value="">Select post type</option>
-                        <option value="News" {{ old('type') == 'News' ? "Selected" : "" }}>News</option>
-                        <option value="Event" {{ old('type') == 'Event' ? "Selected" : "" }}>Event</option>
+                        <option value="News" {{ old('type', $event->type) == 'News' ? "Selected" : "" }}>News</option>
+                        <option value="Event" {{ old('type', $event->type) == 'Event' ? "Selected" : "" }}>Event</option>
                     </select>
                     <!--end::Input-->
                     <!--begin::Description-->
@@ -157,7 +157,7 @@
                     <label class="required form-label">Venue</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" name="venue" class="form-control mb-2" placeholder="venue" value="{{ old('venue') }}" />
+                    <input type="text" name="venue" class="form-control mb-2" placeholder="venue" value="{{ old('venue', $event->venue) }}" />
                     <!--end::Input-->
                     <!--begin::Description-->
                     @error('venue')
@@ -174,7 +174,7 @@
                     <label class="form-label">event url</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <input type="text" name="event_url" class="form-control mb-2" placeholder="event url" value="{{ old('event_url') }}" />
+                    <input type="text" name="event_url" class="form-control mb-2" placeholder="event url" value="{{ old('event_url', $event->event_url) }}" />
                     <!--end::Editor-->
                     <!--begin::Description-->
                     @error('event_url')
@@ -191,7 +191,7 @@
                     <label class="required form-label">Start date</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <input type="date" name="start_date" class="form-control mb-2" placeholder="Event start Date" value="{{ old('start_date') }}" />
+                    <input type="date" name="start_date" class="form-control mb-2" placeholder="Event start Date" value="{{ old('start_date', $event->start_date) }}" />
                     <!--end::Editor-->
                     <!--begin::Description-->
                     @error('start_date')
@@ -208,7 +208,7 @@
                     <label class="form-label">End date</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <input type="date" name="end_date" class="form-control mb-2" placeholder="End Date" value="{{ old('end_date') }}" />
+                    <input type="date" name="end_date" class="form-control mb-2" placeholder="End Date" value="{{ old('end_date', $event->end_date) }}" />
                     <!--end::Editor-->
                     <!--begin::Description-->
                     @error('end_date')
@@ -225,7 +225,7 @@
                     <label class="form-label">Registration fee</label>
                     <!--end::Label-->
                     <!--begin::Editor-->
-                    <input type="number" name="regestration_fee" class="form-control mb-2" placeholder="Registration fee" value="{{ old('regestration_fee') }}" />
+                    <input type="number" name="regestration_fee" class="form-control mb-2" placeholder="Registration fee" value="{{ old('regestration_fee', $event->regestration_fee) }}" />
                     <!--end::Editor-->
                     <!--begin::Description-->
                     @error('regestration_fee')
@@ -246,7 +246,7 @@
             <!--end::Button-->
             <!--begin::Button-->
             <button type="submit" id="kt_ecommerce_add_category_submit" class="btn btn-primary">
-                <span class="indicator-label">Sumit Item</span>
+                <span class="indicator-label">Update Post</span>
                 <span class="indicator-progress">Please wait...
                 <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
             </button>
