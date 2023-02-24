@@ -14,10 +14,29 @@ class OpportunitiesController extends Controller
     public function view(Request $request, $id = null)
     {
         if(\is_null($id)){
-            $opportunities = \App\Models\Opportunity::latest()->paginate(100);
+            $opportunities = \App\Models\Opportunity::where('user_id', Auth::user()->id)
+            ->latest()->paginate(100);
+            
             $data = ['opportunities' => $opportunities];
             return view('pages.dashboard.Opportunities.opportunities', $data);
         }
+
+        $opportunity = \App\Models\Opportunity::find($id);
+        if(!$opportunity){
+            return abort(404);
+        }
+
+        if($request->has('action')){
+            if($request->has('action') == 'delete' && $opportunity->user_id == Auth::user()->id){
+                $delete_file = $this->deleteFile($opportunity->banner_image);
+                if(!$delete_file){
+                    return abort(500);  
+                }
+                $opportunity->delete();
+                return "success";
+            }
+            return abort(403);
+        }        
 
     }
 

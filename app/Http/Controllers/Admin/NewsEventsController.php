@@ -14,10 +14,62 @@ class NewsEventsController extends Controller
     public function view(Request $request, $id = null)
     {
         if(\is_null($id)){
-            $events = \App\Models\NewsAndEvent::latest()->paginate(100);
-            $data = ['events' => $events];
-            return view('pages.dashboard.News_events.news_and_events', $data);
+            if($request->isMethod('GET')){
+                $events = \App\Models\NewsAndEvent::where('user_id', Auth::user()->id)
+                ->latest()->paginate(100);
+
+                return view('pages.dashboard.News_events.news_and_events', ['events' => $events]);
+            }  
+            return abort(404);  
         }
+
+        $event = \App\Models\NewsAndEvent::find($id);
+        if(!$event){
+            return abort(404);
+        }
+
+        if($request->isMethod('GET')){
+            if($request->has('action')){
+                if($request->has('action') == 'delete' && $event->user_id == Auth::user()->id){
+                    $delete_file = $this->deleteFile($event->banner_image);
+                    if(!$delete_file){
+                        return abort(500);  
+                    }
+
+                    $event->delete();
+                    return "success";
+                }
+                return abort(403);
+            }
+
+            return view('pages.dashboard.News_events.edit', ['event' => $event]);
+        } 
+        
+        $request->validate([
+            'title' => 'required|string|min:10|max:2000',
+            'details' => 'required|min:10',
+            'type' => 'required',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date',
+            'venue' => 'nullable|string',
+            'regestration_fee' => 'nullable|numeric',
+            'event_url' => 'nullable|url',
+        ]); 
+        
+        $data = $request->all();
+        if($request->has('avatar')){
+            $image = $this->verifyAndStoreImage($request, 'news_and_events', 'avatar');
+            if($image){
+                $delete_file = $this->deleteFile($event->banner_image); //delete old image
+                $data = array_merge($data, ['banner_image' => $image]);
+            }
+        }
+
+        $event->Update($data);
+        return redirect()->back()->with('success', 'Item has been updated');
+
+        
 
     }
 

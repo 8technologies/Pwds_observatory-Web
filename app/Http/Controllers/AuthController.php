@@ -74,6 +74,7 @@ class AuthController extends Controller
             'name' => 'required|string',
             'about' => 'required|string',
             'phone' => 'required|string',
+            'district' => 'required|string',
             'address' => 'required|string',
             'website' => 'nullable|url',
             'twitter' => 'nullable|url',
@@ -95,7 +96,7 @@ class AuthController extends Controller
             }
         }
 
-        $data = $request->only(['about', 'phone', 'address', 'website', 'twitter', 'facebook']);
+        $data = $request->only(['about', 'phone', 'district', 'address', 'website', 'twitter', 'facebook']);
         $data = array_merge($data, ['user_id' => $user->id]);
         \App\Models\Profile::updateOrCreate(
             ['user_id' => $user->id],
@@ -106,11 +107,32 @@ class AuthController extends Controller
         return redirect()->back()->with('success', 'Profile information has been updated');
     }
 
+    public function account(Request $request)
+    {
+        if($request->isMethod('GET')){
+            return view('pages.auth.account');
+        }
+
+        $request->validate([
+            'old_password' => 'required|string',
+            'password' => 'required|string|min:6|confirmed',
+            'password_confirmation' => 'required|same:password',
+        ]);
+
+        if( Hash::check($request->input('old_password'), Auth::user()->password) ){
+            Auth::user()->password = Hash::make($request->input('password'));
+            Auth::user()->save();
+            return redirect()->back()->with('success', 'Password has been updated');
+        }
+
+        return redirect()->back()->with('error', 'You enter a wrong old password');
+    }
+
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login');
+        return redirect()->route('home');
     }
 }

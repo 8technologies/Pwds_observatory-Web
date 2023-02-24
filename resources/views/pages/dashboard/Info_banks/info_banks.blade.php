@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('bread')
-    @include('layouts.bread', ['current_page' => 'Jobs and Opportunities'])
+    @include('layouts.bread', ['current_page' => 'Information Banks'])
 @endsection
 
 @section('content')
@@ -29,7 +29,7 @@
         <!--begin::Card toolbar-->
         <div class="card-toolbar">
             <!--begin::Button-->
-            <a class="btn btn-light-primary" href="{{ route('post_opportunity') }}">
+            <a class="btn btn-light-primary" href="{{ route('post_info_bank') }}">
             <!--begin::Svg Icon | path: icons/duotune/general/gen035.svg-->
             <span class="svg-icon svg-icon-3">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -38,7 +38,7 @@
                     <rect x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="currentColor" />
                 </svg>
             </span>
-            <!--end::Svg Icon-->Post New opportunity</a>
+            <!--end::Svg Icon-->Post Information bank</a>
             <!--end::Button-->
         </div>
         <!--end::Card toolbar-->
@@ -46,10 +46,10 @@
     <!--end::Card header-->
     <!--begin::Card body-->
     <div class="card-body pt-0">
-        @if ($opportunities->count() < 1)
+        @if ($info_banks->count() < 1)
         <div class="py-5 my-5">
-           <h3 class="mt-5">No opportunities have been posted yet</h3>
-           <a class="btn btn-primary mt-3 mb-5" href="{{ route('post_opportunity') }}">
+           <h3 class="mt-5">No Information banks have been posted yet</h3>
+           <a class="btn btn-primary mt-3 mb-5" href="{{ route('post_info_bank') }}">
             <!--begin::Svg Icon | path: icons/duotune/general/gen035.svg-->
             <span class="svg-icon svg-icon-3">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,7 +58,7 @@
                     <rect x="6.01041" y="10.9247" width="12" height="2" rx="1" fill="currentColor" />
                 </svg>
             </span>
-            <!--end::Svg Icon-->Post New opportunity</a>
+            <!--end::Svg Icon-->Post Innovation</a>
         </div>    
         @else
         <!--begin::Table-->
@@ -68,7 +68,7 @@
                 <!--begin::Table row-->
                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                     <th class="min-w-125px">Info</th>
-                    <th class="min-w-125px">Dates</th>
+                    <th class="min-w-125px">Last Modified</th>
                     <th class="text-end min-w-100px">Actions</th>
                 </tr>
                 <!--end::Table row-->
@@ -76,26 +76,22 @@
             <!--end::Table head-->
             <!--begin::Table body-->
             <tbody class="fw-semibold text-gray-600">
-                @foreach ($opportunities as $opportunity)
+                @foreach ($info_banks as $info_bank)
                 <tr>
                     <!--begin::Name=-->
                     <td>
                         <div class="d-flex align-items-center">
                             <div class="symbol symbol-45px me-5">
-                                <img src="{{asset('storage/'.$opportunity->banner_image ) }}" alt="" />
+                                <img src="{{ asset('storage/'.$info_bank->banner_image ) }}" alt="" />
                             </div>
                             <div class="d-flex justify-content-start flex-column">
-                                <a href="#" class="text-dark fw-bold text-hover-primary fs-6">{{ $opportunity->title }}</a>
-                                <span class="text-muted fw-semibold text-muted d-block fs-7">{{ $opportunity->category }}</span>
+                                <a href="#" class="text-dark fw-bold text-hover-primary fs-6">{{ $info_bank->title }}</a>
                             </div>
-                        </div>                        
+                        </div>
                     </td>
-                    <!--end::Name=-->                   
+                    <!--end::Name=-->                
                     <!--begin::Created Date-->
-                    <td>
-                        <span class="text-muted fw-semibold text-muted d-block fs-7">Expires: {{ $opportunity->expiry_date->format('d M Y') }}</span>
-                        <span class="text-muted fw-semibold text-muted d-block fs-7">Posted: {{ $opportunity->created_at->format('d M Y') }}</span>
-                    </td>
+                    <td>{{ $info_bank->updated_at->format('d M Y') }}</td>
                     <!--end::Created Date-->
                     <!--begin::Action=-->
                     <td class="text-end">
@@ -117,7 +113,7 @@
                             <!--end::Menu item-->
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
-                                <a class="menu-link px-3" onclick='deleteItem("{{ route("admin_opportunities", ["id" => $opportunity->id]) }}?action=delete")'>Delete</a>
+                                <a class="menu-link px-3" onclick='deleteItem("{{ route("admin_info_bank", ["id" => $info_bank->id]) }}?action=delete")'>Delete</a>
                             </div>
                             <!--end::Menu item-->
                         </div>
@@ -138,6 +134,6 @@
 @endsection
 
 @section('page_js')
-<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-<script src="{{ asset('assets/js/custom/deleteAlert.js') }}"></script>  
+<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script> 
+<script src="{{ asset('assets/js/custom/deleteAlert.js') }}"></script> 
 @endsection

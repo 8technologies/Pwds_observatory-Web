@@ -15,7 +15,13 @@ return new class extends Migration
     {
         Schema::create('information_banks', function (Blueprint $table) {
             $table->id();
+            $table->uuid('user_id');
+            $table->string('banner_image');
+            $table->string('title');
+            $table->longText('details');
+            $table->string('pdf_file');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

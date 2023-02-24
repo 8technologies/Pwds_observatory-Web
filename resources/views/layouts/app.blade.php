@@ -67,7 +67,11 @@
 								<div class="app-navbar-item ms-1 ms-md-3" id="kt_header_user_menu_toggle">
 									<!--begin::Menu wrapper-->
 									<div class="cursor-pointer symbol symbol-30px symbol-md-40px">
-										<img src="{{ asset('assets/media/avatars/300-1.jpg') }}" alt="user" />
+										@if (Auth::user()->avator == 'default.png')
+										<img src="{{ asset('assets/media/svg/avatars/001-boy.svg') }}" alt="{{ Auth::user()->name }}" />	
+										@else
+										<img src="{{ asset('storage/'.Auth::user()->avator) }}" alt="{{ Auth::user()->name }}" />	
+										@endif
 									</div>
 									<!--end::Menu wrapper-->
 								</div>

@@ -12,14 +12,4 @@ class HomeController extends Controller
     {
         return view('pages.dashboard.home');
     }
-
-    public function users(Request $request, $id = null)
-    {
-        if(\is_null($id)){
-            $users = \App\Models\User::paginate(100);
-            $data = ['users' => $users];
-            return view('pages.dashboard.users.users', $data);
-        }
-
-    }
 }

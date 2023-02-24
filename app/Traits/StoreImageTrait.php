@@ -27,4 +27,25 @@ trait StoreImageTrait
 
         return false;
     }
+
+    public function verifyAndStoreFile(Request $request, String $directory, String $fieldname = 'pdf_file')
+    {
+        if( $request->hasFile($fieldname) ) {
+            $file = $request->file($fieldname);
+            $file_name = \bin2hex(\random_bytes(8)) .'.'.$file->getClientOriginalExtension(); //rename file
+            $filePath = $request->file($fieldname)->storeAs($directory, $file_name, 'public');
+            return $filePath;
+        }
+
+        return false;
+    }
+
+    public function deleteFile(String $path, String $disk = 'public')
+    {
+        if(Storage::disk($disk)->exists($path)){
+            Storage::disk($disk)->delete($path);
+            return true;
+        }
+        return false;
+    }
 }

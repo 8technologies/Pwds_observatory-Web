@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\StoreImageTrait;
@@ -14,10 +15,30 @@ class InnovationsController extends Controller
     public function view(Request $request, $id = null)
     {
         if(\is_null($id)){
-            $innovations = \App\Models\Innovation::latest()->paginate(100);
+            $innovations = \App\Models\Innovation::where('user_id', Auth::user()->id)
+            ->latest()->paginate(100);
+            
             $data = ['innovations' => $innovations];
             return view('pages.dashboard.Innovations.innovations', $data);
         }
+
+        $innovation = \App\Models\Innovation::find($id);
+        if(!$innovation){
+            return abort(404);
+        }
+
+        if($request->has('action')){
+            if($request->has('action') == 'delete' && $innovation->user_id == Auth::user()->id){
+                $delete_file = $this->deleteFile($innovation->banner_image);
+                if(!$delete_file){
+                    return abort(500);  
+                }
+
+                $innovation->delete();
+                return "success";
+            }
+            return abort(403);
+        }        
 
     }
 
@@ -28,6 +49,7 @@ class InnovationsController extends Controller
         }
 
         $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
             'title' => 'required|string|min:10|max:2000',
             'details' => 'required|min:10',
             'access_contact' => 'nullable|string',

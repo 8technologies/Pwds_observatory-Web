@@ -14,10 +14,28 @@ class ServicesController extends Controller
     public function view(Request $request, $id = null)
     {
         if(\is_null($id)){
-            $services = \App\Models\Service::latest()->paginate(100);
-            $data = ['services' => $services];
-            return view('pages.dashboard.Services.services', $data);
+            $services = \App\Models\Service::where('user_id', Auth::user()->id)
+            ->latest()->paginate(100);
+
+            return view('pages.dashboard.Services.services', ['services' => $services]);
         }
+
+        $service = \App\Models\Service::find($id);
+        if(!$service){
+            return abort(404);
+        }
+
+        if($request->has('action')){
+            if($request->has('action') == 'delete' && $service->user_id == Auth::user()->id){
+                $delete_file = $this->deleteFile($service->banner_image);
+                if(!$delete_file){
+                    return abort(500);  
+                }
+                $service->delete();
+                return "success";
+            }
+            return abort(403);
+        }         
 
     }
 

@@ -49,6 +49,7 @@
                 </div>
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
+                @if (auth()->user()->account_type == 'OPD')
                 <div class="menu-item">
                     <!--begin:Menu link-->
                     <a class="menu-link" href="{{ route('users') }}">
@@ -62,10 +63,11 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Users and Accounts</span>
+                        <span class="menu-title">Organization Members</span>
                     </a>
                     <!--end:Menu link-->
-                </div>
+                </div>                    
+                @endif
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
                 <div class="menu-item">
@@ -127,9 +129,9 @@
                 </div>
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
-                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                <div class="menu-item">
                     <!--begin:Menu link-->
-                    <span class="menu-link">
+                    <a class="menu-link" href="{{ route('admin_info_bank') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs048.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -141,7 +143,7 @@
                             <!--end::Svg Icon-->
                         </span>
                         <span class="menu-title">Information Banks</span>
-                    </span>
+                    </a>
                     <!--end:Menu link-->
                 </div>
                 <!--end:Menu item-->
@@ -195,7 +197,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="#">
+                    <a class="menu-link" href="{{ route('account') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
                             <span class="svg-icon svg-icon-2">
