@@ -21,7 +21,7 @@ use function usort;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Util\Test as TestUtil;
 

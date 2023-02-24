@@ -2,8 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\PwdProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,11 +14,6 @@ use App\Http\Controllers\Api\PwdProfileController;
 |
 */
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
-
-Route::middleware(['auth:sanctum'])->group(function(){
-    Route::get('/profile', [PwdProfileController::class, 'get_pwd_profile']); 
-    Route::post('/update_profile', [PwdProfileController::class, 'update_profile']);
-    Route::post('/update_care_giver', [PwdProfileController::class, 'update_care_giver_info']);
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
 });

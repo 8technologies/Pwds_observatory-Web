@@ -22,7 +22,8 @@ namespace Mockery\Adapter\Phpunit;
 
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+
 use PHPUnit\Util\Blacklist;
 use PHPUnit\Runner\BaseTestRunner;
 

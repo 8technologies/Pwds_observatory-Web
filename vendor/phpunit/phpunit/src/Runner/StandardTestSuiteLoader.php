@@ -18,7 +18,8 @@ use function sprintf;
 use function stripos;
 use function strlen;
 use function substr;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+
 use PHPUnit\Util\FileLoader;
 use ReflectionClass;
 use ReflectionException;
@@ -47,13 +48,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             );
 
             if (empty($loadedClasses)) {
-                throw new Exception(
-                    sprintf(
-                        'Class %s could not be found in %s',
-                        $suiteClassName,
-                        $suiteClassFile
-                    )
-                );
+                throw $this->exceptionFor($suiteClassName, $suiteClassFile);
             }
         }
 
@@ -72,13 +67,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
         }
 
         if (!class_exists($suiteClassName, false)) {
-            throw new Exception(
-                sprintf(
-                    'Class %s could not be found in %s',
-                    $suiteClassName,
-                    $suiteClassFile
-                )
-            );
+            throw $this->exceptionFor($suiteClassName, $suiteClassFile);
         }
 
         try {
@@ -93,17 +82,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
         }
         // @codeCoverageIgnoreEnd
 
-        if ($class->isSubclassOf(TestCase::class)) {
-            if ($class->isAbstract()) {
-                throw new Exception(
-                    sprintf(
-                        'Class %s declared in %s is abstract',
-                        $suiteClassName,
-                        $suiteClassFile
-                    )
-                );
-            }
-
+        if ($class->isSubclassOf(TestCase::class) && !$class->isAbstract()) {
             return $class;
         }
 
@@ -113,40 +92,34 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                 // @codeCoverageIgnoreStart
             } catch (ReflectionException $e) {
                 throw new Exception(
-                    sprintf(
-                        'Method %s::suite() declared in %s is abstract',
-                        $suiteClassName,
-                        $suiteClassFile
-                    )
+                    $e->getMessage(),
+                    $e->getCode(),
+                    $e
                 );
             }
+            // @codeCoverageIgnoreEnd
 
-            if (!$method->isPublic()) {
-                throw new Exception(
-                    sprintf(
-                        'Method %s::suite() declared in %s is not public',
-                        $suiteClassName,
-                        $suiteClassFile
-                    )
-                );
-            }
-
-            if (!$method->isStatic()) {
-                throw new Exception(
-                    sprintf(
-                        'Method %s::suite() declared in %s is not static',
-                        $suiteClassName,
-                        $suiteClassFile
-                    )
-                );
+            if (!$method->isAbstract() && $method->isPublic() && $method->isStatic()) {
+                return $class;
             }
         }
 
-        return $class;
+        throw $this->exceptionFor($suiteClassName, $suiteClassFile);
     }
 
     public function reload(ReflectionClass $aClass): ReflectionClass
     {
         return $aClass;
+    }
+
+    private function exceptionFor(string $className, string $filename): Exception
+    {
+        return new Exception(
+            sprintf(
+                "Class '%s' could not be found in '%s'.",
+                $className,
+                $filename
+            )
+        );
     }
 }

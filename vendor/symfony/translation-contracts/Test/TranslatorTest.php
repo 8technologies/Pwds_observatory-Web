@@ -11,7 +11,7 @@
 
 namespace Symfony\Contracts\Translation\Test;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Contracts\Translation\TranslatorTrait;
 

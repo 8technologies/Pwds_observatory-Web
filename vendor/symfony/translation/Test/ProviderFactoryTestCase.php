@@ -12,7 +12,7 @@
 namespace Symfony\Component\Translation\Test;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\Translation\Dumper\XliffFileDumper;

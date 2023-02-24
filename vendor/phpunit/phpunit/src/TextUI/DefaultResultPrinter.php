@@ -29,7 +29,8 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;

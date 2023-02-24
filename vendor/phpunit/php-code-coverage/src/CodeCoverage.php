@@ -21,7 +21,8 @@ use function explode;
 use function get_class;
 use function is_array;
 use function sort;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Test;
 use ReflectionClass;

@@ -18,7 +18,8 @@ use DOMElement;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;

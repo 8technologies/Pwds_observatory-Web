@@ -1,31 +1,46 @@
 <?php
 
-use Illuminate\Support\Facades\Artisan;
-use App\Http\Controllers\SiteController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\MainController;
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::match(['GET', 'POST'], '/login', [AuthController::class, 'login'])->name('login');
-Route::match(['GET', 'POST'], '/sign-up', [AuthController::class, 'sign_up'])->name('sign_up');
-
-Route::get('/', [SiteController::class, 'home'])->name('home');
-Route::get('/events/{id?}', [SiteController::class, 'events'])->name('events');
-Route::get('/services/{id?}', [SiteController::class, 'services'])->name('services');
-Route::get('/opportunities/{id?}', [SiteController::class, 'opportunities'])->name('opportunities');
-Route::get('/information_bank/{id?}', [SiteController::class, 'info_bank'])->name('info_bank');
-Route::get('/innovations/{id?}', [SiteController::class, 'innovations'])->name('innovations');
 
 
-//Route::get('/run_migrations', function (){ Artisan::call('migrate'); dd("migrations"); });
-//Route::get('/system_link', function (){ Artisan::call('storage:link'); dd("syslink cretaed"); });
+
+Route::get('/', [MainController::class, 'index'])->name('home');
+Route::get('/about-us', [MainController::class, 'about_us']);
+Route::get('/our-team', [MainController::class, 'our_team']);
+Route::get('/news-category/{id}', [MainController::class, 'news_category']);
+Route::get('/news-category', [MainController::class, 'news_category']);
+Route::get('/news', [MainController::class, 'news_category']);
+Route::get('/news/{id}', [MainController::class, 'news']);
+Route::get('/members', [MainController::class, 'members']);
+Route::get('/dinner', [MainController::class, 'dinner']);
+Route::get('/chairperson-message', function(){ return view('chair-person-message'); });
+Route::get('/vision-mission', function(){ return view('vision-mission'); }); 
+Route::get('/constitution', function(){ return view('constitution'); }); 
+Route::get('/register', [AccountController::class, 'register'])->name('register');
+
+Route::get('/login', [AccountController::class, 'login'])->name('login')
+    ->middleware(RedirectIfAuthenticated::class);
+
+Route::post('/register', [AccountController::class, 'register_post'])
+    ->middleware(RedirectIfAuthenticated::class);
+
+Route::post('/login', [AccountController::class, 'login_post'])
+    ->middleware(RedirectIfAuthenticated::class);
+
+
+Route::get('/dashboard', [AccountController::class, 'dashboard'])
+    ->middleware(Authenticate::class);
+
+
+Route::get('/account-details', [AccountController::class, 'account_details'])
+    ->middleware(Authenticate::class);
+
+Route::post('/account-details', [AccountController::class, 'account_details_post'])
+    ->middleware(Authenticate::class);
+
+Route::get('/logout', [AccountController::class, 'logout']);

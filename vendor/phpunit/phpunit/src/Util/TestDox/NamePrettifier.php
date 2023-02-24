@@ -38,7 +38,8 @@ use function strtolower;
 use function strtoupper;
 use function substr;
 use function trim;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\Test;

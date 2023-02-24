@@ -12,7 +12,8 @@ namespace PHPUnit\Util;
 use function get_class;
 use function implode;
 use function str_replace;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
 use RecursiveIteratorIterator;

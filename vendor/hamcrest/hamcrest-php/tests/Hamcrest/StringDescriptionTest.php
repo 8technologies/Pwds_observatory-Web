@@ -1,7 +1,7 @@
 <?php
 namespace Hamcrest;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class SampleSelfDescriber implements \Hamcrest\SelfDescribing
 {

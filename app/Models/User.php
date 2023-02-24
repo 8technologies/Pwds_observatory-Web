@@ -2,54 +2,21 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class User extends Model
 {
-    use HasUuids, HasApiTokens, HasFactory, Notifiable;
+    use HasFactory; 
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'phone',
-        'password',
-        'avator',
-        'account_type'
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-        'account_type'
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    public function pwd_profile(): HasOne
+    public function campus()
     {
-        return $this->hasOne(PwdProfile::class);
+        return $this->belongsTo(Campus::class, 'campus_id');
     }
+ 
+    public function programs()
+    {
+        return $this->hasMany(UserHasProgram::class, 'user_id');
+    }
+ 
 }

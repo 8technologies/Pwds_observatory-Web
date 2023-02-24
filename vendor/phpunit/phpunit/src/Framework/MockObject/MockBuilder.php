@@ -11,7 +11,8 @@ namespace PHPUnit\Framework\MockObject;
 
 use function array_diff;
 use function array_merge;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+
 use ReflectionClass;
 
 /**
