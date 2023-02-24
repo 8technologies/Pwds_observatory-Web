@@ -21,13 +21,14 @@ class MainController extends BaseController
     public function index()
     {
 
+        die("<h1>Something really cool is coming soon! 🥰</h1>");
         $members = Administrator::where([])->orderBy('updated_at', 'desc')->limit(8)->get();
         $profiles = [];
         $_profiles = [];
         foreach (Administrator::where([])->orderBy('updated_at', 'desc')->limit(15)->get() as $key => $v) {
             $profiles[] = $v;
         }
- 
+
         foreach ($profiles as $key => $pro) {
             if ($pro->intro == null || strlen($pro->intro) < 3) {
                 $pro->intro = "Hi there, I'm $pro->name IUIU Alumnus. I am excited to be a part of IUIU-AA Network. I call upon you to join the team!";
@@ -49,11 +50,11 @@ class MainController extends BaseController
                 break;
             }
         }
-        
+
         return view('index', [
             'members' => $members,
             'profiles' => $_profiles,
-            'posts' => $_posts, 
+            'posts' => $_posts,
         ]);
     }
     public function about_us()

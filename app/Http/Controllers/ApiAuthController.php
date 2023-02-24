@@ -47,8 +47,7 @@ class ApiAuthController extends Controller
 
 
     public function login(Request $r)
-    {
-        die('I love romina');
+    { 
         if ($r->username == null) {
             return $this->error('Username is required.');
         }
@@ -59,7 +58,7 @@ class ApiAuthController extends Controller
 
         $r->username = trim($r->username);
 
-        $u = User::where('phone_number_1', $r->username)
+        $u = User::where('phone_number', $r->username)
             ->orWhere('username', $r->username)
             ->orWhere('id', $r->username)
             ->orWhere('email', $r->username)
@@ -74,7 +73,7 @@ class ApiAuthController extends Controller
             if (Utils::phone_number_is_valid($phone_number)) {
                 $phone_number = $r->phone_number;
 
-                $u = User::where('phone_number_1', $phone_number)
+                $u = User::where('phone_number', $phone_number)
                     ->orWhere('username', $phone_number)
                     ->orWhere('email', $phone_number)
                     ->first();
@@ -85,21 +84,9 @@ class ApiAuthController extends Controller
             return $this->error('User account not found.');
         }
 
-        $token = auth('api')->attempt([
-            'id' => $u->id,
-            'password' => trim($r->password),
-        ]);
-
-
-        if ($token == null) {
-            return $this->error('Wrong credentials.');
-        }
-
-
-        //auth('api')->factory()->setTTL(Carbon::now()->addMonth(12)->timestamp);
-
+        
         JWTAuth::factory()->setTTL(60 * 24 * 30 * 365);
-
+        
         $token = auth('api')->attempt([
             'id' => $u->id,
             'password' => trim($r->password),
@@ -109,6 +96,9 @@ class ApiAuthController extends Controller
         if ($token == null) {
             return $this->error('Wrong credentials.');
         }
+ 
+
+ 
         $u->token = $token;
         $u->remember_token = $token;
 
@@ -140,13 +130,13 @@ class ApiAuthController extends Controller
             return $this->error('Password is required.');
         }
 
-        $u = Administrator::where('phone_number_1', $phone_number)
+        $u = Administrator::where('phone_number', $phone_number)
             ->orWhere('username', $phone_number)->first();
         if ($u != null) {
             return $this->error('User with same phone number already exists.');
         }
         $user = new Administrator();
-        $user->phone_number_1 = $phone_number;
+        $user->phone_number = $phone_number;
         $user->username = $phone_number;
         $user->username = $phone_number;
         $user->name = $r->first_name . " " . $user->last_name;
