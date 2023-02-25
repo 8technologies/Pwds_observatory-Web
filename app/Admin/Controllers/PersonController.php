@@ -143,7 +143,7 @@ class PersonController extends AdminController
                 'None' => 'None - (Not educated at all)',
                 'Below primary' => 'Not educated - (Did not complete P.7)',
                 'Primary' => 'Primary - (Completed P.7)',
-                'Sendary' => 'Sendary - (Completed S.4)',
+                'Secondary' => 'Secondary - (Completed S.4)',
                 'A-Level' => 'Advanced level - (Completed S.6)',
                 'Bachelor' => 'Bachelor - (Degree)',
                 'Masters' => 'Masters',

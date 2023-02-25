@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiAuthController;
+use App\Http\Controllers\ApiResurceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::POST("users/login", [ApiAuthController::class, "login"]);
+Route::get('api/{model}', [ApiResurceController::class, 'index']);    
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
