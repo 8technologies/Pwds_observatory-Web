@@ -17,6 +17,20 @@ class ApiResurceController extends Controller
 
     use ApiResponser;
 
+    public function people(Request $r)
+    {
+        $u = auth('api')->user();
+        if ($u == null) {
+            return $this->error('User not found.');
+        }
+
+        return $this->success(
+            Person::where(['administrator_id' => $u->id])->get(),
+            $message = "Sussesfully",
+            200
+        );
+    }
+
     public function person_create(Request $r)
     {
         $u = auth('api')->user();
@@ -36,12 +50,9 @@ class ApiResurceController extends Controller
             try {
                 $image = Utils::upload_images_2($_FILES, true);
             } catch (Throwable $t) {
-                $image = $t;
+                $image = "no_image.jpg";
             }
         }
-  
-
-
 
         $obj = new Person();
         $obj->id = $r->id;
@@ -69,7 +80,7 @@ class ApiResurceController extends Controller
         $obj->caregiver_phone_number = $r->caregiver_phone_number;
         $obj->caregiver_age = $r->caregiver_age;
         $obj->caregiver_relationship = $r->caregiver_relationship;
-        $obj->photo = $image; 
+        $obj->photo = $image;
         $obj->save();
 
 
