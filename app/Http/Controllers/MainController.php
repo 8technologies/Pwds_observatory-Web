@@ -158,11 +158,28 @@ status
         ';
 
         $recs = preg_split('/\r\n|\n\r|\r|\n/', $data);
+        MainController::createNew($recs);
         MainController::from_json($recs);
         MainController::fromJson($recs);
         MainController::generate_vars($recs);
         MainController::create_table($recs, 'people');
         //MainController::to_json($recs);
+    }
+
+
+    function createNew($recs)
+    {
+
+        $_data = "";
+
+        foreach ($recs as $v) {
+            $key = trim($v);
+
+            $_data .= "\$obj->{$key} =  \$r->{$key};<br>";
+        }
+
+        print_r($_data);
+        die("");
     }
 
 

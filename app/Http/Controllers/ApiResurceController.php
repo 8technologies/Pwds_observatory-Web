@@ -3,21 +3,82 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Person;
 use App\Models\Utils;
 use App\Traits\ApiResponser;
 use Carbon\Carbon;
 use Encore\Admin\Auth\Database\Administrator;
 use Exception;
 use Illuminate\Http\Request;
+use Throwable;
 
 class ApiResurceController extends Controller
 {
 
     use ApiResponser;
 
+    public function person_create(Request $r)
+    {
+        $u = auth('api')->user();
+        if ($u == null) {
+            return $this->error('User not found.');
+        }
+        if (
+            $r->name == null ||
+            $r->sex == null ||
+            $r->subcounty_id == null
+        ) {
+            return $this->error('Some Information is still missing. Fill the missing information and try again.');
+        }
+
+        $image = "";
+        if (!empty($_FILES)) {
+            try {
+                $image = Utils::upload_images_2($_FILES, true);
+            } catch (Throwable $t) {
+                $image = "no_image.jpg";
+            }
+        }
+  
+
+
+
+        $obj = new Person();
+        $obj->id = $r->id;
+        $obj->created_at = $r->created_at;
+        $obj->association_id = $r->association_id;
+        $obj->administrator_id = $u->administrator_id;
+        $obj->group_id = $r->group_id;
+        $obj->name = $r->name;
+        $obj->address = $r->address;
+        $obj->parish = $r->parish;
+        $obj->village = $r->village;
+        $obj->phone_number = $r->phone_number;
+        $obj->email = $r->email;
+        $obj->district_id = $r->district_id;
+        $obj->subcounty_id = $r->subcounty_id;
+        $obj->disability_id = $r->disability_id;
+        $obj->phone_number_2 = $r->phone_number_2;
+        $obj->dob = $r->dob;
+        $obj->sex = $r->sex;
+        $obj->education_level = $r->education_level;
+        $obj->employment_status = $r->employment_status;
+        $obj->has_caregiver = $r->has_caregiver;
+        $obj->caregiver_name = $r->caregiver_name;
+        $obj->caregiver_sex = $r->caregiver_sex;
+        $obj->caregiver_phone_number = $r->caregiver_phone_number;
+        $obj->caregiver_age = $r->caregiver_age;
+        $obj->caregiver_relationship = $r->caregiver_relationship;
+        $obj->photo = $image; 
+        $obj->save();
+
+
+        return $this->success(null, $message = "Sussesfully registered!", 200);
+    }
+
     public function groups()
     {
-        return $this->success(Group::get_groups(), 'Success'); 
+        return $this->success(Group::get_groups(), 'Success');
     }
     public function index(Request $r, $model)
     {

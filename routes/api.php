@@ -18,8 +18,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::POST("users/login", [ApiAuthController::class, "login"]);
-Route::get('api/{model}', [ApiResurceController::class, 'index']);    
-Route::get('groups', [ApiResurceController::class, 'groups']);     
+Route::POST("people", [ApiResurceController::class, "person_create"]);
+Route::get('api/{model}', [ApiResurceController::class, 'index']);
+Route::get('groups', [ApiResurceController::class, 'groups']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -49,12 +50,12 @@ Route::get('ajax', function (Request $r) {
     $search_by_2 = trim($r->get('search_by_2'));
 
     $q = trim($r->get('q'));
- 
+
     $res_1 = $model::where(
         $search_by_1,
         'like',
         "%$q%"
-    ) 
+    )
         ->where($conditions)
         ->limit(20)->get();
     $res_2 = [];
@@ -64,7 +65,7 @@ Route::get('ajax', function (Request $r) {
             $search_by_2,
             'like',
             "%$q%"
-        ) 
+        )
             ->where($conditions)
             ->limit(20)->get();
     }
