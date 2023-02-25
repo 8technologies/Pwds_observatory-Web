@@ -17,7 +17,7 @@ class ApiResurceController extends Controller
 
     public function groups()
     {
-        return $this->success(Group::get_groups_array(), 'Success'); 
+        return $this->success(Group::get_groups(), 'Success'); 
     }
     public function index(Request $r, $model)
     {
