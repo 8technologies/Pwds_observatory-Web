@@ -36,7 +36,7 @@ class ApiResurceController extends Controller
             try {
                 $image = Utils::upload_images_2($_FILES, true);
             } catch (Throwable $t) {
-                $image = "no_image.jpg";
+                $image = $t;
             }
         }
   
