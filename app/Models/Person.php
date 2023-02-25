@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -62,4 +63,39 @@ class Person extends Model
             return $m;
         });
     }
+
+    public function getDisabilityTextAttribute()
+    {
+        $d = Disability::find($this->disability_id);
+        if($d == null){
+            return 'Not mentioned.';
+        }
+        return $d->name;
+    }
+    public function getGroupTextAttribute()
+    {
+        $d = Group::find($this->group_id);
+        if($d == null){
+            return 'Not group.';
+        }
+        return $d->name_text; 
+    }
+    public function getAdministratorTextAttribute()
+    {
+        $d = Administrator::find($this->administrator_id);
+        if($d == null){
+            return 'Not group.';
+        }
+        return $d->name; 
+    }
+    public function getSubcountyTextAttribute()
+    {
+        $d = Location::find($this->subcounty_id);
+        if($d == null){
+            return 'Not group.';
+        } 
+        return $d->name_text; 
+    }
+
+    protected $appends = ['disability_text','group_text','administrator_text','subcounty_text'];
 }

@@ -49,15 +49,7 @@ class Location extends Model
     }
 
     public function getNameTextAttribute()
-    {
-
-
-        return "$this->name - $this->district_name";
-        if ($this->district == null) {
-            return $this->name;
-        }
-        return $this->name . ", " . $this->district;
-
+    { 
         if (((int)($this->parent)) > 0) {
             $mother = Location::find($this->parent);
 

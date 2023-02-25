@@ -51,21 +51,11 @@ class Group extends Model
     public function getNameTextAttribute()
     {
 
-
-        return "$this->name - $this->district_name";
-        if ($this->district == null) {
-            return $this->name;
+        $d = Association::find($this->association_id);
+        if($d == null){
+            return 'Not group.';
         }
-        return $this->name . ", " . $this->district;
-
-        if (((int)($this->parent)) > 0) {
-            $mother = Location::find($this->parent);
-
-            if ($mother != null) {
-                return $mother->name . ", " . $this->name;
-            }
-        }
-        return $this->name;
+        return $d->name.', '.$this->name;
     }
 
     protected $appends = ['name_text'];
