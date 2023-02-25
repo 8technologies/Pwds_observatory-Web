@@ -21,7 +21,10 @@ class Utils extends Model
             $r = str_replace('\public', "", $r);
         }
 
-        $r = $r . "/public";
+        if(!(str_contains($r,'public'))){
+            $r = $r . "/public";
+        }
+
  
         /* 
          "/home/ulitscom_html/public/storage/images/956000011639246-(m).JPG
@@ -30,7 +33,7 @@ class Utils extends Model
         */
         return $r;
     }
-    
+
     public static function upload_images_2($files, $is_single_file = false)
     {
 
