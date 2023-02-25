@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
 use App\Models\Utils;
 use App\Traits\ApiResponser;
 use Carbon\Carbon;
@@ -14,6 +15,10 @@ class ApiResurceController extends Controller
 
     use ApiResponser;
 
+    public function groups()
+    {
+        return $this->success(Group::get_groups_array(), 'Success'); 
+    }
     public function index(Request $r, $model)
     {
 

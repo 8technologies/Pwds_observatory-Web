@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::POST("users/login", [ApiAuthController::class, "login"]);
 Route::get('api/{model}', [ApiResurceController::class, 'index']);    
+Route::get('groups', [ApiResurceController::class, 'groups']);     
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
