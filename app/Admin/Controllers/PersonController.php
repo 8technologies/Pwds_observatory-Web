@@ -141,7 +141,7 @@ class PersonController extends AdminController
         $form->select('education_level', __('Education level'))
             ->options([
                 'None' => 'None - (Not educated at all)',
-                'Below primary' => 'Not educated - (Did not complete P.7)',
+                'Below primary' => 'Below primary - (Did not complete P.7)',
                 'Primary' => 'Primary - (Completed P.7)',
                 'Secondary' => 'Secondary - (Completed S.4)',
                 'A-Level' => 'Advanced level - (Completed S.6)',

@@ -22,6 +22,10 @@ php artisan make:migration create_people_table
 php artisan make:migration create_disabilities_table 
 php artisan make:migration create_institutions_table 
 php artisan make:migration create_counselling_centres_table 
+php artisan make:migration create_counselling_centres_table 
+php artisan make:migration create_job_applications_table 
+php artisan make:migration create_products_table 
+php artisan make:migration create_product_orders_table 
 
 Encore\Admin\Auth\Database\Administrator::class,
 php artisan admin:make FormSr4Controller --model=App\FormSr4
@@ -45,6 +49,10 @@ php artisan admin:make PersonController --model=App\Models\Person
 php artisan admin:make DisabilityController --model=App\Models\Disability
 php artisan admin:make InstitutionController --model=App\Models\Institution
 php artisan admin:make CounsellingCentreController --model=App\Models\CounsellingCentre
+php artisan admin:make JobController --model=App\Models\Job
+php artisan admin:make JobApplicationController --model=App\Models\JobApplication
+php artisan admin:make ProductController --model=App\Models\Product
+php artisan admin:make ProductOrderController --model=App\Models\ProductOrder
 
 php artisan make:factory TeacherFactory
 
@@ -80,4 +88,8 @@ php artisan make:model Person
 php artisan make:model Disability
 php artisan make:model Institution
 php artisan make:model CounsellingCentre
+php artisan make:model Job
+php artisan make:model JobApplication
+php artisan make:model Product
+php artisan make:model ProductOrder
 

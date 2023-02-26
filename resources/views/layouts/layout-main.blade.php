@@ -16,6 +16,88 @@
     </main>
 
 
+    <!-- Brands (carousel on screens < 1100px) -->
+    <section class="container p-0 mt-md-2  ">
+        <div class="swiper pt-2 mx-n2"
+            data-swiper-options='{
+                  "slidesPerView": 2,
+                  "pagination": {
+                    "el": ".swiper-pagination",
+                    "clickable": true
+                  },
+                  "breakpoints": {
+                    "500": {
+                      "slidesPerView": 3,
+                      "spaceBetween": 8
+                    },
+                    "650": {
+                      "slidesPerView": 4,
+                      "spaceBetween": 8
+                    },
+                    "900": {
+                      "slidesPerView": 5,
+                      "spaceBetween": 8
+                    },
+                    "1100": {
+                      "slidesPerView": 6,
+                      "spaceBetween": 8
+                    }
+                  }
+                }'>
+            <div class="swiper-wrapper">
+
+                <!-- Item -->
+                <div class="swiper-slide py-3">
+                    <a href="#" class="card card-body card-hover px-2 mx-2">
+                        <img src="assets/img/brands/01.svg" class="d-block mx-auto my-2" width="154" alt="Brand">
+                    </a>
+                </div>
+
+                <!-- Item -->
+                <div class="swiper-slide py-3">
+                    <a href="#" class="card card-body card-hover px-2 mx-2">
+                        <img src="assets/img/brands/02.svg" class="d-block mx-auto my-2" width="154" alt="Brand">
+                    </a>
+                </div>
+
+                <!-- Item -->
+                <div class="swiper-slide py-3">
+                    <a href="#" class="card card-body card-hover px-2 mx-2">
+                        <img src="assets/img/brands/03.svg" class="d-block mx-auto my-2" width="154" alt="Brand">
+                    </a>
+                </div>
+
+                <!-- Item -->
+                <div class="swiper-slide py-3">
+                    <a href="#" class="card card-body card-hover px-2 mx-2">
+                        <img src="assets/img/brands/04.svg" class="d-block mx-auto my-2" width="154" alt="Brand">
+                    </a>
+                </div>
+
+                <!-- Item -->
+                <div class="swiper-slide py-3">
+                    <a href="#" class="card card-body card-hover px-2 mx-2">
+                        <img src="assets/img/brands/05.svg" class="d-block mx-auto my-2" width="154" alt="Brand">
+                    </a>
+                </div>
+
+                <!-- Item -->
+                <div class="swiper-slide py-3">
+                    <a href="#" class="card card-body card-hover px-2 mx-2">
+                        <img src="assets/img/brands/06.svg" class="d-block mx-auto my-2" width="154" alt="Brand">
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pagination (bullets) -->
+            <div class="swiper-pagination position-relative pt-2 mt-4"></div>
+        </div>
+    </section>
+
+
+
+
+
     <!-- Footer -->
     <footer class="footer bg-secondary pt-5 pb-4 pb-lg-5 border-top border-primary border-5">
         <div class="container pt-lg-4">

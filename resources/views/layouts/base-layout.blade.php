@@ -159,10 +159,13 @@
         </div>
     </div>
 
+    <div class="bg-light">
+
+
     @yield('base-content')
 
 
-
+</div>
     @yield('footer')
     @yield('footer-2')
 
@@ -178,11 +181,12 @@
     <script src="{{ url('') }}/assets/vendor/lightgallery/plugins/video/lg-video.min.js"></script>
     <script src="{{ url('') }}/assets/vendor/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
     <script src="{{ url('') }}/assets/vendor/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Main Theme Script -->
     <script src="{{ url('') }}/assets/js/theme.min.js"></script>
 
-
+    @yield('bellow-footer')
 
 
 </body>

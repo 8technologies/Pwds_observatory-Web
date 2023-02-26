@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '4197e3e49056dcd564d50a1cebb762fb2be65054',
+        'reference' => '5a5155a93bb41c0e4f91d51199aa1255f247fe29',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -439,6 +439,15 @@
                 0 => '*',
             ),
         ),
+        'laravel-admin-ext/chartjs' => array(
+            'pretty_version' => 'v1.0.0',
+            'version' => '1.0.0.0',
+            'reference' => '3a12f9907c9d4ba59cdd1c9033e67325a337469f',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../laravel-admin-ext/chartjs',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'laravel-admin-ext/summernote' => array(
             'pretty_version' => 'v1.0.3',
             'version' => '1.0.3.0',
@@ -460,7 +469,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '4197e3e49056dcd564d50a1cebb762fb2be65054',
+            'reference' => '5a5155a93bb41c0e4f91d51199aa1255f247fe29',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -21,7 +21,7 @@ class MainController extends BaseController
     public function index()
     {
 
-        die("<h1>Something really cool is coming soon! 🥰</h1>");
+    /*     die("<h1>Something really cool is coming soon! 🥰</h1>"); */
         $members = Administrator::where([])->orderBy('updated_at', 'desc')->limit(8)->get();
         $profiles = [];
         $_profiles = [];
