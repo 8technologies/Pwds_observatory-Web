@@ -27,9 +27,9 @@
                         <div class="card-body p-lg-2">
                             <h2 class="text-white pb-1 pb-md-3 text-dark">Chairman’s Message</h2>
                             <p class="fs-lg text-white pb-2 pb-md-0 mb-4 mb-md-5  text-dark">
-                                It is my distinct honour and privilege to welcome you to the IUIU Alumni Association
+                                It is my distinct honour and privilege to welcome you to the ICT for persons with disabilites Association
                                 website.
-                                If you are a graduate of IUIU and you are yet to become a member of this Association. <br> I
+                                If you are a graduate of ICT for persons with disabilites you are yet to become a member of this Association. <br> I
                                 earnestly invite you to do so - it's easy and inexpensive...</p>
                             <a href="{{ url('chairperson-message') }}" class="btn btn-light btn-lg">
                                 Read full message
@@ -51,8 +51,8 @@
                             <i class="bx bx-time text-primary fs-3"></i>
                         </div>
                         <ul class="list-unstyled ps-3 ps-lg-0 ps-xl-3 mb-0">
-                            <li><strong class="text-dark">UPCOMING EVENT:</strong> IUIU Alumni Dinner</li>
-                            <li><strong class="text-dark">10th Feb, 2023:</strong> IUIU Female's campus</li>
+                            <li><strong class="text-dark">UPCOMING EVENT:</strong> ICT for persons with disabilites Dinner</li>
+                            <li><strong class="text-dark">10th Feb, 2023:</strong> ICT for persons with disabilites's campus</li>
                         </ul>
                     </div>
                     <a href="{{ admin_url('event-bookings/create?event=1') }}"
@@ -73,21 +73,21 @@
 
     <!-- Video showreel -->
     <section class="container text-center pb-5 mb-3 mb-md-4 mb-lg-5 mt-md-5">
-        <h2 class="h1 pt-1 mb-4">About IUIU-Alumni Association</h2>
+        <h2 class="h1 pt-1 mb-4">About ICT for persons with disabilites Association</h2>
         <div class="row justify-content-center mb-md-2 mb-lg-5">
             <div class="col-lg-6 col-md-8">
-                <p class="fs-lg text-lead ">The Islamic University In Uganda Alumni Association (IUIU-AA) was formally
+                <p class="fs-lg text-lead ">The Islamic University In Uganda Alumni Association (ICT for persons with disabilites) was formally
                     registered with the Uganda Registration Serveices Bureau (URSB) on August 12th, 2020 Kampala.</p>
                 <p class="fs-lg text-lead mt-2">
-                    IUIU-AA seeks to create a platform for discussion and practical solutions that benefit the members and
+                    ICT for persons with disabilites seeks to create a platform for discussion and practical solutions that benefit the members and
                     our great University.</p>
-                <p class="fs-lg text-lead mt-2">Furthermore, promote fellowship among IUIU graduates, assist members to
-                    develop careers prospects and maintain a database of IUIU Alumni at national and international levels.
+                <p class="fs-lg text-lead mt-2">Furthermore, promote fellowship among ICT for persons with disabilites, assist members to
+                    develop careers prospects and maintain a database of ICT for persons with disabilites at national and international levels.
                 </p>
-                <p class="fs-lg text-lead mt-2 ">As a network that unites IUIU Alumni under one umbrella, we look forward to
-                    promoting the interests, welfare and educational aims of IUIU and the University.</p>
+                <p class="fs-lg text-lead mt-2 ">As a network that unites ICT for persons with disabilites under one umbrella, we look forward to
+                    promoting the interests, welfare and educational aims of ICT for persons with disabilites the University.</p>
 
-                <p class="fs-lg">Read more about IUIU-AA <a href="{{ url('about-us') }}" class="fw-medium">Click here</a>
+                <p class="fs-lg">Read more about ICT for persons with disabilites <a href="{{ url('about-us') }}" class="fw-medium">Click here</a>
                 </p>
             </div>
 
@@ -128,7 +128,7 @@
                                 <img src="assets/img/landing/digital-agency/icons/award.svg" width="48" alt="Award icon"
                                     class="d-block mb-4 mx-auto">
                                 <h4 class="mb-2 pb-1">Our Mission</h4>
-                                <p class="mx-auto" style="max-width: 336px;">To create fellowship among IUIU Alumni under
+                                <p class="mx-auto" style="max-width: 336px;">To create fellowship among ICT for persons with disabilites under
                                     one umbrella and offer practical solutions that benefit members and the Alma mater
                                     through rigorous networking.</p>
                             </div>
@@ -161,7 +161,7 @@
                 </a>
             </div>
             <span class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-35"></span>
-            <img src="assets/images/iuiuaa.jpg" alt="Cover image">
+            <img src="assets/images/ICT for persons with disabilites.jpg" alt="Cover image">
         </div>
     </section>
 
@@ -186,13 +186,12 @@
     <section class="container pb-5 mb-md-2 mb-lg-5">
         <div class="row">
             <div class="col-lg-4 text-center text-lg-start pb-3 pb-lg-0 mb-4 mb-lg-0">
-                <h2 class="h1 mb-lg-4">Discover IUIU-AA Services</h2>
+                <h2 class="h1 mb-lg-4">Discover ICT for persons with disabilites Services</h2>
                 <p class="pb-4 mb-0 mb-lg-3">
-                    IUIU-AA Membership enables you to enjoy being a part of the IUIU Alumni community and related fellowship
-                    in various forms. Take advantage of the opportunity that this association offers to all Alumni of IUIU,
-                    our dear alma mater, to give our loving attention and support that she deserves for achieving greater
+                    ICT for persons with disabilites Membership enables you to enjoy being a part of the ICT for persons with disabilites community and related fellowship
+                    in various forms. Take advantage of the opportunity that this association offers to all Alumni of ICT for persons with disabilites dear alma mater, to give our loving attention and support that she deserves for achieving greater
                     glory and world class status.</p>
-                <a href="{{ url('about-us') }}" class="btn btn-primary shadow-primary btn-lg">ABOUT IUIUAA</a>
+                <a href="{{ url('about-us') }}" class="btn btn-primary shadow-primary btn-lg">ABOUT ICT for persons with disabilites</a>
             </div>
             <div class="col-xl-7 col-lg-8 offset-xl-1">
                 <div class="row row-cols-1 row-cols-md-2">
@@ -362,7 +361,7 @@
     <!-- Testimonials (Carousel) -->
     <section class="bg-secondary py-5 mb-2 mb-md-4 mb-lg-5">
         <div class="container pt-lg-4 mt-1">
-            <h2 class="h1 text-center pb-3 pb-md-4 pb-xl-5">IUIU Alumni - Profiles</h2>
+            <h2 class="h1 text-center pb-3 pb-md-4 pb-xl-5">ICT for persons with disabilites - Profiles</h2>
         </div>
         <div class="pb-lg-3 px-2 px-sm-0">
             <div class="swiper"
@@ -526,7 +525,7 @@
     <section class="container py-5">
         <div class="row mt-lg-3 pt-1 pt-md-4 pt-lg-5">
             <div class="col-xl-3 col-md-4 text-center text-md-start">
-                <h2 class="h1 mb-4">IUIU Alumni Grand Dinner - 2023</h2>
+                <h2 class="h1 mb-4">ICT for persons with disabilites Grand Dinner - 2023</h2>
                 <h3 class="h4">Venue</h3>
                 <div class="d-none d-md-block text-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" width="118" height="118" fill="none">
@@ -544,20 +543,20 @@
                 </div>
             </div>
             <div class="col-xl-9 col-md-8">
-                <img src="assets/images/iuiu-campus-min.jpg" class="rounded-3" width="952" alt="Venue">
+                <img src="assets/images/ICT for persons with disabilites-min.jpg" class="rounded-3" width="952" alt="Venue">
             </div>
         </div>
         <div class="row mb-lg-3 pb-1 pb-md-4 pb-lg-5 mt-4 mt-sm-n5">
             <div class="col-lg-4 col-md-5 offset-md-6 offset-lg-7 mt-md-n5">
                 <div class="gallery mt-md-n4 mx-auto" style="max-width: 416px;">
-                    <a href="../external.html?link=https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15959.065741666545!2d32.5143163!3d0.2922013!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc9089a574d73ada0!2sIUIU%20%7C%20Islamic%20University%20in%20Uganda%20-%20Females&#39;%20Campus!5e0!3m2!1sen!2sug!4v1672652271533!5m2!1sen!2sug"
+                    <a href="../external.html?link=https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15959.065741666545!2d32.5143163!3d0.2922013!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc9089a574d73ada0!2sICT for persons with disabilites%7C%20Islamic%20University%20in%20Uganda%20-%20Females&#39;%20Campus!5e0!3m2!1sen!2sug!4v1672652271533!5m2!1sen!2sug"
                         data-iframe="true" class="gallery-item rounded-2"
                         data-sub-html='<h6 class="fs-sm text-light">Kaboja, Kabojja, Nateete, Kampala</h6>'>
                         <img src="assets/img/landing/conference/map-light.jpg" class="d-dark-mode-none"
                             alt="Map preview">
                         <img src="assets/img/landing/conference/map-dark.jpg" class="d-none d-dark-mode-block"
                             alt="Map preview">
-                        <div class="gallery-item-caption fs-sm fw-medium">IUIU Female's campus - Kaboja, Kabojja, Nateete, Kampala</div>
+                        <div class="gallery-item-caption fs-sm fw-medium">ICT for persons with disabilites's campus - Kaboja, Kabojja, Nateete, Kampala</div>
                     </a>
                 </div>
             </div>
@@ -601,7 +600,7 @@
                                     <div class="text-center text-sm-start me-sm-4">
                                         <div class="lead text-primary fw-semibold text-uppercase mb-2">10<sup
                                                 class="text-lowercase">th</sup> FEB, 2023</div>
-                                        <h3 class="h1 text-heading">IUIU Alumni Grand Dinner</h3>
+                                        <h3 class="h1 text-heading">ICT for persons with disabilites Grand Dinner</h3>
                                     </div>
                                     <div class="d-table bg-white rounded-3 p-4 flex-shrink-0 mx-auto mx-sm-0">
                                         <img src="assets/img/landing/conference/qr.png" width="102" alt="QR Code">

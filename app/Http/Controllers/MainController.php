@@ -31,7 +31,7 @@ class MainController extends BaseController
 
         foreach ($profiles as $key => $pro) {
             if ($pro->intro == null || strlen($pro->intro) < 3) {
-                $pro->intro = "Hi there, I'm $pro->name IUIU Alumnus. I am excited to be a part of IUIU-AA Network. I call upon you to join the team!";
+                $pro->intro = "Hi there, I'm $pro->name . I call upon you to join the team!";
             }
             $_profiles[] = $pro;
         }

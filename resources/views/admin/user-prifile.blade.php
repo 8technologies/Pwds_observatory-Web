@@ -125,7 +125,7 @@ use App\Models\Utils;
                         <th scope="col">Award</th>
                         <th scope="col">Program</th>
                         <th scope="col">Year of admission</th>
-                        <th scope="col">IUIU Campus</th>
+                        <th scope="col">ICT for persons with disabilites Campus</th>
                     </tr>
                 </thead>
                 <tbody>

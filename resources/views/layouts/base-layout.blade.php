@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <title>IUIU - Alumni Association</title>
+    <title>ICT for persons with disabilites</title>
     <base href="{{ url('') }}/">
 
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="IUIU Alumni Association">
-    <meta name="keywords" content="iuiuaa, iuiu alumni, iuiu alumni association, islamic university in uganda alumni">
+    <meta name="description" content="ICT for persons with disabilites">
+    <meta name="keywords" content="ICT for persons with disabilites">
     <meta name="author" content="Muhindo Mubaraka - Mubahood">
 
     <!-- Viewport -->

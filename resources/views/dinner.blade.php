@@ -650,7 +650,7 @@ $book_link = admin_url('event-bookings/create?event=' . $d->id);
                                     <div class="text-center text-sm-start me-sm-4">
                                         <div class="lead text-primary fw-semibold text-uppercase mb-2">10<sup
                                                 class="text-lowercase">th</sup> FEB, 2023</div>
-                                        <h3 class="h1 text-heading">IUIU Alumni Grand Dinner</h3>
+                                        <h3 class="h1 text-heading">ICT for persons with disabilites Grand Dinner</h3>
                                     </div>
                                     <div class="d-table bg-white rounded-3 p-4 flex-shrink-0 mx-auto mx-sm-0">
                                         <img src="assets/img/landing/conference/qr.png" width="102" alt="QR Code">
