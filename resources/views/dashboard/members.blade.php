@@ -36,7 +36,7 @@ use App\Models\Utils;
                 <thead>
                     <tr class="fw-bolder text-muted">
                         <th class="min-w-200px">Member</th>
-                        <th class="min-w-150px">Program</th>
+                        <th class="min-w-150px">Group</th>
                         <th class="min-w-150px">Current address</th>
                         <th class="text-right">Connect</th>
                     </tr>
@@ -62,8 +62,8 @@ use App\Models\Utils;
                                         <span
                                             class="text-muted fw-bold text-muted d-block fs-7">{{ $i->country ?? '- ' }}</span>
                                         <span class="text-muted fw-bold text-muted d-block fs-7">
-                                            <b class="p-0 m-0 small text-dark">COUNTRY:</b>
-                                            {{ Str::of($i->country)->limit(10) }}
+                                            <b class="p-0 m-0 small text-dark">SEX:</b>
+                                            {{ Str::of($i->sex)->limit(10) }}
                                         </span>
                                         <span class="text-muted fw-bold text-muted d-block fs-7">
                                             <b class="p-0 m-0 small text-dark">JOINED:</b>

@@ -9,6 +9,7 @@ use App\Models\Location;
 use App\Models\Person;
 use App\Models\Utils;
 use Carbon\Carbon;
+use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Controllers\Dashboard;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Column;
@@ -21,6 +22,10 @@ class HomeController extends Controller
     public function index(Content $content)
     {
 
+   /*      foreach (Administrator::all() as $key => $as) {
+            $as->avatar = 'images/u-'.rand(1,10).'.png';
+            $as->save();
+        } */
 
 
 
