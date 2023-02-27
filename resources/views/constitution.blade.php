@@ -24,7 +24,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ url('about-us') }}">About us</a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">IUIU Alumni association constitution</li>
+                            <li class="breadcrumb-item active" aria-current="page">ICT for persons with disablities - project profile</li>
                         </ol>
                     </nav>
                 </div>
@@ -34,9 +34,9 @@
             <div class="row  justify-content-center mb-4 mb-md-5">
 
                 <div class="col-lg-8 lead text-center">
-                    <h1>IUIU Alumni association constitution</h1>
+                    <h1>ICT for persons with disablities - project profile</h1>
                     
-                    <a href="" class="btn btn-primary btn-lg text-uppercase my-5">DOWNLOAD constitution <i class="fa fa-file"></i></a>
+                    <a href="javascript:;" class="btn btn-primary btn-lg text-uppercase my-5">DOWNLOAD PROFILE <i class="fa fa-file"></i></a>
                     
                 </div>
             </div>

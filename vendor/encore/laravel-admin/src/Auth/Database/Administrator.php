@@ -11,7 +11,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
-use Tymon\JWTAuth\Contracts\JWTSubject; 
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
  * Class Administrator.
@@ -33,7 +33,7 @@ class Administrator extends Model implements AuthenticatableContract, JWTSubject
     {
         return [];
     }
- 
+
 
     protected $fillable = ['username', 'password', 'name', 'avatar', 'created_at_text'];
 
@@ -58,27 +58,16 @@ class Administrator extends Model implements AuthenticatableContract, JWTSubject
         parent::boot();
 
         self::creating(function ($m) {
-            $m->name = $m->first_name . " " . $m->last_name;
-            $m->avatar = 'user.jpg';
+            $n = $m->first_name . " " . $m->last_name;
+            if (strlen(trim($n)) > 1) {
+                $m->name = trim($n);
+            }
         });
         self::updating(function ($m) {
-            $m->complete_profile = 0;
-            if (
-                $m->first_name != null &&
-                $m->first_name != null &&
-                $m->country != null &&
-                $m->sex != null &&
-                strlen($m->first_name) > 2 &&
-                strlen($m->sex) > 2 &&
-                strlen($m->country)
-            ) {
-                $m->complete_profile = 1;
-
-                $m->name =  $m->first_name . " " . $m->last_name;
-                if ($m->title != null && strlen($m->title) > 1) {
-                    $m->name = $m->title . ". " . $m->name;
-                }
-            }
+            $n = $m->first_name . " " . $m->last_name;
+            if (strlen(trim($n)) > 1) {
+                $m->name = trim($n);
+            } 
         });
     }
 

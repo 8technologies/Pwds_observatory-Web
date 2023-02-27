@@ -115,7 +115,7 @@ use App\Models\Utils;
 
 
     <hr class="mt-4 mb-2 border-primary pb-0 mt-md-5 mb-md-5 ">
-    <h3 class="text-uppercase h4  m-0 text-center mt-2 "><b>Programs accomplished at IUIU</b></h3>
+    <h3 class="text-uppercase h4  m-0 text-center mt-2 "><b>Programs accomplished</b></h3>
 
     <div class="row mt-2">
         <div class="col-12">

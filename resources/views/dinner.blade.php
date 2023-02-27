@@ -128,9 +128,9 @@ $book_link = admin_url('event-bookings/create?event=' . $d->id);
 
                     <!-- Item -->
                     <div class="swiper-slide">
-                        <a title="Islamic university in uganda Alumni Association - IUIUAA" href="javascript:;"
+                        <a title="Islamic university in uganda Alumni Association - NUDIPU" href="javascript:;"
                             class="d-block py-3">
-                            <img title="Islamic university in uganda Alumni Association  - IUIUAA"
+                            <img title="Islamic university in uganda Alumni Association  - NUDIPU"
                                 src="assets/images/iuiu-aa-logo.png" class="d-block mx-auto img-fluid" width="154"
                                 alt="Brand">
                         </a>

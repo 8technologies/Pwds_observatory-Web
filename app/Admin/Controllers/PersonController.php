@@ -6,10 +6,12 @@ use App\Models\Disability;
 use App\Models\Group;
 use App\Models\Location;
 use App\Models\Person;
+use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\Auth;
 
 class PersonController extends AdminController
 {
@@ -18,7 +20,7 @@ class PersonController extends AdminController
      *
      * @var string
      */
-    protected $title = 'Person';
+    protected $title = 'Persons with disabities';
 
     /**
      * Make a grid builder.
@@ -28,6 +30,7 @@ class PersonController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Person());
+        $grid->quickSearch('name')->placeholder('Search by name');
 
         $grid->column('id', __('Id'));
         $grid->column('created_at', __('Created at'));
@@ -110,16 +113,40 @@ class PersonController extends AdminController
     {
         $form = new Form(new Person());
 
+
+        if (
+            (Auth::user()->isRole('staff')) ||
+            (Auth::user()->isRole('admin'))
+        ) {
+
+            $ajax_url = url(
+                '/api/ajax?'
+                    . "search_by_1=name"
+                    . "&search_by_2=id"
+                    . "&model=User"
+            );
+            $form->select('administrator_id', "Account mananger")
+                ->options(function ($id) {
+                    $a = Administrator::find($id);
+                    if ($a) {
+                        return [$a->id => "#" . $a->id . " - " . $a->name];
+                    }
+                })
+                ->ajax($ajax_url)->rules('required');
+        } else {
+            $form->select('administrator_id', __('Account mananger'))
+                ->options(Administrator::where('id', Auth::user()->id)->get()->pluck('name', 'id'))->default(Auth::user()->id)->readOnly()->rules('required');
+        }
+
+
         $form->select('group_id', __('Select Association & Group'))
             ->rules('required')
             ->help('Where this person with disability belongs')
             ->options(Group::get_groups_array());
 
 
- 
-
         $form->text('name', __('Full Name'))->rules('required');
-        $form->image('photo', __('Photo')); 
+        $form->image('photo', __('Photo'));
 
         $form->date('dob', __('Date of Birth'))->rules('required');
         $form->radio('sex', __('Sex'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');

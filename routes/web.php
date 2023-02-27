@@ -19,7 +19,7 @@ Route::get('/news', [MainController::class, 'news_category']);
 Route::get('/news/{id}', [MainController::class, 'news']);
 Route::get('/members', [MainController::class, 'members']);
 Route::get('/dinner', [MainController::class, 'dinner']);
-Route::get('/chairperson-message', function(){ return view('chair-person-message'); });
+Route::get('/ucc', function(){ return view('chair-person-message'); });
 Route::get('/vision-mission', function(){ return view('vision-mission'); }); 
 Route::get('/constitution', function(){ return view('constitution'); }); 
 Route::get('/register', [AccountController::class, 'register'])->name('register');

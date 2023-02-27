@@ -24,7 +24,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ url('about-us') }}">About us</a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Chair person message</li>
+                            <li class="breadcrumb-item active" aria-current="page">Uganda Communications Commission</li>
                         </ol>
                     </nav>
                 </div>
@@ -34,22 +34,11 @@
             <div class="row  justify-content-center mb-4 mb-md-5">
 
                 <div class="col-lg-8 lead">
-                    <h1>Chairperson's message</h1>
-                    <p>It is my distinct honour and privilege to welcome you to the IUIU Alumni Association website.</p>
-                    <p>If you are a graduate of IUIU and you are yet to become a member of this Association, I earnestly
-                        invite you to do so - it's easy and inexpensive.</p>
-                    <p>Membership enables you to reconnect with your former classmates, meet up with other graduates during
-                        such events as the Annual Alumni Grand Dinners and to enjoy many other benefits, as you will
-                        soon find out from this website.</p>
-                    <p>Take advantage of our potential resources for mentorship, resume help, networking and interviewing
-                        tips, assistance with job searching and applying for graduate or professional school programs to
-                        mention
-                        but a few.</p>
-                    <p>Membership also affords you the opportunity to give back to our alma mater and to support its
-                        advancement.</p>
-                    <blockquote>Be <b>“Proud to be an IUIU Graduate!”</b></blockquote>
-                    <p> - <b>Abdunur M. Sekindi</b></p>
-                    <p> <b>Chairperson IUIU Alumni Association</b></p>
+                    <h1>Message from Uganda Communications Commission - UCC</h1>
+                    <p>Message will go here..</p>
+                    <blockquote>Be <b>“Tag line!”</b></blockquote>
+                    <p> - <b>Mr. XYX</b></p>
+                    <p> <b>Role of the person</b></p>
                 </div>
             </div>
         </div>

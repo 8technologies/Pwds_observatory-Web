@@ -34,7 +34,7 @@
                                 <option value="Network & Security">Job opportunities</option>
                                 <option value="Mobile Development">Products & services</option>
                                 <option value="" selected disabled>Service providers</option>
-                                <option value="Web Development">Councelors</option>
+                                <option value="Web Development">Counselors</option>
                                 <option value="Game Development">Institutions</option>
                                 <option value="Programming">Innovations</option>
                             </select>
@@ -63,20 +63,28 @@
                     </form>
                     <div class="d-flex align-items-center mt-auto mb-3 mb-lg-0 pb-4 pb-lg-0 pb-xl-5">
                         <div class="d-flex me-3">
-                            <div class="d-flex align-items-center justify-content-center bg-light rounded-circle"
-                                style="width: 52px; height: 52px;">
-                                <img src="assets/img/avatar/08.jpg" class="rounded-circle" width="48" alt="Avatar">
+                            <div class="d-flex align-items-center justify-content-center bg-light rounded-circle ms-n3"
+                                style="width: 60px; height: 60px;">
+                                <img src="storage/images/u-3.png" class="rounded-circle" width="57" alt="Avatar">
                             </div>
                             <div class="d-flex align-items-center justify-content-center bg-light rounded-circle ms-n3"
-                                style="width: 52px; height: 52px;">
-                                <img src="assets/img/avatar/15.jpg" class="rounded-circle" width="48" alt="Avatar">
+                                style="width: 60px; height: 60px;">
+                                <img src="storage/images/u-7.png" class="rounded-circle" width="57" alt="Avatar">
                             </div>
                             <div class="d-flex align-items-center justify-content-center bg-light rounded-circle ms-n3"
-                                style="width: 52px; height: 52px;">
-                                <img src="assets/img/avatar/16.jpg" class="rounded-circle" width="48" alt="Avatar">
+                                style="width: 60px; height: 60px;">
+                                <img src="storage/images/u-8.png" class="rounded-circle" width="57" alt="Avatar">
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center bg-light rounded-circle ms-n3"
+                                style="width: 60px; height: 60px;">
+                                <img src="storage/images/u-9.png" class="rounded-circle" width="57" alt="Avatar">
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center bg-light rounded-circle ms-n3"
+                                style="width: 60px; height: 60px;">
+                                <img src="storage/images/u-10.png" class="rounded-circle" width="57" alt="Avatar">
                             </div>
                         </div>
-                        <span class="fs-sm"><span class="text-primary fw-semibold">10K+</span> people are already with
+                        <span class="fs-sm"><span class="text-primary fw-semibold">3,257+</span> people are already with
                             us!</span> <small>&nbsp;<a href="{{ admin_url() }}">Join Now</a></small>
                     </div>
                 </div>
@@ -126,11 +134,11 @@
                 <div class="d-flex justify-content-center justify-content-md-between pt-4 pt-lg-5">
                     <div class="mx-3 mx-md-0">
                         <div class="display-3 text-dark mb-1">23%</div>
-                        <span>Nulla venenatis everys</span>
+                        <span>Females - with disabilities</span>
                     </div>
                     <div class="mx-3 mx-md-0">
-                        <div class="display-3 text-dark mb-1">132b</div>
-                        <span>Dictum in marko elementum</span>
+                        <div class="display-3 text-dark mb-1">77%</div>
+                        <span>Males - with disabilities</span>
                     </div>
                 </div>
             </div>
@@ -268,7 +276,7 @@
         <div class="text-center pb-4 pb-md-0 mb-2 mb-md-5 mx-auto" style="max-width: 530px;">
             <h2 class="h1">How Does It Work?</h2>
             <p class="mb-0">This platform is not purposely for only persons with disabilities but also caregivers,
-                service providers, councelors, institutions and anyone who need to contribute to livelihood of persons with
+                service providers, counselors, institutions and anyone who need to contribute to livelihood of persons with
                 disabilities (well-wihsers). Below are steps how to use the platform.</p>
         </div>
 
@@ -316,34 +324,53 @@
 
 
     <!-- Feature section (App) -->
-    <section class="container pb-5 mb-md-2 mb-lg-4 mb-xl-5 py-5">
-        <div class="row align-items-center pt-2 pb-3">
+    <section class=" pb-5 mb-md-2 mb-lg-4 mb-xl-5 bg-secondary py-5">
+        <div class="container">
 
-            <!-- Parallax gfx -->
-            <div class="col-md-6 offset-xl-1">
-                <canvas id="topDistricts"></canvas>
-            </div>
 
-            <!-- Text -->
-            <div class="col-md-6 col-xl-5 text-center text-md-start mb-5 mb-md-0">
-                <h2 class="h1 pb-2 pb-lg-3">About ICT for Persons With Disablities.</h2>
-                <p class="pb-2 mb-4 mb-lg-5">Uganda Communications Commission (UCC), through The Uganda Communications
-                    Universal Service and Access Fund (UCUSAF), which is a Universal Service Fund (USF) for communications
-                    in Uganda, launched a call for business plan proposals to establish collaboration on the implementation
-                    of key activities under a general thematic area of addressing digital inclusiveness of Persons with
-                    Disabilities.</p>
-                <hr>
-                <div class="d-flex justify-content-center justify-content-md-between pt-4 pt-lg-5">
-                    <div class="mx-3 mx-md-0">
-                        <div class="display-3 text-dark mb-1">23%</div>
-                        <span>Nulla venenatis everys</span>
-                    </div>
-                    <div class="mx-3 mx-md-0">
-                        <div class="display-3 text-dark mb-1">132b</div>
-                        <span>Dictum in marko elementum</span>
+            <div class="row align-items-center pt-2 pb-3">
+
+                <!-- Parallax gfx -->
+                <div class="col-md-5">
+                    <canvas id="topDistricts"></canvas>
+                </div>
+
+                <!-- Text -->
+                <div class="col-md-7  text-center text-md-start mb-5 mb-md-0">
+                    <h2 class="h1 pb-2 pb-lg-3">TOP 5 Distticts with Persons With Disablities.</h2>
+                    <p class="pb-2 mb-4 mb-lg-5">Uganda Communications Commission (UCC), through The Uganda Communications
+                        Universal Service and Access Fund (UCUSAF), which is a Universal Service Fund (USF) for
+                        communications
+                        in Uganda, launched a call for business plan proposals to establish collaboration on the
+                        implementation
+                        of key activities under a general thematic area of addressing digital inclusiveness of Persons with
+                        Disabilities.</p>
+                    <hr>
+                    <div class="row  pt-4 pt-lg-5">
+                        <div class="col mx-3 mx-md-0">
+                            <div class="display-3 text-dark mb-1">70%</div>
+                            <span>Kampala</span>
+                        </div>
+                        <div class="col mx-3 mx-md-0">
+                            <div class="display-3 text-dark mb-1">12%</div>
+                            <span>Mbarara</span>
+                        </div>
+                        <div class="col mx-3 mx-md-0">
+                            <div class="display-3 text-dark mb-1">10%</div>
+                            <span>Kasese</span>
+                        </div>
+                        <div class="col mx-3 mx-md-0">
+                            <div class="display-3 text-dark mb-1">4%</div>
+                            <span>Jinja</span>
+                        </div>
+                        <div class="col mx-3 mx-md-0">
+                            <div class="display-3 text-dark mb-1">3%</div>
+                            <span>Arua</span>
+                        </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
 
@@ -352,11 +379,24 @@
     <section class="container pb-5 mb-md-2 mb-lg-4 mb-xl-5 py-5">
         <div class="row align-items-center pt-2 pb-3">
 
-            <!-- Parallax gfx -->
-            <div class="col-md-12 offset-xl-1">
-                <canvas id="months"></canvas>
+
+
+            <div class="col-md-6  text-center text-md-start mb-5 mb-md-0">
+                <h2 class="h1 pb-2 pb-lg-3">Registerd Persons With Disablities - in past 12 Months</h2>
+                <p class="pb-2 mb-4 mb-lg-5">Uganda Communications Commission (UCC), through The Uganda Communications
+                    Universal Service and Access Fund (UCUSAF), which is a Universal Service Fund (USF) for
+                    communications
+                    in Uganda, launched a call for business plan proposals to establish collaboration on the
+                    implementation
+                    of key activities under a general thematic area of addressing digital inclusiveness of Persons with
+                    Disabilities.</p>
+
             </div>
 
+            <!-- Parallax gfx -->
+            <div class="col-md-6 ">
+                <canvas id="months"></canvas>
+            </div>
 
         </div>
     </section>
@@ -369,17 +409,28 @@
         const ctx = document.getElementById('myChart');
         const data = {
             labels: [
-                'Red',
-                'Blue',
-                'Yellow'
+                'Vision Impairment - 370',
+                'Deaf or hard of hearing - 57',
+                'Mental health conditions - 101',
+                'Intellectual disability - 210',
+                'Acquired brain injury - 259',
+                'Physical disability - 712',
+                'Autism spectrum disorder - 100'
             ],
             datasets: [{
                 label: 'My First Dataset',
-                data: [300, 50, 100],
+                data: [370, 57, 101, 210, 259, 712, 100],
                 backgroundColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)'
+                    '#8EFCDF',
+                    '#F43DE3',
+                    '#F6DE5C',
+                    '#7D57F8',
+                    '#431B02',
+                    '#23A2E9',
+                    '#34F1B7',
+                    '#868686',
+                    '#C71C5D',
+                    '#D0B1FD',
                 ],
                 hoverOffset: 4
             }]
@@ -407,20 +458,41 @@
             type: 'pie',
             data: {
                 labels: [
-                    'Red',
-                    'Blue',
-                    'Yellow'
+                    'Jinja',
+                    'Mbarara',
+                    'Kampala',
+                    'Arua',
+                    'Kasese',
                 ],
                 datasets: [{
                     label: 'My First Dataset',
-                    data: [300, 50, 100],
+                    data: [300, 882, 100, 150, 200],
                     backgroundColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(54, 162, 235)',
-                        'rgb(255, 205, 86)'
+                        '#23A2E9',
+                        '#F43DE3',
+                        '#7D57F8',
+                        '#34F1B7',
+                        '#F6DE5C',
+                        '#C71C5D',
+                        '#431B02',
+                        '#370133',
+                        '#868686',
+                        '#D0B1FD',
+                        '#8EFCDF',
                     ],
-                    hoverOffset: 4
                 }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'TOP 5 Distticts with Persons With Disablities'
+                    }
+                }
             },
         });
 
@@ -429,20 +501,49 @@
             type: 'bar',
             data: {
                 labels: [
-                    'Red',
-                    'Blue',
-                    'Yellow'
+                    'Janiary',
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
+                    'July',
+                    'August',
+                    'September',
+                    'October',
+                    'November',
+                    'December',
                 ],
                 datasets: [{
-                    label: 'My First Dataset',
-                    data: [300, 50, 100,300, 50, 100,300, 50, 100,300, 50, 100],
+                    label: 'Registerd per month',
+                    data: [309, 53, 108, 461, 520, 127, 132, 55, 181, 301, 121, 654],
                     backgroundColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(54, 162, 235)',
-                        'rgb(255, 205, 86)'
+                        '#23A2E9',
+                        '#F43DE3',
+                        '#7D57F8',
+                        '#34F1B7',
+                        '#F6DE5C',
+                        '#C71C5D',
+                        '#431B02',
+                        '#370133',
+                        '#868686',
+                        '#D0B1FD',
+                        '#8EFCDF',
                     ],
-                    hoverOffset: 4
-                }]
+                    hoverOffset: 0
+                }],
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Registerd Persons With Disablities - in past 12 Months'
+                    }
+                }
             },
         });
     </script>

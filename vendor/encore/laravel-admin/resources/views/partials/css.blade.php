@@ -4,7 +4,7 @@
 
 <?php
 
-$primt_color = '#309900';
+$primt_color = '#009DD6';
 ?><style>
     .sidebar {
         background-color: #FFFFFF;
@@ -45,4 +45,7 @@ $primt_color = '#309900';
     :root {
         --primary: {{ $primt_color }};
     }
-</style>
+    .card {
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+    }
+</style> 

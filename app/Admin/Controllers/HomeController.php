@@ -140,7 +140,7 @@ deleted_at
 	 
 */
 
-/*         for ($i = 1; $i < 100; $i++) {
+        /*         for ($i = 1; $i < 100; $i++) {
             shuffle($groups);
             shuffle($groups);
             shuffle($groups);
@@ -193,17 +193,64 @@ deleted_at
             $c->save(); 
         }
  */
-     
+
         $u = Admin::user();
 
-        if (Admin::user()->complete_profile != 1) {
-            admin_info('Alert', 'Please complete your profile information to proceed.');
-            return redirect(admin_url('auth/setting'));
-        }
-        Utils::checkEventRegustration();
+
+        $content->row(function (Row $row) {
+            $row->column(3, function (Column $column) {
+                $column->append(view('widgets.box-5', [
+                    'is_dark' => false,
+                    'title' => 'New members',
+                    'sub_title' => 'Joined 30 days ago.',
+                    'number' => number_format(rand(100, 600)),
+                    'link' => 'javascript:;'
+                ]));
+            });
+            $row->column(3, function (Column $column) {
+                $column->append(view('widgets.box-5', [
+                    'is_dark' => false,
+                    'title' => 'Products & Services',
+                    'sub_title' => 'All time.',
+                    'number' => number_format(rand(1000, 6000)),
+                    'link' => 'javascript:;'
+                ]));
+            });
+            $row->column(3, function (Column $column) {
+                $column->append(view('widgets.box-5', [
+                    'is_dark' => false,
+                    'title' => 'Job oppotunities',
+                    'sub_title' => rand(100, 400) . ' jobs posted 7 days ago.',
+                    'number' => number_format(rand(1000, 6000)),
+                    'link' => 'javascript:;'
+                ]));
+            });
+            $row->column(3, function (Column $column) {
+                $column->append(view('widgets.box-5', [
+                    'is_dark' => true,
+                    'title' => 'System traffic',
+                    'sub_title' => rand(100, 400) . ' mobile app, ' . rand(100, 300) . ' web browser.',
+                    'number' => number_format(rand(100, 6000)),
+                    'link' => 'javascript:;'
+                ]));
+            });
+        });
+
+
+        
+
+        $content->row(function (Row $row) {
+            $row->column(6, function (Column $column) {
+                $column->append(view('widgets.by-categories', []));
+            }); 
+            $row->column(6, function (Column $column) {
+                $column->append(view('widgets.by-districts', []));
+            }); 
+        });
+
 
         $content
-            ->title('IUIU AA - Dashboard')
+            ->title('ICT for Persons With Disabilities - Dashboard')
             ->description('Hello ' . $u->name . "!");
 
         $content->row(function (Row $row) {
@@ -217,6 +264,7 @@ deleted_at
                 $column->append(Dashboard::dashboard_news());
             });
         });
+        
 
 
 
