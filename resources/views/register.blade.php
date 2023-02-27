@@ -21,8 +21,8 @@
                         <h1 class="text-center text-xl-start">Register</h1>
 
                         <p class="lead fs-sm text-dark mt-3 border border-primary p-3 bg-secondary rounded">
-                            Dear respected visitor, thank you for your interest in the ICT for Persons With Disablities. We
-                            are seeking to create an national database for for Persons With Disablities to enhance ways of
+                            Dear respected visitor, thank you for your interest in the ICT for Persons With Disabilities. We
+                            are seeking to create an national database for for Persons With Disabilities to enhance ways of
                             reaching out and supporting.
                             Please fill out this form to help us get to know you better.
                         </p>

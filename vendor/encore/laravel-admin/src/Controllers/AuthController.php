@@ -247,8 +247,8 @@ class AuthController extends Controller
         Utils::checkEventRegustration();
 
         $form = new Form(new $class());
-        $form->html('<br>Dear respected member, thank you for your interest in the <b>ICT for Persons With Disablities</b>. We
-        are seeking to create an national database for for Persons With Disablities to enhance ways of
+        $form->html('<br>Dear respected member, thank you for your interest in the <b>ICT for Persons With Disabilities</b>. We
+        are seeking to create an national database for for Persons With Disabilities to enhance ways of
         reaching out and supporting.
         Please fill out this form to help us get to know you better.', '<br>NOTICE:');
 

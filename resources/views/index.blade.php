@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-lg-5 d-flex flex-column pt-lg-4 pt-xl-5">
                     <h5 class="my-2">Welcome!</h5>
-                    <h1 class="display-3 mb-4"> <span class="text-primary">ICT</span> for Persons With Disablities</h1>
+                    <h1 class="display-3 mb-4"> <span class="text-primary">ICT</span> for Persons With Disabilities</h1>
                     <p class="fs-lg mb-5">This System will help you, Enhance your Knowledge Management, ICT Adoption, Digital
                         Skills, And Access To E-Services For Persons With Disabilities.!</p>
 
@@ -124,7 +124,7 @@
 
             <!-- Text -->
             <div class="col-md-6 col-xl-5 text-center text-md-start mb-5 mb-md-0">
-                <h2 class="h1 pb-2 pb-lg-3">About ICT for Persons With Disablities.</h2>
+                <h2 class="h1 pb-2 pb-lg-3">About ICT for Persons With Disabilities.</h2>
                 <p class="pb-2 mb-4 mb-lg-5">Uganda Communications Commission (UCC), through The Uganda Communications
                     Universal Service and Access Fund (UCUSAF), which is a Universal Service Fund (USF) for communications
                     in Uganda, launched a call for business plan proposals to establish collaboration on the implementation
@@ -173,8 +173,8 @@
                 <div class="col-lg-8">
                     <h2 class="h1 text-center text-md-start mb-4">Serveices and Benefits</h2>
                     <p class="fs-lg text-muted text-center text-md-start mb-4 mb-xl-5">
-                        ICT for Persons With Disablities - Digital onservatory is a system built a variety of solutions to
-                        simply day-to-day life of a person with disablity or people who give care to persons with
+                        ICT for Persons With Disabilities - Digital onservatory is a system built a variety of solutions to
+                        simply day-to-day life of a person with disability or people who give care to persons with
                         disabilites as listed below.
                     </p>
                     <div class="row row-cols-1 row-cols-sm-2 pt-2 pt-sm-3 pt-xl-2">
@@ -188,7 +188,7 @@
                                 <div class="ps-4 ps-sm-3 ps-md-4">
                                     <h3 class="h5 pb-1 mb-2">Persons With Disabilities - Profiling</h3>
                                     <p class="mb-0">To register a people with disabilities to the Uganda National
-                                        Database of persons with disablities.</p>
+                                        Database of persons with disabilities.</p>
                                 </div>
                             </div>
                         </div>
@@ -337,7 +337,7 @@
 
                 <!-- Text -->
                 <div class="col-md-7  text-center text-md-start mb-5 mb-md-0">
-                    <h2 class="h1 pb-2 pb-lg-3">TOP 5 Distticts with Persons With Disablities.</h2>
+                    <h2 class="h1 pb-2 pb-lg-3">TOP 5 Distticts with Persons With Disabilities.</h2>
                     <p class="pb-2 mb-4 mb-lg-5">Uganda Communications Commission (UCC), through The Uganda Communications
                         Universal Service and Access Fund (UCUSAF), which is a Universal Service Fund (USF) for
                         communications
@@ -382,7 +382,7 @@
 
 
             <div class="col-md-6  text-center text-md-start mb-5 mb-md-0">
-                <h2 class="h1 pb-2 pb-lg-3">Registerd Persons With Disablities - in past 12 Months</h2>
+                <h2 class="h1 pb-2 pb-lg-3">Registerd Persons With Disabilities - in past 12 Months</h2>
                 <p class="pb-2 mb-4 mb-lg-5">Uganda Communications Commission (UCC), through The Uganda Communications
                     Universal Service and Access Fund (UCUSAF), which is a Universal Service Fund (USF) for
                     communications
@@ -490,7 +490,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'TOP 5 Distticts with Persons With Disablities'
+                        text: 'TOP 5 Distticts with Persons With Disabilities'
                     }
                 }
             },
@@ -541,7 +541,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Registerd Persons With Disablities - in past 12 Months'
+                        text: 'Registerd Persons With Disabilities - in past 12 Months'
                     }
                 }
             },

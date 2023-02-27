@@ -174,7 +174,7 @@
                         NUDIPU
                     </div>
                     <p class="fs-sm pb-lg-3 mb-4 lead">
-                        <b class="text-dark">ICT for Persons With Disablities</b> will help you, Enhance your
+                        <b class="text-dark">ICT for Persons With disabilities</b> will help you, Enhance your
                         Knowledge Management, ICT Adoption, Digital Skills, And Access To E-Services For Persons With
                         Disabilities.
                     </p>

@@ -11,7 +11,7 @@ return [
     | login page.
     |
     */
-    'name' => 'ICT for Persons with disablities',
+    'name' => 'ICT for Persons with disabilities',
 
     /*
     |--------------------------------------------------------------------------
