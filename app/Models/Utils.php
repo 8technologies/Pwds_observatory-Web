@@ -6,10 +6,334 @@ use Carbon\Carbon;
 use Encore\Admin\Facades\Admin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use SplFileObject;
 
 class Utils extends Model
 {
     use HasFactory;
+
+    /* 
+/* 
+
+Full texts
+id	
+created_at	
+updated_at	
+association_id	
+group_id	
+name	
+address	
+parish	
+village	
+phone_number	
+email	
+district_id	
+subcounty_id	
+	
+phone_number_2	
+dob	
+sex	
+	 
+	
+caregiver_sex	
+caregiver_phone_number	
+caregiver_age	
+caregiver_relationship	
+photo	
+deleted_at	
+status	
+administrator_id	
+	
+*/
+
+    /* 
+  
+[] => 
+[9] => RELATIONSHIP WITH CAREGIVER
+[] => District
+*/
+
+
+    public static function importPwdsProfiles($path)
+    {
+        $csv = new SplFileObject($path);
+        $csv->setFlags(SplFileObject::READ_CSV);
+        //$csv->setCsvControl(';');  //separator change if you need
+        set_time_limit(-1); // Time in seconds
+        $cats = [];
+        $isFirst  = true;
+        foreach ($csv as $line) {
+            if ($isFirst) {
+                $isFirst = false;
+                continue;
+            }
+
+            if((Person::count('id') >= 3963)){
+                die("done"); 
+            }
+            
+            $p = new Person();
+            $p->name = 'N/A';
+
+
+
+            $p->subcounty_description = null;
+            if (
+                isset($line[10]) &&
+                $line[10] != null &&
+                strlen($line[10]) > 2
+            ) {
+                $dis = $line[10];
+                $_dis = Location::where(
+                    'name',
+                    'LIKE',
+                    '%' . $dis . '%'
+                )->first();
+                if ($_dis != null) {
+                    $p->disability_id = $_dis->id;
+                } else {
+                    $p->disability_id = 1002006;
+                }
+            }
+
+
+            $p->subcounty_description = null;
+            if (
+                isset($line[8]) &&
+                $line[8] != null &&
+                strlen($line[8]) > 1
+            ) {
+                $p->dob = $line[8];
+            }
+
+            $p->subcounty_description = null;
+            if (
+                isset($line[7]) &&
+                $line[7] != null &&
+                strlen($line[7]) > 3
+            ) {
+                $p->caregiver_name = $line[7];
+                $p->has_caregiver = 'Yes';
+            } else {
+                $p->has_caregiver = 'No';
+            }
+
+            $p->subcounty_description = null;
+            if (
+                isset($line[4]) &&
+                $line[4] != null &&
+                strlen($line[4]) > 3
+            ) {
+                $p->disability_description = $line[4];
+            }
+
+            $p->education_level = null;
+            if (
+                isset($line[5]) &&
+                $line[5] != null &&
+                strlen($line[5]) > 1
+            ) {
+                //$p->education_level = $line[5];
+            }
+
+            $p->job = null;
+            if (
+                isset($line[6]) &&
+                $line[6] != null &&
+                strlen($line[6]) > 1
+            ) {
+                $p->employment_status = 'Yes';
+                $p->job = $line[6];
+            } else {
+                $p->employment_status = 'No';
+            }
+
+            if (
+                isset($line[0]) &&
+                $line[0] != null &&
+                strlen($line[0]) > 2
+            ) {
+                $p->name = trim($line[0]);
+            }
+
+            $p->sex = 'N/A';
+            if (
+                isset($line[1]) &&
+                $line[1] != null &&
+                strlen($line[1]) > 0
+            ) {
+                if (strtolower(substr($line[0], 0, 1)) == 'm') {
+                    $p->sex = 'Male';
+                } else {
+                    $p->sex = 'Female';
+                }
+            }
+
+            $p->phone_number = null;
+            if (
+                isset($line[2]) &&
+                $line[2] != null &&
+                strlen($line[2]) > 5
+            ) {
+                $p->phone_number = Utils::prepare_phone_number($line[2]);
+            }
+
+            if (
+                isset($line[3]) &&
+                $line[3] != null &&
+                strlen($line[3]) > 2
+            ) {
+                $cat =  trim(strtolower($line[3]));
+
+                if (in_array($cat, [
+                    'epilepsy'
+                ])) {
+                    $p->disability_id = 1;
+                    $p->disability_description = $line[3];
+                } elseif (in_array($cat, [
+                    'visual',
+                    'visual impairment',
+                    'deaf-blind',
+                    'visual disability',
+                    'visual impairmrnt',
+                    'blind',
+                ])) {
+                    $p->disability_id = 2;
+                    $p->disability_description = $line[3];
+                } elseif (in_array($cat, [
+                    'deaf',
+                    'hard of hearing',
+                    'hearing impairment',
+                ])) {
+                    $p->disability_id = 3;
+                    $p->disability_description = $line[3];
+                } elseif (in_array($cat, [
+                    'mental',
+                    'visual disabilty',
+                    'mental retardation',
+                ])) {
+                    $p->disability_id = 4;
+                    $p->disability_description = $line[3];
+                } elseif (in_array($cat, [
+                    'intellectual disability',
+                    'mental disabilty',
+                    'mental disability',
+                    'cerebral pulse',
+                ])) {
+
+                    $p->disability_id = 5;
+                    $p->disability_description = $line[3];
+                } elseif (in_array($cat, [
+                    'epileptic',
+                    'brain injury',
+                    'spine damage',
+                ])) {
+
+                    $p->disability_id = 6;
+                    $p->disability_description = $line[3];
+                } elseif (in_array($cat, [
+                    'physical',
+                    'parent',
+                    'physical  disability',
+                    'physical disability',
+                    'physical disabbility',
+                    'physical disabilty',
+                    'pyhsical disability',
+                    'physical didability',
+                    'physical diability',
+                    'physical impairment',
+                    'male',
+                    'amputee',
+                    'sickler',
+                    '#null!',
+                ])) {
+                    $p->disability_id = 7;
+                    $p->disability_description = $line[3];
+                } elseif (in_array($cat, [
+                    'albino',
+                    'albinism',
+                    'albism',
+                ])) {
+                    $p->disability_id = 8;
+                    $p->disability_description = $line[3];
+                } elseif (in_array($cat, [
+                    'little person',
+                    'littleperson',
+                    'liitleperson',
+                    'liittleperson',
+                    'dwarfism',
+                    'persons of short stature (little persons)',
+                ])) {
+                    $p->disability_id = 9;
+                    $p->disability_description = $line[3];
+                } else {
+                    $p->disability_id = 1;
+                    $p->disability_description = "N/A";
+                }
+            } else {
+                $p->disability_id = 6;
+                $p->disability_description = 'Other';
+            }
+
+            $p->subcounty_description = null;
+            if (
+                isset($line[2]) &&
+                $line[2] != null &&
+                strlen($line[2]) > 5
+            ) {
+                $p->phone_number = Utils::prepare_phone_number($line[2]);
+            }
+
+            try {
+                $p->save();
+            } catch (\Throwable $th) {
+                echo $th; 
+                echo "failed <br>";
+            }
+        }
+
+        echo "done! with $p->id <pre>";
+        die('');
+
+        dd($path);
+    }
+
+
+
+
+
+    public static function phone_number_is_valid($phone_number)
+    {
+        $phone_number = Utils::prepare_phone_number($phone_number);
+        if (substr($phone_number, 0, 4) != "+256") {
+            return false;
+        }
+
+        if (strlen($phone_number) != 13) {
+            return false;
+        }
+
+        return true;
+    }
+    public static function prepare_phone_number($phone_number)
+    {
+        $original = $phone_number;
+        //$phone_number = '+256783204665';
+        //0783204665
+        if (strlen($phone_number) > 10) {
+            $phone_number = str_replace("+", "", $phone_number);
+            $phone_number = substr($phone_number, 3, strlen($phone_number));
+        } else {
+            if (substr($phone_number, 0, 1) == "0") {
+                $phone_number = substr($phone_number, 1, strlen($phone_number));
+            }
+        }
+        if (strlen($phone_number) != 9) {
+            return $original;
+        }
+        return "+256" . $phone_number;
+    }
+
 
 
     public static function docs_root()
@@ -21,11 +345,11 @@ class Utils extends Model
             $r = str_replace('\public', "", $r);
         }
 
-        if(!(str_contains($r,'public'))){
+        if (!(str_contains($r, 'public'))) {
             $r = $r . "/public";
         }
 
- 
+
         /* 
          "/home/ulitscom_html/public/storage/images/956000011639246-(m).JPG
         

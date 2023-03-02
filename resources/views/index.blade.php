@@ -173,7 +173,7 @@
                 <div class="col-lg-8">
                     <h2 class="h1 text-center text-md-start mb-4">Serveices and Benefits</h2>
                     <p class="fs-lg text-muted text-center text-md-start mb-4 mb-xl-5">
-                        ICT for Persons With Disabilities - Digital onservatory is a system built a variety of solutions to
+                        ICT for Persons With Disabilities - Digital observatory is a system built a variety of solutions to
                         simply day-to-day life of a person with disability or people who give care to persons with
                         disabilites as listed below.
                     </p>
@@ -277,7 +277,7 @@
             <h2 class="h1">How Does It Work?</h2>
             <p class="mb-0">This platform is not purposely for only persons with disabilities but also caregivers,
                 service providers, counselors, institutions and anyone who need to contribute to livelihood of persons with
-                disabilities (well-wihsers). Below are steps how to use the platform.</p>
+                disabilities (well-wishers). Below are steps how to use the platform.</p>
         </div>
 
         <!-- Steps -->
@@ -298,7 +298,7 @@
                 <div class="step-body">
                     <h3 class="h4 mb-3">Profiling</h3>
                     <p class="mb-0">Complete your profile to clarify the purpose
-                        and the role that will play into this ssystem.</p>
+                        and the role that will play into this System.</p>
                 </div>
             </div>
             <div class="step">
@@ -315,8 +315,8 @@
                     <div class="step-number-inner">4</div>
                 </div>
                 <div class="step-body">
-                    <h3 class="h4 mb-3">Enjoy</h3>
-                    <p class="mb-0">Once we aprove your profile, you will then be able to access all system featurs!</p>
+                    <h3 class="h4 mb-3">Enjoy!</h3>
+                    <p class="mb-0">Once we aprove your profile, you will then be able to access all system features!</p>
                 </div>
             </div>
         </div>
@@ -337,7 +337,7 @@
 
                 <!-- Text -->
                 <div class="col-md-7  text-center text-md-start mb-5 mb-md-0">
-                    <h2 class="h1 pb-2 pb-lg-3">TOP 5 Distticts with Persons With Disabilities.</h2>
+                    <h2 class="h1 pb-2 pb-lg-3">TOP 5 Districts with Persons With Disabilities.</h2>
                     <p class="pb-2 mb-4 mb-lg-5">Uganda Communications Commission (UCC), through The Uganda Communications
                         Universal Service and Access Fund (UCUSAF), which is a Universal Service Fund (USF) for
                         communications
@@ -446,7 +446,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Registerd Persons With Disabities in Uganda  - By Disability categories'
+                        text: 'Registerd Persons With disabilities in Uganda  - By Disability categories'
                     }
                 }
             },

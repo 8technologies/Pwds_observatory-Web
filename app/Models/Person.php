@@ -64,6 +64,17 @@ class Person extends Model
         });
     }
 
+    public function association(){
+        return $this->belongsTo(Association::class);
+    }
+
+    public function disability(){
+        return $this->belongsTo(Disability::class,'disability_id');
+    }
+
+    public function district(){
+        return $this->belongsTo(Location::class,'district_id');
+    }
     public function getDisabilityTextAttribute()
     {
         $d = Disability::find($this->disability_id);

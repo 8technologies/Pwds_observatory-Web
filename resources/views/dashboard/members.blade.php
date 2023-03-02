@@ -109,7 +109,7 @@ use App\Models\Utils;
                                         class="btn btn-icon btn-bg-light  text-primary  me-1 p-0 px-2 m-0"
                                         style="font-size: 12px;">
                                         <i class="fa fa-phone"></i>
-                                        <span>Cell {{ $i->first_name }}</span>
+                                        <span>Call {{ $i->first_name }}</span>
                                     </a> 
 
 

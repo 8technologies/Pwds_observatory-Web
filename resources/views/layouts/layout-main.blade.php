@@ -18,7 +18,7 @@
 
     <!-- Brands (carousel on screens < 1100px) -->
     <section class="container p-0 mt-md-2  ">
-        <h2 class="h1 mb-4 ">Partnaship</h2>
+        <h2 class="h1 mb-4 ">Partnership</h2>
         <div class="swiper pt-0 mx-n2 text-center"
             data-swiper-options='{
                   "slidesPerView": 2,

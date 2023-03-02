@@ -6,6 +6,8 @@ use App\Models\Disability;
 use App\Models\Group;
 use App\Models\Location;
 use App\Models\Person;
+use App\Models\Utils;
+use Dflydev\DotAccessData\Util;
 use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -20,7 +22,7 @@ class PersonController extends AdminController
      *
      * @var string
      */
-    protected $title = 'Persons with disabities';
+    protected $title = 'Persons with disabilities';
 
     /**
      * Make a grid builder.
@@ -32,33 +34,73 @@ class PersonController extends AdminController
         $grid = new Grid(new Person());
         $grid->quickSearch('name')->placeholder('Search by name');
 
-        $grid->column('id', __('Id'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
-        $grid->column('association_id', __('Association id'));
-        $grid->column('group_id', __('Group id'));
-        $grid->column('name', __('Name'));
-        $grid->column('address', __('Address'));
-        $grid->column('parish', __('Parish'));
-        $grid->column('village', __('Village'));
-        $grid->column('phone_number', __('Phone number'));
-        $grid->column('email', __('Email'));
-        $grid->column('district_id', __('District id'));
-        $grid->column('subcounty_id', __('Subcounty id'));
-        $grid->column('disability_id', __('Disability id'));
-        $grid->column('phone_number_2', __('Phone number 2'));
-        $grid->column('dob', __('Dob'));
-        $grid->column('sex', __('Sex'));
-        $grid->column('education_level', __('Education level'));
-        $grid->column('employment_status', __('Employment status'));
-        $grid->column('has_caregiver', __('Has caregiver'));
-        $grid->column('caregiver_name', __('Caregiver name'));
-        $grid->column('caregiver_sex', __('Caregiver sex'));
-        $grid->column('caregiver_phone_number', __('Caregiver phone number'));
-        $grid->column('caregiver_age', __('Caregiver age'));
-        $grid->column('caregiver_relationship', __('Caregiver relationship'));
-        $grid->column('photo', __('Photo'));
-        $grid->column('deleted_at', __('Deleted at'));
+        $grid->model()->orderBy('id', 'desc');
+        $grid->disableBatchActions();
+
+        $grid->column('id', __('Id'))->sortable();
+        $grid->column('created_at', __('Regisetered'))->display(
+            function ($x) {
+                return Utils::my_date($x);
+            }
+        )->sortable();
+        $grid->column('name', __('Name'))->sortable();
+        $grid->column('sex', __('Sex'))->filter([
+            'Male' => 'Male',
+            'Female' => 'Female',
+        ])->sortable();
+
+        $grid->column('dob', __('AGE/D.O.B'));
+
+        $grid->column('disability_id', __('Disability'))
+            ->display(
+                function ($x) {
+                    if ($this->disability == null) {
+                        return '-';
+                    }
+                    return $this->disability->name;
+                }
+            )->sortable();
+        $grid->column('phone_number', __('Phone number'))->sortable();
+        $grid->column('district_id', __('District'))
+            ->display(
+                function ($x) {
+                    if ($this->district == null) {
+                        return '-';
+                    }
+                    return $this->district->name;
+                }
+            )->sortable();
+
+        $grid->column('email', __('Email'))->hide();
+        $grid->column('address', __('Address'))->hide();
+        $grid->column('parish', __('Parish'))->hide();
+        $grid->column('village', __('Village'))->hide();
+
+
+        $grid->column('employment_status', __('Is Employed'))->filter([
+            'Yes' => 'Yes',
+            'No' => 'No',
+        ])->sortable();
+
+        $grid->column('has_caregiver', __('Has caregiver'))->hide();
+        $grid->column('caregiver_name', __('Caregiver name'))->hide();
+        $grid->column('caregiver_sex', __('Caregiver sex'))->hide();
+        $grid->column('caregiver_phone_number', __('Caregiver phone number'))->hide();
+        $grid->column('caregiver_age', __('Caregiver age'))->hide();
+        $grid->column('caregiver_relationship', __('Caregiver relationship'))->hide();
+        $grid->column('photo', __('Photo'))->hide();
+
+        $grid->column('association_id', __('Association'))
+            ->display(
+                function ($x) {
+                    if ($this->association == null) {
+                        return '-';
+                    }
+                    return $this->association->name;
+                }
+            )->sortable();
+
+
 
         return $grid;
     }

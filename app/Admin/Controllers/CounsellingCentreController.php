@@ -19,7 +19,7 @@ class CounsellingCentreController extends AdminController
      *
      * @var string
      */
-    protected $title = 'CounsellingCentre';
+    protected $title = 'Counselling centres';
 
     /**
      * Make a grid builder.

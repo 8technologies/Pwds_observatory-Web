@@ -16,12 +16,16 @@ use Encore\Admin\Layout\Column;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
 use Faker\Factory as Faker;
+use SplFileObject;
 
 class HomeController extends Controller
 {
     public function index(Content $content)
     {
+  
 
+
+        //Utils::importPwdsProfiles(Utils::docs_root().'/people.csv');  
    /*      foreach (Administrator::all() as $key => $as) {
             $as->avatar = 'images/u-'.rand(1,10).'.png';
             $as->save();
