@@ -170,8 +170,7 @@
             <div class="row pb-5">
                 <div class="col-lg-4 col-md-6">
                     <div class="navbar-brand text-dark p-0 me-0 mb-3 mb-lg-4">
-                        <img src="assets/img/logo.png" width="120" alt="NUDIPU">
-                        NUDIPU
+                        <img src="assets/img/logo-1.png" width="260" alt="NUDIPU">
                     </div>
                     <p class="fs-sm pb-lg-3 mb-4 lead">
                         <b class="text-dark">ICT for Persons With disabilities</b> will help you, Enhance your

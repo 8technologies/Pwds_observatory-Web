@@ -19,7 +19,7 @@ if (!isset($header_style)) {
 
 <div class="container px-3">
     <a href="{{ url('/') }}" class="navbar-brand pe-3">
-        <img src="assets/img/logo.png" width="50" alt="NUDIPU"> NUDIPU
+        <img src="assets/img/logo-1.png" width="200" alt="NUDIPU">
     </a>
     <div id="navbarNav" class="offcanvas offcanvas-end">
         <div class="offcanvas-header border-bottom">
