@@ -146,7 +146,7 @@ if (!isset($header_style)) {
     </button>
     @guest
         <a href="{{ admin_url('') }}" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex" rel="noopener">
-            <i class="bx bx-user-plus fs-5 lh-1 me-1"></i> &nbsp;LOGIN
+            <i class="bx bx-accessibility fs-5 lh-1 me-1"></i>Observatory
         </a>
     @endguest
 
