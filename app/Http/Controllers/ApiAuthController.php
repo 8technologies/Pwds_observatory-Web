@@ -51,7 +51,6 @@ class ApiAuthController extends Controller
 
     public function login(Request $r)
     { 
-        die("romina");
         if ($r->username == null) {
             return $this->error('Username is required.');
         }
