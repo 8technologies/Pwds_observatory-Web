@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Job;
 use App\Models\Person;
 use App\Models\Utils;
 use App\Traits\ApiResponser;
@@ -25,9 +26,27 @@ class ApiResurceController extends Controller
         }
 
         return $this->success(
-            Person::where(['administrator_id' => $u->id])->get(),
+            Person::where(['administrator_id' => $u->id])
+                ->limit(100)
+                ->orderBy('id', 'desc')
+                ->get(),
             $message = "Sussesfully",
             200
+        );
+    }
+    public function jobs(Request $r)
+    {
+        $u = auth('api')->user();
+        if ($u == null) {
+            return $this->error('User not found.');
+        }
+
+        return $this->success(
+            Job::where([])
+                ->orderBy('id', 'desc')
+                ->limit(100)
+                ->get(),
+            $message = "Sussesfully", 
         );
     }
 

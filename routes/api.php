@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::POST("users/login", [ApiAuthController::class, "login"]);
 Route::POST("people", [ApiResurceController::class, "person_create"]);
 Route::get("people", [ApiResurceController::class, "people"]);
+Route::get("jobs", [ApiResurceController::class, "jobs"]);
 Route::get('api/{model}', [ApiResurceController::class, 'index']);
 Route::get('groups', [ApiResurceController::class, 'groups']);
 
