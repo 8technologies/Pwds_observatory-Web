@@ -55,7 +55,7 @@ class ApiAuthController extends Controller
             return $this->error('Username is required.');
         }
 
-        if ($r->password == null) {
+    if ($r->password == null) {
             return $this->error('Password is required.');
         }
 

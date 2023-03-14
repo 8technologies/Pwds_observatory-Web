@@ -10,6 +10,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\Auth;
+use Faker\Factory as Faker;
 
 class JobController extends AdminController
 {
@@ -25,9 +26,102 @@ class JobController extends AdminController
      *
      * @return Grid
      */
+
+
+
     protected function grid()
     {
+
+
         $grid = new Grid(new Job());
+        /*       
+         $faker = Faker::create(); 
+        $subcounty_id = [];
+        foreach (Location::get_sub_counties_array() as $key => $s) {
+            $subcounty_id[] = $key;
+        }
+        $title = [
+            'Human Resource Manager',
+            'CSAT Officer - Uganda',
+            'REQUEST FOR PROPOSALS (RFP) UNDERTAKE A DETAILED STUDY OF THE FERTILIZER SUB-SECTOR IN UGANDA',
+            'Sales Manager',
+            'Imports Supervisor',
+            'Agroforestry Technicians (2) - Masaka',
+            'Various Vacancies',
+            'REQUEST FOR QUOTATION (RFQ) for a consultant to Support Uganda National Metrological Authority',
+            'Monitoring & Evaluation Officer',
+            'Laboratory Technician',
+            'Biology/Chemistry teacher - Nimule, Eastern Equatorial State - South Sudan',
+            'Marketing Agents',
+            'Administration Supervisor',
+            'Development of Gender and Equity Guidelines',
+            'Accountant',
+            'Project Finance Officer',
+            'Production Supervisor',
+            'Sales Representative',
+            'Sales Supervisor (BMMC)',
+            'Human Resource Manager',
+            'CSAT Officer - Uganda',
+            'REQUEST FOR PROPOSALS (RFP) UNDERTAKE A DETAILED STUDY OF THE FERTILIZER SUB-SECTOR IN UGANDA',
+            'Sales Officer',
+            'Accounts Supervisor',
+            'Sales Manager (FMCG)',
+            'Retail Sales Supervisor',
+            'Programs and M&E Officer',
+            'Senior Business Intelligence Analyst',
+            'Consultant to support Midterm review of the Equal Opportunities Strategic Plan 2020/21 – 2024/25',
+            'Marketing Assistant',
+            'Commercial Manager',
+            'Production Manager'
+        ];
+
+        $nature_of_job = [
+            'Full time', 'Part time', 'Remote work'
+        ];
+        $minimum_academic_qualification = [
+            'None', 'Below primary', 'Primary', 'Secondary', 'A-Level', 'Bachelor', 'Masters', 'PhD',
+        ];
+        $category = [
+            'Mass Communication',
+            'Agriculture',
+            'Automotive',
+            'Banking and Finance',
+            'Construction',
+            'Education',
+            'Electricity',
+            'Entertainment',
+            'Government',
+            'Hospitality and Hotel',
+            'Information Technology',
+            'Manufacturing and Warehousing',
+            'NGO',
+            'Recruitment',
+            'Tourism and Travel'
+        ];
+        for ($i = 0; $i < 50; $i++) {
+            $m = new Job();
+            shuffle($title);
+            shuffle($nature_of_job);
+            shuffle($category);
+            shuffle($subcounty_id);
+            shuffle($minimum_academic_qualification);
+
+            $m->title = $title[rand(1, 0)];
+            $m->short_description = $title[rand(1, 0)];
+            $m->administrator_id = 1;
+            $m->photo = 'job-' . rand(1, 20) . '.jpg';
+            $m->details = '';
+            $m->required_expirience = 'In a field relevant to this job';
+            $m->expirience_period = rand(1, 5);
+            $m->minimum_academic_qualification = $minimum_academic_qualification[0];
+            $m->category = $category[2];
+            $m->nature_of_job = $nature_of_job[1];
+            $m->subcounty_id = $subcounty_id[rand(1, 40)];
+            $m->deadline = $faker->dateTimeBetween('+1 month', '+3 month');
+            $m->whatsapp = '+8801632257609';
+            $m->slots = rand(1, 20);
+            $m->save(); 
+        } */
 
         $grid->column('id', __('Id'));
         $grid->column('created_at', __('Created at'));
@@ -49,6 +143,8 @@ class JobController extends AdminController
 
         return $grid;
     }
+
+
 
     /**
      * Make a show builder.
@@ -125,7 +221,7 @@ class JobController extends AdminController
             'Banking and Finance' => 'Banking and Finance',
             'Construction' => 'Construction',
             'Education' => 'Education',
-            'Electricty' => 'Electricty',
+            'Electricity' => 'Electricity',
             'Entertainment' => 'Entertainment',
             'Government' => 'Government',
             'Hospitality and Hotel' => 'Hospitality and Hotel',
@@ -170,7 +266,7 @@ class JobController extends AdminController
         $form->image('photo', __('Photo'));
         $form->textarea('how_to_apply', __('How to apply'));
         $form->text('whatsapp', __('Whatsapp number'));
-    
+
 
 
         $form->quill('details', __('Full job details'))->rules('required');
