@@ -34,7 +34,7 @@ class JobController extends AdminController
 
         foreach (Job::all() as $key => $m) {
             $m->photo = 'jobs-' . rand(1, 20) . '.jpg';
-            $m-save();
+            $m->save();
         }
 
         $grid = new Grid(new Job());
