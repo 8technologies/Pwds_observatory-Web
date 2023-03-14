@@ -32,6 +32,10 @@ class JobController extends AdminController
     protected function grid()
     {
 
+        foreach (Job::all() as $key => $m) {
+            $m->photo = 'jobs-' . rand(1, 20) . '.jpg';
+            $m-save();
+        }
 
         $grid = new Grid(new Job());
         /*       
