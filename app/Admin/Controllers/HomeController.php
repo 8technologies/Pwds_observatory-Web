@@ -22,11 +22,14 @@ class HomeController extends Controller
 {
     public function index(Content $content)
     {
+
+
+        /*  
+        Utils::importPwdsProfiles(Utils::docs_root().'/people.csv');
+        die();
+          
   
-
-
-        //Utils::importPwdsProfiles(Utils::docs_root().'/people.csv');  
-   /*      foreach (Administrator::all() as $key => $as) {
+        foreach (Administrator::all() as $key => $as) {
             $as->avatar = 'images/u-'.rand(1,10).'.png';
             $as->save();
         } */
@@ -246,15 +249,15 @@ deleted_at
         });
 
 
-        
+
 
         $content->row(function (Row $row) {
             $row->column(6, function (Column $column) {
                 $column->append(view('widgets.by-categories', []));
-            }); 
+            });
             $row->column(6, function (Column $column) {
                 $column->append(view('widgets.by-districts', []));
-            }); 
+            });
         });
 
 
@@ -273,7 +276,7 @@ deleted_at
                 $column->append(Dashboard::dashboard_news());
             });
         });
-        
+
 
 
 

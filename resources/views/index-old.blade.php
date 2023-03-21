@@ -77,7 +77,7 @@
         <div class="row justify-content-center mb-md-2 mb-lg-5">
             <div class="col-lg-6 col-md-8">
                 <p class="fs-lg text-lead ">The Islamic University In Uganda Alumni Association (ICT for persons with disabilites) was formally
-                    registered with the Uganda Registration Serveices Bureau (URSB) on August 12th, 2020 Kampala.</p>
+                    registered with the Uganda Registration Services Bureau (URSB) on August 12th, 2020 Kampala.</p>
                 <p class="fs-lg text-lead mt-2">
                     ICT for persons with disabilites seeks to create a platform for discussion and practical solutions that benefit the members and
                     our great University.</p>

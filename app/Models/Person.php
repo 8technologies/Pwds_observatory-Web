@@ -19,7 +19,7 @@ class Person extends Model
         });
         self::creating(function ($m) {
 
-            $m->district_id = 1;
+           /*  $m->district_id = 1;
 
             if ($m->subcounty_id != null) {
                 $sub = Location::find($m->subcounty_id);
@@ -28,7 +28,7 @@ class Person extends Model
                 } else {
                     $m->subcounty_id = 1;
                 }
-            }
+            } */
 
             $m->group_id = 1;
             $sub = Group::find($m->group_id);
@@ -43,8 +43,7 @@ class Person extends Model
 
 
         self::updating(function ($m) {
-
-            $m->district_id = 1;
+           /*  $m->district_id = 1;
             $sub = Location::find($m->subcounty_id);
             if ($sub != null) {
                 $m->district_id = $sub->parent;
@@ -58,7 +57,7 @@ class Person extends Model
                 $m->association_id = $sub->association_id;
             } else {
                 $m->group_id = 1;
-            } 
+            }  */
 
             return $m;
         });

@@ -171,7 +171,7 @@
 
                 <!-- Feature list -->
                 <div class="col-lg-8">
-                    <h2 class="h1 text-center text-md-start mb-4">Serveices and Benefits</h2>
+                    <h2 class="h1 text-center text-md-start mb-4">Services and Benefits</h2>
                     <p class="fs-lg text-muted text-center text-md-start mb-4 mb-xl-5">
                         ICT for Persons With Disabilities - Digital observatory is a system built a variety of solutions to
                         simply day-to-day life of a person with disability or people who give care to persons with
@@ -382,7 +382,7 @@
 
 
             <div class="col-md-6  text-center text-md-start mb-5 mb-md-0">
-                <h2 class="h1 pb-2 pb-lg-3">Registerd Persons With Disabilities - in past 12 Months</h2>
+                <h2 class="h1 pb-2 pb-lg-3">Registered Persons With Disabilities - in past 12 Months</h2>
                 <p class="pb-2 mb-4 mb-lg-5">Uganda Communications Commission (UCC), through The Uganda Communications
                     Universal Service and Access Fund (UCUSAF), which is a Universal Service Fund (USF) for
                     communications
@@ -446,7 +446,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Registerd Persons With disabilities in Uganda  - By Disability categories'
+                        text: 'Registered Persons With disabilities in Uganda  - By Disability categories'
                     }
                 }
             },
@@ -515,7 +515,7 @@
                     'December',
                 ],
                 datasets: [{
-                    label: 'Registerd per month',
+                    label: 'Registered per month',
                     data: [309, 53, 108, 461, 520, 127, 132, 55, 181, 301, 121, 654],
                     backgroundColor: [
                         '#23A2E9',
@@ -541,7 +541,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Registerd Persons With Disabilities - in past 12 Months'
+                        text: 'Registered Persons With Disabilities - in past 12 Months'
                     }
                 }
             },

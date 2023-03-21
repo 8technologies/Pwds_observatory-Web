@@ -26,8 +26,7 @@ address
 parish	
 village	
 phone_number	
-email	
-district_id	
+email		
 subcounty_id	
 	
 phone_number_2	
@@ -60,6 +59,7 @@ administrator_id
         $csv->setFlags(SplFileObject::READ_CSV);
         //$csv->setCsvControl(';');  //separator change if you need
         set_time_limit(-1); // Time in seconds
+        $disability_description = [];
         $cats = [];
         $isFirst  = true;
         foreach ($csv as $line) {
@@ -68,10 +68,22 @@ administrator_id
                 continue;
             }
 
-            if((Person::count('id') >= 3963)){
-                die("done"); 
+            $name = $line[0];
+            $user = Person::where(['name' => $name])->first();
+            if($user ==null){
+                continue;
             }
-            
+            $user->district_id = 88;
+            $user->parish .= 1; 
+            $user->save();
+            continue;
+
+
+
+            /* if ((Person::count('id') >= 3963)) {
+                die("done");
+            } */
+
             $p = new Person();
             $p->name = 'N/A';
 
@@ -90,9 +102,9 @@ administrator_id
                     '%' . $dis . '%'
                 )->first();
                 if ($_dis != null) {
-                    $p->disability_id = $_dis->id;
+                    $p->district_id = $_dis->id;
                 } else {
-                    $p->disability_id = 1002006;
+                    $p->district_id = 1002006;
                 }
             }
 
@@ -202,15 +214,25 @@ administrator_id
                     $p->disability_description = $line[3];
                 } elseif (in_array($cat, [
                     'deaf',
+                    'epileosy/hard of speach',
                     'hard of hearing',
                     'hearing impairment',
+                    'deaf blindness',
+                    'hearing impairment',
+                    'deaf-blind',
+                    'youth rep (deaf )',
+                    'deaf rep',
+                    'deaf rep.',
+                    'deaf',
+                    'deafblind',
                 ])) {
                     $p->disability_id = 3;
                     $p->disability_description = $line[3];
                 } elseif (in_array($cat, [
-                    'mental',
                     'visual disabilty',
-                    'mental retardation',
+                    "low vision",
+                    "visual",
+                    "visual impairment",
                 ])) {
                     $p->disability_id = 4;
                     $p->disability_description = $line[3];
@@ -218,15 +240,31 @@ administrator_id
                     'intellectual disability',
                     'mental disabilty',
                     'mental disability',
+                    'intellectual',
+                    'interlectual',
+                    'parent with interlectual',
+                    'interlectual rep.',
                     'cerebral pulse',
+                    'mental',
+                    'mental retardation',
+                    'mental health',
+                    'mental illness',
                 ])) {
 
                     $p->disability_id = 5;
                     $p->disability_description = $line[3];
                 } elseif (in_array($cat, [
                     'epileptic',
+                    'parent with children with intellectual disability',
                     'brain injury',
                     'spine damage',
+                    'epilipsy',
+                    'person with epilepsy',
+                    'epilepsy',
+                    'hydrosphlus',
+                    'epilpesy',
+                    'celebral palsy',
+                    'women rep .celebral palsy',
                 ])) {
 
                     $p->disability_id = 6;
@@ -245,14 +283,28 @@ administrator_id
                     'male',
                     'amputee',
                     'sickler',
-                    '#null!',
+                    'physical',
+                    'physical impairment',
+                    'parent rep',
+                    'women rep.',
+                    'youth rep',
+                    'parent rep.',
+                    'parent  rep.',
+                    'parent',
+                    'youth rep,',
+                    'women rep',
+                    'youth rep.',
                 ])) {
                     $p->disability_id = 7;
                     $p->disability_description = $line[3];
                 } elseif (in_array($cat, [
                     'albino',
                     'albinism',
+                    'person with albinism',
                     'albism',
+                    'albino',
+                    'albinsim',
+                    'albinism',
                 ])) {
                     $p->disability_id = 8;
                     $p->disability_description = $line[3];
@@ -261,14 +313,15 @@ administrator_id
                     'littleperson',
                     'liitleperson',
                     'liittleperson',
+                    'little person',
                     'dwarfism',
                     'persons of short stature (little persons)',
                 ])) {
                     $p->disability_id = 9;
                     $p->disability_description = $line[3];
                 } else {
-                    $p->disability_id = 1;
-                    $p->disability_description = "N/A";
+                    $p->disability_id = 7;
+                    $p->disability_description = $line[3];
                 }
             } else {
                 $p->disability_id = 6;
@@ -284,14 +337,22 @@ administrator_id
                 $p->phone_number = Utils::prepare_phone_number($line[2]);
             }
 
+            $_p = Person::where(['name' => $p->name, 'district_id' => $p->district_id])->first();
+            if ($_p != null) {
+                echo "FOUND => $_p->name<=========<hr>";
+                continue;
+            }
+
             try {
                 $p->save();
+                echo $p->id . ". " . $p->name . "<hr>";
             } catch (\Throwable $th) {
-                echo $th; 
+                echo $th;
                 echo "failed <br>";
             }
         }
 
+        dd($disability_description);
         echo "done! with $p->id <pre>";
         die('');
 
