@@ -40,6 +40,16 @@ class CounsellingCentre extends Model
 
             return $m;
         });
-    } 
-     
+    }
+
+
+    public function getSubcountyTextAttribute()
+    {
+        $d = Location::find($this->subcounty_id);
+        if ($d == null) {
+            return 'Not group.';
+        }
+        return $d->name_text;
+    }
+    protected $appends = ['subcounty_text'];
 }

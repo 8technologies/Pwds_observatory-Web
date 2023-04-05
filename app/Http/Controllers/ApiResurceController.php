@@ -2,9 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Association;
+use App\Models\CounsellingCentre;
+use App\Models\Event;
 use App\Models\Group;
+use App\Models\Institution;
 use App\Models\Job;
+use App\Models\NewsPost;
 use App\Models\Person;
+use App\Models\Product;
+use App\Models\ServiceProvider;
 use App\Models\Utils;
 use App\Traits\ApiResponser;
 use Carbon\Carbon;
@@ -46,7 +53,7 @@ class ApiResurceController extends Controller
                 ->orderBy('id', 'desc')
                 ->limit(100)
                 ->get(),
-            $message = "Sussesfully", 
+            $message = "Sussesfully",
         );
     }
 
@@ -110,6 +117,39 @@ class ApiResurceController extends Controller
     {
         return $this->success(Group::get_groups(), 'Success');
     }
+
+
+    public function associations()
+    {
+        return $this->success(Association::where([])->orderby('id', 'desc')->get(), 'Success');
+    }
+
+    public function institutions()
+    {
+        return $this->success(Institution::where([])->orderby('id', 'desc')->get(), 'Success');
+    }
+    public function service_providers()
+    {
+        return $this->success(ServiceProvider::where([])->orderby('id', 'desc')->get(), 'Success');
+    }
+    public function counselling_centres()
+    {
+        return $this->success(CounsellingCentre::where([])->orderby('id', 'desc')->get(), 'Success');
+    }
+    public function products()
+    {
+        return $this->success(Product::where([])->orderby('id', 'desc')->get(), 'Success');
+    }
+    public function events()
+    {
+        return $this->success(Event::where([])->orderby('id', 'desc')->get(), 'Success');
+    }
+    public function news_posts()
+    {
+        return $this->success(NewsPost::where([])->orderby('id', 'desc')->get(), 'Success');
+    }
+
+
     public function index(Request $r, $model)
     {
 

@@ -18,4 +18,14 @@ class NewsPost extends Model
     {
         return $this->belongsTo(Administrator::class, 'administrator_id');
     }
+
+    public function getPostCategoryTextAttribute()
+    {
+        $d = PostCategory::find($this->post_category_id);
+        if ($d == null) {
+            return 'Not Subcounty.';
+        }
+        return $d->name;
+    }
+    protected $appends = ['post_category_text'];
 }

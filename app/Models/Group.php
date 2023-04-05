@@ -28,7 +28,7 @@ class Group extends Model
     {
         $sql = "SELECT groups.id as id, associations.name as name, groups.name as group_name FROM  `groups`, `associations` WHERE  associations.id = groups.association_id ORDER BY associations.name ASC";
         return DB::select($sql);
-    }
+    } 
  
     public static function get_districts()
     {

@@ -23,6 +23,13 @@ Route::get("people", [ApiResurceController::class, "people"]);
 Route::get("jobs", [ApiResurceController::class, "jobs"]);
 Route::get('api/{model}', [ApiResurceController::class, 'index']);
 Route::get('groups', [ApiResurceController::class, 'groups']);
+Route::get('associations', [ApiResurceController::class, 'associations']);
+Route::get('institutions', [ApiResurceController::class, 'institutions']);
+Route::get('service-providers', [ApiResurceController::class, 'service_providers']);
+Route::get('counselling-centres', [ApiResurceController::class, 'counselling_centres']);
+Route::get('products', [ApiResurceController::class, 'products']);
+Route::get('events', [ApiResurceController::class, 'events']);
+Route::get('news-posts', [ApiResurceController::class, 'news_posts']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
