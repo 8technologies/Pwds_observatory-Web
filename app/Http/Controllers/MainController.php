@@ -21,7 +21,7 @@ class MainController extends BaseController
     public function index()
     {
 
-    /*     die("<h1>Something really cool is coming soon! 🥰</h1>"); */
+        /*     die("<h1>Something really cool is coming soon! 🥰</h1>"); */
         $members = Administrator::where([])->orderBy('updated_at', 'desc')->limit(8)->get();
         $profiles = [];
         $_profiles = [];
@@ -117,47 +117,199 @@ class MainController extends BaseController
         ]);
     }
 
-
-    function generate_variables()
+    function generate_class()
     {
-        $data = '
-id
-created_at
-association_id
-administrator_id
-administrator_text
-association_text
-group_id
-group_text
-name
-address
-parish
-village
-phone_number
-email
-district_id
-district_text
-subcounty_id
-subcounty_text
-disability_id
-disability_text
-phone_number_2
-dob
-sex
-education_level
-employment_status
-has_caregiver
-caregiver_name
-caregiver_sex
-caregiver_phone_number
-caregiver_age
-caregiver_relationship
-photo
-deleted_at
-status
-        ';
 
-        $recs = preg_split('/\r\n|\n\r|\r|\n/', $data);
+        $data = 'id, created_at, updated_at, administrator_id, title, short_description, details, nature_of_job, minimum_academic_qualification, required_expirience, expirience_period, category, photo, how_to_apply, whatsapp, subcounty_id, district_id, deadline, slots, subcounty_text';
+
+        $modelName = 'Job';
+        $endPoint = 'jobs';
+        $tableName = 'jobs';
+        //$array = preg_split('/\r\n|\n\r|\r|\n/', $data);
+        $array = explode(',', $data);
+        $generate_vars = MainController::generate_vars($array);
+        $fromJson = MainController::fromJson($array);
+        $from_json = MainController::from_json($array);
+        $toJson = MainController::to_json($array);
+        $create_table = MainController::create_table($array, $modelName);
+        return <<<EOT
+<pre>
+import 'package:nudipu/utils/Utils.dart';
+import 'package:sqflite/sqflite.dart';
+
+import 'RespondModel.dart';
+
+class $modelName {
+  static String endPoint = "$endPoint";
+  static String tableName = "$tableName";
+
+  $generate_vars
+
+  static fromJson(dynamic m) {
+    $modelName obj = new $modelName();
+    if (m == null) {
+      return obj;
+    }
+    
+  $fromJson
+  return obj;
+}
+
+  
+
+
+  static Future&lt;List&lt;$modelName&gt;&gt; getLocalData({String where: "1"}) async {
+    List&lt;$modelName&gt; data = [];
+    if (!(await $modelName.initTable())) {
+      Utils.toast("Failed to init dynamic store.");
+      return data;
+    }
+
+    Database db = await Utils.dbInit();
+    if (!db.isOpen) {
+      return data;
+    }
+
+    List&lt;Map&gt; maps = await db.query($modelName.tableName, where: where);
+
+    if (maps.isEmpty) {
+      return data;
+    }
+    List.generate(maps.length, (i) {
+      data.add($modelName.fromJson(maps[i]));
+    });
+
+    return data;
+  }
+
+
+  static Future&lt;List&lt;$modelName&gt;&gt; getItems({String where = '1'}) async {
+    List&lt;$modelName&gt; data = await getLocalData(where: where);
+    if (data.isEmpty) {
+      await $modelName.getOnlineItems();
+      data = await getLocalData(where: where);
+    } else {
+      data = await getLocalData(where: where);
+      $modelName.getOnlineItems();
+    }
+    data.sort((a, b) => b.id.compareTo(a.id));
+    return data;
+  }
+
+  static Future&lt;List&lt;$modelName&gt;&gt; getOnlineItems() async {
+    List&lt;$modelName&gt; data = [];
+
+    RespondModel resp =
+        RespondModel(await Utils.http_get($modelName.endPoint, {}));
+
+    if (resp.code != 1) {
+      return [];
+    }
+
+    Database db = await Utils.dbInit();
+    if (!db.isOpen) {
+      Utils.toast("Failed to init local store.");
+      return [];
+    }
+
+    if (resp.data.runtimeType.toString().contains('List')) {
+      if (await Utils.is_connected()) {
+        await $modelName.deleteAll();
+      }
+
+      await db.transaction((txn) async {
+        var batch = txn.batch();
+
+        for (var x in resp.data) {
+          $modelName sub = $modelName.fromJson(x);
+          try {
+            batch.insert(tableName, sub.toJson(),
+                conflictAlgorithm: ConflictAlgorithm.replace);
+          } catch (e) {}
+        }
+
+        try {
+          await batch.commit(continueOnError: true);
+        } catch (e) {}
+      });
+    }
+
+    return [];
+
+    return data;
+  }
+
+  save() async {
+    Database db = await Utils.dbInit();
+    if (!db.isOpen) {
+      Utils.toast("Failed to init local store.");
+      return;
+    }
+
+    await initTable();
+
+    try {
+      await db.insert(
+        tableName,
+        toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    } catch (e) {
+      Utils.toast("Failed to save student because \${e.toString()}");
+    }
+  }
+
+  toJson() {
+    return {
+     $toJson
+    };
+  }
+
+  static Future&lt;bool&gt; initTable() async {
+    Database db = await Utils.dbInit();
+    if (!db.isOpen) {
+      return false;
+    }
+
+    String sql = "$create_table";
+
+    try {
+      //await db.delete(tableName);
+
+      await db.execute(sql);
+    } catch (e) {
+      Utils.log('Failed to create table because \${e.toString()}');
+
+      return false;
+    }
+
+    return true;
+  }
+
+  static deleteAll() async {
+    if (!(await $modelName.initTable())) {
+      return;
+    }
+    Database db = await Utils.dbInit();
+    if (!db.isOpen) {
+      return false;
+    }
+    await db.delete(tableName);
+  }
+}
+</pre>
+EOT;
+
+        return view('generate-class', [
+            'modelName' => $modelName,
+            'endPoint' => $endPoint,
+            'fromJson' => MainController::fromJson($vars),
+        ]);
+    }
+
+    function generate_variables($data)
+    {
+
         MainController::createNew($recs);
         MainController::from_json($recs);
         MainController::fromJson($recs);
@@ -178,8 +330,7 @@ status
             $_data .= "\$obj->{$key} =  \$r->{$key};<br>";
         }
 
-        print_r($_data);
-        die("");
+        return $_data;
     }
 
 
@@ -190,44 +341,49 @@ status
 
         foreach ($recs as $v) {
             $key = trim($v);
-
+            if (strlen($key) < 1) {
+                continue;
+            }
             if ($key == 'id') {
                 $_data .= "obj.{$key} = Utils.int_parse(m['{$key}']);<br>";
             } else {
                 $_data .= "obj.{$key} = Utils.to_str(m['{$key}'],'');<br>";
             }
         }
-
-        print_r($_data);
-        die("");
+        return $_data;
     }
 
 
 
-    function create_table($recs, $table_name)
+    function create_table($recs, $modelName)
     {
 
-        $_data = "CREATE TABLE  IF NOT EXISTS  $table_name (  ";
+        $__t = '${' . $modelName . '.tableName}';
+        $_data = "CREATE TABLE  IF NOT EXISTS  $__t (  " . '"';
         $i = 0;
         $len = count($recs);
         foreach ($recs as $v) {
             $key = trim($v);
+            $i++;
+            if (strlen($key) < 1) {
+                continue;
+            }
 
+            $_data .= '<br>"';
             if ($key == 'id') {
                 $_data .= 'id INTEGER PRIMARY KEY';
             } else {
-                $_data .= " $key TEXT";
+                '"' . $_data .= " $key TEXT";
             }
 
-            $i++;
-            if ($i != $len) {
-                $_data .= ',';
+
+            if ($i  != $len) {
+                $_data .= ',"';
             }
         }
 
         $_data .= ')';
-        print_r($_data);
-        die("");
+        return $_data;
     }
 
 
@@ -236,6 +392,7 @@ status
 
         $_data = "";
         foreach ($recs as $v) {
+
             $key = trim($v);
             if (strlen($key) < 2) {
                 continue;
@@ -243,9 +400,7 @@ status
             $_data .= "$key : $key,<br>";
         }
 
-        echo "<pre>";
-        print_r($_data);
-        die("");
+        return $_data;
     }
 
 
@@ -260,9 +415,7 @@ status
             $_data .= "'$key' : $key,<br>";
         }
 
-        echo "<pre>";
-        print_r($_data);
-        die("");
+        return $_data;
     }
 
     function generate_vars($recs)
@@ -271,14 +424,17 @@ status
         $_data = "";
         foreach ($recs as $v) {
             $key = trim($v);
-            if (strlen($key) < 2) {
+            if (strlen($key) < 1) {
                 continue;
             }
-            $_data .= "String $key = \"\";<br>";
+
+            if ($key == 'id') {
+                $_data .= "int $key = 0;<br>";
+            } else {
+                $_data .= "String $key = \"\";<br>";
+            }
         }
 
-        echo "<pre>";
-        print_r($_data);
-        die("");
+        return $_data;
     }
 }
