@@ -15,124 +15,124 @@ use Illuminate\Routing\Controller as BaseController;
 
 class MainController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+  use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
-    public function index()
-    {
+  public function index()
+  {
 
-        /*     die("<h1>Something really cool is coming soon! 🥰</h1>"); */
-        $members = Administrator::where([])->orderBy('updated_at', 'desc')->limit(8)->get();
-        $profiles = [];
-        $_profiles = [];
-        foreach (Administrator::where([])->orderBy('updated_at', 'desc')->limit(15)->get() as $key => $v) {
-            $profiles[] = $v;
-        }
-
-        foreach ($profiles as $key => $pro) {
-            if ($pro->intro == null || strlen($pro->intro) < 3) {
-                $pro->intro = "Hi there, I'm $pro->name . I call upon you to join the team!";
-            }
-            $_profiles[] = $pro;
-        }
-
-        $posts = [];
-        foreach (NewsPost::all() as $key => $v) {
-            $posts[] = $v;
-        }
-        shuffle($posts);
-        $_posts = [];
-        $i = 0;
-        foreach ($posts as $key => $v) {
-            $_posts[] = $v;
-            $i++;
-            if ($i > 2) {
-                break;
-            }
-        }
-
-        return view('index', [
-            'members' => $members,
-            'profiles' => $_profiles,
-            'posts' => $_posts,
-        ]);
-    }
-    public function about_us()
-    {
-        return view('about-us');
-    }
-    public function our_team()
-    {
-        return view('our-team');
-    }
-    public function news_category()
-    {
-        return view('news-category');
+    /*     die("<h1>Something really cool is coming soon! 🥰</h1>"); */
+    $members = Administrator::where([])->orderBy('updated_at', 'desc')->limit(8)->get();
+    $profiles = [];
+    $_profiles = [];
+    foreach (Administrator::where([])->orderBy('updated_at', 'desc')->limit(15)->get() as $key => $v) {
+      $profiles[] = $v;
     }
 
-    public function dinner()
-    {
-        $p = Event::find(1);
-        if ($p == null) {
-            die("Post not found.");
-        }
-        return view('dinner', [
-            'd' => $p
-        ]);
+    foreach ($profiles as $key => $pro) {
+      if ($pro->intro == null || strlen($pro->intro) < 3) {
+        $pro->intro = "Hi there, I'm $pro->name . I call upon you to join the team!";
+      }
+      $_profiles[] = $pro;
     }
 
-    public function news(Request $r)
-    {
-        $p = NewsPost::find($r->id);
-        if ($p == null) {
-            die("Post not found.");
-        }
-
-        $posts = [];
-        foreach (NewsPost::all() as $key => $v) {
-            $posts[] = $v;
-        }
-        shuffle($posts);
-        $_posts = [];
-        $i = 0;
-        foreach ($posts as $key => $v) {
-            $_posts[] = $v;
-            $i++;
-            if ($i > 2) {
-                break;
-            }
-        }
-
-        return view('news-post', [
-            'p' => $p,
-            'post' => $p,
-            'posts' => $_posts,
-        ]);
+    $posts = [];
+    foreach (NewsPost::all() as $key => $v) {
+      $posts[] = $v;
     }
-    public function members()
-    {
-        $members = Administrator::where([])->orderBy('id', 'desc')->limit(12)->get();
-        return view('members', [
-            'members' => $members
-        ]);
+    shuffle($posts);
+    $_posts = [];
+    $i = 0;
+    foreach ($posts as $key => $v) {
+      $_posts[] = $v;
+      $i++;
+      if ($i > 2) {
+        break;
+      }
     }
 
-    function generate_class()
-    {
+    return view('index', [
+      'members' => $members,
+      'profiles' => $_profiles,
+      'posts' => $_posts,
+    ]);
+  }
+  public function about_us()
+  {
+    return view('about-us');
+  }
+  public function our_team()
+  {
+    return view('our-team');
+  }
+  public function news_category()
+  {
+    return view('news-category');
+  }
 
-        $data = 'id, created_at, updated_at, administrator_id, title, short_description, details, nature_of_job, minimum_academic_qualification, required_expirience, expirience_period, category, photo, how_to_apply, whatsapp, subcounty_id, district_id, deadline, slots, subcounty_text';
+  public function dinner()
+  {
+    $p = Event::find(1);
+    if ($p == null) {
+      die("Post not found.");
+    }
+    return view('dinner', [
+      'd' => $p
+    ]);
+  }
 
-        $modelName = 'Job';
-        $endPoint = 'jobs';
-        $tableName = 'jobs';
-        //$array = preg_split('/\r\n|\n\r|\r|\n/', $data);
-        $array = explode(',', $data);
-        $generate_vars = MainController::generate_vars($array);
-        $fromJson = MainController::fromJson($array);
-        $from_json = MainController::from_json($array);
-        $toJson = MainController::to_json($array);
-        $create_table = MainController::create_table($array, $modelName);
-        return <<<EOT
+  public function news(Request $r)
+  {
+    $p = NewsPost::find($r->id);
+    if ($p == null) {
+      die("Post not found.");
+    }
+
+    $posts = [];
+    foreach (NewsPost::all() as $key => $v) {
+      $posts[] = $v;
+    }
+    shuffle($posts);
+    $_posts = [];
+    $i = 0;
+    foreach ($posts as $key => $v) {
+      $_posts[] = $v;
+      $i++;
+      if ($i > 2) {
+        break;
+      }
+    }
+
+    return view('news-post', [
+      'p' => $p,
+      'post' => $p,
+      'posts' => $_posts,
+    ]);
+  }
+  public function members()
+  {
+    $members = Administrator::where([])->orderBy('id', 'desc')->limit(12)->get();
+    return view('members', [
+      'members' => $members
+    ]);
+  }
+
+  function generate_class()
+  {
+
+    $data = 'id, created_at, updated_at, title, theme, photo, details, prev_event_title, number_of_attendants, number_of_speakers, number_of_experts, venue_name, venue_photo, venue_map_photo, event_date, address, gps_latitude, gps_longitude, video';
+
+    $modelName = 'EventModel';
+    $endPoint = 'events';
+    $tableName = 'events';
+    //$array = preg_split('/\r\n|\n\r|\r|\n/', $data);
+    $array = explode(',', $data);
+    $generate_vars = MainController::generate_vars($array);
+    $fromJson = MainController::fromJson($array);
+    $from_json = MainController::from_json($array);
+    $toJson = MainController::to_json($array);
+    $create_table = MainController::create_table($array, $modelName);
+    return <<<EOT
 <pre>
 import 'package:nudipu/utils/Utils.dart';
 import 'package:sqflite/sqflite.dart';
@@ -300,141 +300,141 @@ class $modelName {
 </pre>
 EOT;
 
-        return view('generate-class', [
-            'modelName' => $modelName,
-            'endPoint' => $endPoint,
-            'fromJson' => MainController::fromJson($vars),
-        ]);
+    return view('generate-class', [
+      'modelName' => $modelName,
+      'endPoint' => $endPoint,
+      'fromJson' => MainController::fromJson($vars),
+    ]);
+  }
+
+  function generate_variables($data)
+  {
+
+    MainController::createNew($recs);
+    MainController::from_json($recs);
+    MainController::fromJson($recs);
+    MainController::generate_vars($recs);
+    MainController::create_table($recs, 'people');
+    //MainController::to_json($recs);
+  }
+
+
+  function createNew($recs)
+  {
+
+    $_data = "";
+
+    foreach ($recs as $v) {
+      $key = trim($v);
+
+      $_data .= "\$obj->{$key} =  \$r->{$key};<br>";
     }
 
-    function generate_variables($data)
-    {
+    return $_data;
+  }
 
-        MainController::createNew($recs);
-        MainController::from_json($recs);
-        MainController::fromJson($recs);
-        MainController::generate_vars($recs);
-        MainController::create_table($recs, 'people');
-        //MainController::to_json($recs);
+
+  function fromJson($recs)
+  {
+
+    $_data = "";
+
+    foreach ($recs as $v) {
+      $key = trim($v);
+      if (strlen($key) < 1) {
+        continue;
+      }
+      if ($key == 'id') {
+        $_data .= "obj.{$key} = Utils.int_parse(m['{$key}']);<br>";
+      } else {
+        $_data .= "obj.{$key} = Utils.to_str(m['{$key}'],'');<br>";
+      }
+    }
+    return $_data;
+  }
+
+
+
+  function create_table($recs, $modelName)
+  {
+
+    $__t = '${' . $modelName . '.tableName}';
+    $_data = "CREATE TABLE  IF NOT EXISTS  $__t (  " . '"';
+    $i = 0;
+    $len = count($recs);
+    foreach ($recs as $v) {
+      $key = trim($v);
+      $i++;
+      if (strlen($key) < 1) {
+        continue;
+      }
+
+      $_data .= '<br>"';
+      if ($key == 'id') {
+        $_data .= 'id INTEGER PRIMARY KEY';
+      } else {
+        '"' . $_data .= " $key TEXT";
+      }
+
+
+      if ($i  != $len) {
+        $_data .= ',"';
+      }
     }
 
+    $_data .= ')';
+    return $_data;
+  }
 
-    function createNew($recs)
-    {
 
-        $_data = "";
+  function from_json($recs)
+  {
 
-        foreach ($recs as $v) {
-            $key = trim($v);
+    $_data = "";
+    foreach ($recs as $v) {
 
-            $_data .= "\$obj->{$key} =  \$r->{$key};<br>";
-        }
-
-        return $_data;
+      $key = trim($v);
+      if (strlen($key) < 2) {
+        continue;
+      }
+      $_data .= "$key : $key,<br>";
     }
 
+    return $_data;
+  }
 
-    function fromJson($recs)
-    {
 
-        $_data = "";
-
-        foreach ($recs as $v) {
-            $key = trim($v);
-            if (strlen($key) < 1) {
-                continue;
-            }
-            if ($key == 'id') {
-                $_data .= "obj.{$key} = Utils.int_parse(m['{$key}']);<br>";
-            } else {
-                $_data .= "obj.{$key} = Utils.to_str(m['{$key}'],'');<br>";
-            }
-        }
-        return $_data;
+  function to_json($recs)
+  {
+    $_data = "";
+    foreach ($recs as $v) {
+      $key = trim($v);
+      if (strlen($key) < 2) {
+        continue;
+      }
+      $_data .= "'$key' : $key,<br>";
     }
 
+    return $_data;
+  }
 
+  function generate_vars($recs)
+  {
 
-    function create_table($recs, $modelName)
-    {
+    $_data = "";
+    foreach ($recs as $v) {
+      $key = trim($v);
+      if (strlen($key) < 1) {
+        continue;
+      }
 
-        $__t = '${' . $modelName . '.tableName}';
-        $_data = "CREATE TABLE  IF NOT EXISTS  $__t (  " . '"';
-        $i = 0;
-        $len = count($recs);
-        foreach ($recs as $v) {
-            $key = trim($v);
-            $i++;
-            if (strlen($key) < 1) {
-                continue;
-            }
-
-            $_data .= '<br>"';
-            if ($key == 'id') {
-                $_data .= 'id INTEGER PRIMARY KEY';
-            } else {
-                '"' . $_data .= " $key TEXT";
-            }
-
-
-            if ($i  != $len) {
-                $_data .= ',"';
-            }
-        }
-
-        $_data .= ')';
-        return $_data;
+      if ($key == 'id') {
+        $_data .= "int $key = 0;<br>";
+      } else {
+        $_data .= "String $key = \"\";<br>";
+      }
     }
 
-
-    function from_json($recs)
-    {
-
-        $_data = "";
-        foreach ($recs as $v) {
-
-            $key = trim($v);
-            if (strlen($key) < 2) {
-                continue;
-            }
-            $_data .= "$key : $key,<br>";
-        }
-
-        return $_data;
-    }
-
-
-    function to_json($recs)
-    {
-        $_data = "";
-        foreach ($recs as $v) {
-            $key = trim($v);
-            if (strlen($key) < 2) {
-                continue;
-            }
-            $_data .= "'$key' : $key,<br>";
-        }
-
-        return $_data;
-    }
-
-    function generate_vars($recs)
-    {
-
-        $_data = "";
-        foreach ($recs as $v) {
-            $key = trim($v);
-            if (strlen($key) < 1) {
-                continue;
-            }
-
-            if ($key == 'id') {
-                $_data .= "int $key = 0;<br>";
-            } else {
-                $_data .= "String $key = \"\";<br>";
-            }
-        }
-
-        return $_data;
-    }
+    return $_data;
+  }
 }
