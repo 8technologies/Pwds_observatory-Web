@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Models\Association;
 use App\Models\Disability;
 use App\Models\Group;
 use App\Models\Location;
@@ -32,6 +33,72 @@ class PersonController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Person());
+
+
+        $grid->filter(function ($f) {
+            // Remove the default id filter
+            $f->disableIdFilter();
+            $f->between('created_at', 'Filter by registered')->date();
+
+
+            $f->equal('disability_id', 'Filter Type of disability')->select(
+                Disability::where([])->orderBy('name', 'asc')->get()->pluck('name', 'id')
+            );
+
+
+            $district_ajax_url = url(
+                '/api/ajax?'
+                    . "&search_by_1=name"
+                    . "&search_by_2=id"
+                    . "&query_parent=0"
+                    . "&model=Location"
+            );
+            $f->equal('district_id', 'Filter by district')->select(function ($id) {
+                $a = Location::find($id);
+                if ($a) {
+                    return [$a->id => "#" . $a->id . " - " . $a->name];
+                }
+            })
+                ->ajax($district_ajax_url);
+
+
+            $district_ajax_url = url(
+                '/api/ajax?'
+                    . "&search_by_1=name"
+                    . "&model=Association"
+            );
+
+            $f->equal('association_id', 'Filter by association')->select(function ($id) {
+                $a = Association::find($id);
+                if ($a) {
+                    return [$a->id => "#" . $a->id . " - " . $a->name];
+                }
+            })
+                ->ajax($district_ajax_url);
+
+
+            $f->equal('sex', 'Filter by Sex')->select([
+                'Male' => 'Male',
+                'Female' => 'Female',
+            ]);
+
+
+            $f->between('dob', 'Filter by date of birth range')->date();
+
+            $f->equal('employment_status', 'Filter by employment status')->select([
+                'Employed' => 'Employed',
+                'Not Employed' => 'Not Employed',
+            ]);
+
+            $f->equal('has_caregiver', 'Has caregiver')->select([
+                'Yes' => 'Yes',
+                'No' => 'No',
+            ]);
+ 
+   
+        });
+
+
         $grid->quickSearch('name')->placeholder('Search by name');
 
         $grid->model()->orderBy('id', 'desc');
@@ -77,9 +144,9 @@ class PersonController extends AdminController
         $grid->column('village', __('Village'))->hide();
 
 
-        $grid->column('employment_status', __('Is Employed'))->filter([
-            'Yes' => 'Yes',
-            'No' => 'No',
+        $grid->column('employment_status', __('Is Employed'))->dot([
+            'Employed' => 'success',
+            'Not Employed' => 'danger',
         ])->sortable();
 
         $grid->column('has_caregiver', __('Has caregiver'))->hide();
@@ -187,15 +254,22 @@ class PersonController extends AdminController
             ->options(Group::get_groups_array());
 
 
-        $form->text('name', __('Full Name'))->rules('required');
         $form->image('photo', __('Photo'));
+        $form->text('name', __('Full Name'))->rules('required');
 
-        $form->date('dob', __('Date of Birth'))->rules('required');
+        $form->date('dob', __('Date of Birth'));
         $form->radio('sex', __('Sex'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
 
 
+
+        $form->select('disability_id', __('Select disability'))
+            ->rules('required')
+            ->options(Disability::where([])->orderBy('name', 'asc')->get()->pluck('name', 'id'));
+
+
+
         $form->email('email', __('Email address'));
-        $form->text('phone_number', __('Phone number'))->rules('required');
+        $form->text('phone_number', __('Phone number'));
         $form->text('phone_number_2', __('Alternative Phone number'));
 
         $form->select('subcounty_id', __('Subcounty'))
@@ -217,19 +291,18 @@ class PersonController extends AdminController
                 'Bachelor' => 'Bachelor - (Degree)',
                 'Masters' => 'Masters',
                 'PhD' => 'PhD',
-            ])->rules('required');
+            ]);
 
         $form->radio('employment_status', __('Employment status'))->options(['Employed' => 'Employed', 'Not Employed' => 'Not Employed'])->rules('required');
         $form->radio('has_caregiver', __('Has caregiver?'))
             ->options(['Yes' => 'Yes', 'No' => 'No'])
             ->when('Yes', function ($form) {
-                $form->text('caregiver_name', __('Caregiver Name'))->rules('required');
-                $form->radio('caregiver_sex', __('Caregiver Sex'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
+                $form->text('caregiver_name', __('Caregiver Name'));
+                $form->radio('caregiver_sex', __('Caregiver Sex'))->options(['Male' => 'Male', 'Female' => 'Female']);
                 $form->text('caregiver_phone_number', __('Caregiver phone number'));
                 $form->text('caregiver_age', __('Caregiver age'));
                 $form->text('caregiver_relationship', __('Caregiver relationship'));
-            })
-            ->rules('required');
+            });
 
 
 

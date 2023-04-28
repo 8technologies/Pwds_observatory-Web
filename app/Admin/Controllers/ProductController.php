@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Models\Location;
 use App\Models\Product;
+use App\Models\Utils;
 use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -28,21 +29,44 @@ class ProductController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Product());
+        $grid->disableFilter();
+        $grid->disableBatchActions();
+        $grid->quickSearch('name')->placeholder('Search by name');
+        $grid->model()->orderBy('id', 'desc');
 
-        $grid->column('id', __('Id'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
-        $grid->column('administrator_id', __('Administrator id'));
-        $grid->column('name', __('Name'));
-        $grid->column('type', __('Type'));
-        $grid->column('photo', __('Photo'));
-        $grid->column('details', __('Details'));
-        $grid->column('price', __('Price'));
-        $grid->column('offer_type', __('Offer type'));
+        $grid->column('created_at', __('Regisetered'))->display(
+            function ($x) {
+                return Utils::my_date($x);
+            }
+        )->sortable();
+        $grid->column('name', __('Name'))->sortable(); 
+ 
+        $grid->column('type', __('Type'))->sortable();  
+        $grid->column('photo', __('Photo'))->display(function ($avatar) {
+            $img = url("storage/" . $avatar);
+            $link = admin_url('members/' . $this->id);
+            $link = 'javascript:;';
+            return '<a href=' . $link . ' title="View profile"><img class="img-fluid " style="border-radius: 10px;"  src="' . $img . '" ></a>';
+        })
+        ->width(80)
+        ->sortable();  
+        $grid->column('offer_type', __('Offer type')) ->sortable();  
+        $grid->column('price', __('Price')) ->sortable();  
         $grid->column('state', __('State'));
         $grid->column('category', __('Category'));
-        $grid->column('subcounty_id', __('Subcounty id'));
-        $grid->column('district_id', __('District id'));
+  
+
+        $grid->column('subcounty_id', __('Subcounty'))
+            ->display(
+                function ($x) {
+                    $dis = Location::find($x);
+                    if ($dis == null) {
+                        return '-';
+                    }
+                    return $dis->name_text;
+                }
+            )->sortable(); 
+
 
         return $grid;
     }

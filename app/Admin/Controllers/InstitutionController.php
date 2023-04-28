@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Models\Disability;
 use App\Models\Institution;
 use App\Models\Location;
+use App\Models\Utils;
 use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -29,30 +30,53 @@ class InstitutionController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Institution());
+        $grid->disableFilter();
+        $grid->disableBatchActions();
+        $grid->quickSearch('name')->placeholder('Search by name');
+        $grid->model()->orderBy('id', 'desc');
 
-        $grid->column('id', __('Id'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
-        $grid->column('administrator_id', __('Administrator id'));
-        $grid->column('disability_id', __('Disability id'));
-        $grid->column('name', __('Name'));
-        $grid->column('about', __('About'));
+        $grid->column('created_at', __('Regisetered'))->display(
+            function ($x) {
+                return Utils::my_date($x);
+            }
+        )->sortable();
+        $grid->column('name', __('Name'))->sortable();
+
+        $grid->column('skills', __('Skills'));
+        $grid->column('fees_range', __('Fees range'));
+
+        $grid->column('phone_number', __('Phone number'));
+        $grid->column('email', __('Email'));
+
+        $grid->column('district_id', __('District'))
+            ->display(
+                function ($x) {
+                    $dis = Location::find($x);
+                    if ($dis == null) {
+                        return '-';
+                    }
+                    return $dis->name;
+                }
+            )->sortable();
+
+        $grid->column('subcounty_id', __('Subcounty'))
+            ->display(
+                function ($x) {
+                    $dis = Location::find($x);
+                    if ($dis == null) {
+                        return '-';
+                    }
+                    return $dis->name;
+                }
+            )->sortable();
+
         $grid->column('address', __('Address'));
         $grid->column('parish', __('Parish'));
         $grid->column('village', __('Village'));
-        $grid->column('phone_number', __('Phone number'));
-        $grid->column('email', __('Email'));
-        $grid->column('district_id', __('District id'));
-        $grid->column('subcounty_id', __('Subcounty id'));
         $grid->column('website', __('Website'));
-        $grid->column('phone_number_2', __('Phone number 2'));
-        $grid->column('photo', __('Photo'));
         $grid->column('gps_latitude', __('Gps latitude'));
         $grid->column('gps_longitude', __('Gps longitude'));
-        $grid->column('status', __('Status'));
-        $grid->column('skills', __('Skills'));
-        $grid->column('fees_range', __('Fees range'));
-        $grid->column('deleted_at', __('Deleted at'));
+
 
         return $grid;
     }
@@ -132,9 +156,12 @@ class InstitutionController extends AdminController
 
         $form->text('name', __('Institution Name'))->rules('required');
 
-        $form->select('disability_id', __('Select Category of persons with disabilities offered'))
-        ->rules('required') 
-        ->options(Disability::where([])->get()->pluck('name', 'id') );
+
+
+
+        $form->multipleSelect('disabilities', __('Select Categories of persons with disabilities'))
+            ->rules('required')
+            ->options(Disability::where([])->orderBy('name', 'asc')->get()->pluck('name', 'id'));
 
         $form->tags('skills', __('Skills offered'));
         $form->text('fees_range', __('Fees range'));
@@ -158,8 +185,7 @@ class InstitutionController extends AdminController
         $form->text('gps_longitude', __('Institution Gps longitude'));
         $form->image('photo', __('Institution logo'));
         $form->quill('about', __('About The Institution'))->rules('required');
-        $form->disableCreatingCheck();
-        $form->disableEditingCheck();
+
         $form->disableReset();
         $form->disableViewCheck();
 

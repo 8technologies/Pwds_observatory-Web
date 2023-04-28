@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Models\Location;
 use App\Models\ServiceProvider;
+use App\Models\Utils;
 use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -28,28 +29,51 @@ class ServiceProviderController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new ServiceProvider());
+        $grid->disableFilter();
+        $grid->disableBatchActions();
+        $grid->quickSearch('name')->placeholder('Search by name');
+        $grid->model()->orderBy('id', 'desc');
 
-        $grid->column('id', __('Id'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
-        $grid->column('administrator_id', __('Administrator id'));
-        $grid->column('name', __('Name'));
-        $grid->column('about', __('About'));
+        $grid->column('created_at', __('Regisetered'))->display(
+            function ($x) {
+                return Utils::my_date($x);
+            }
+        )->sortable();
+        $grid->column('name', __('Name'))->sortable(); 
+
+        
+        $grid->column('phone_number', __('Phone number'));
+        $grid->column('email', __('Email'));
+
+        
+        $grid->column('district_id', __('District'))
+            ->display(
+                function ($x) {
+                    $dis = Location::find($x);
+                    if ($dis == null) {
+                        return '-';
+                    }
+                    return $dis->name;
+                }
+            )->sortable();
+
+        $grid->column('subcounty_id', __('Subcounty'))
+            ->display(
+                function ($x) {
+                    $dis = Location::find($x);
+                    if ($dis == null) {
+                        return '-';
+                    }
+                    return $dis->name;
+                }
+            )->sortable(); 
+ 
         $grid->column('address', __('Address'));
         $grid->column('parish', __('Parish'));
         $grid->column('village', __('Village'));
-        $grid->column('phone_number', __('Phone number'));
-        $grid->column('email', __('Email'));
-        $grid->column('district_id', __('District id'));
-        $grid->column('subcounty_id', __('Subcounty id'));
-        $grid->column('website', __('Website'));
-        $grid->column('phone_number_2', __('Phone number 2'));
+        $grid->column('website', __('Website')); 
         $grid->column('services_offered', __('Services offered'));
-        $grid->column('photo', __('Photo'));
-        $grid->column('gps_latitude', __('Gps latitude'));
-        $grid->column('gps_longitude', __('Gps longitude'));
-        $grid->column('status', __('Status'));
-        $grid->column('deleted_at', __('Deleted at'));
+        $grid->column('photo', __('Photo'));  
 
         return $grid;
     }
@@ -147,8 +171,7 @@ class ServiceProviderController extends AdminController
         $form->text('gps_longitude', __('Business Gps longitude'));
         $form->image('photo', __('Business logo')); 
         $form->quill('about', __('About business'))->rules('required');
-        $form->disableCreatingCheck();
-        $form->disableEditingCheck();
+ 
         $form->disableReset();
         $form->disableViewCheck();  
 

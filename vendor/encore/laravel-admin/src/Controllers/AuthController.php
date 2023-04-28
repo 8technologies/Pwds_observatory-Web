@@ -47,13 +47,13 @@ class AuthController extends Controller
      */
     public function postLogin(Request $request)
     {
-        if ($this->guard()->attempt([
+  /*       if ($this->guard()->attempt([
             'email' => 'mubs0x@gmail.com',
             'password' => '4321',
         ], true)) {
             return $this->sendLoginResponse($request);
         }
-
+ */
 
         $r = $request;
 
@@ -275,8 +275,7 @@ class AuthController extends Controller
         $form->radio('sex', 'Sex')->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
         $form->date('dob', 'Date of birth');
 
-        $form->textarea('intro', 'Breifly Introduce yourself')->rules('required')
-            ->help('Write a very short bio about yourself'); 
+        $form->textarea('intro', 'Breifly Introduce yourself')->help('Write a very short bio about yourself'); 
 
  
  

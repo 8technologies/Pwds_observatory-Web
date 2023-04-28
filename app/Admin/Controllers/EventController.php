@@ -29,26 +29,30 @@ class EventController extends AdminController
         $grid = new Grid(new Event());
         Utils::checkEventRegustration(); 
 
-        $grid->column('id', __('Id'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
-        $grid->column('title', __('Title'));
-        $grid->column('theme', __('Theme'));
-        $grid->column('photo', __('Photo'));
-        $grid->column('details', __('Details'));
-        $grid->column('prev_event_title', __('Prev event title'));
-        $grid->column('number_of_attendants', __('Number of attendants'));
-        $grid->column('number_of_speakers', __('Number of speakers'));
-        $grid->column('number_of_experts', __('Number of experts'));
-        $grid->column('venue_name', __('Venue name'));
-        $grid->column('venue_photo', __('Venue photo'));
-        $grid->column('venue_map_photo', __('Venue map photo'));
-        $grid->column('event_date', __('Event date'));
+        $grid->disableFilter();
+        $grid->disableBatchActions();
+        $grid->quickSearch('title')->placeholder('Search by Event Title');
+        $grid->model()->orderBy('id', 'desc');
+
+        $grid->column('created_at', __('Regisetered'))->display(
+            function ($x) {
+                return Utils::my_date($x);
+            }
+        )->sortable(); 
+        $grid->column('title', __('Event Title'))->sortable();  
+
+        $grid->column('theme', __('Event Theme')); 
+        $grid->column('details', __('Details'))->hide();
+ 
+        $grid->column('venue_name', __('Venue'));  
+        $grid->column('event_date', __('Event date'))->display(
+            function ($x) {
+                return Utils::my_date($x);
+            }
+        )->sortable();  
         $grid->column('address', __('Address'));
         $grid->column('gps_latitude', __('Gps latitude'));
-        $grid->column('gps_longitude', __('Gps longitude'));
-        $grid->column('video', __('Video'));
-
+        $grid->column('gps_longitude', __('Gps longitude')); 
         return $grid;
     }
 

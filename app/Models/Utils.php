@@ -55,6 +55,7 @@ administrator_id
 
     public static function importPwdsProfiles($path)
     {
+        return;
         $csv = new SplFileObject($path);
         $csv->setFlags(SplFileObject::READ_CSV);
         //$csv->setCsvControl(';');  //separator change if you need
@@ -68,34 +69,84 @@ administrator_id
                 continue;
             }
 
-            $name = $line[0];
-            $user = Person::where(['name' => $name])->first();
-            if($user ==null){
+
+
+
+            $name = null;
+            if (isset($line[2])) {
+                $name = $line[2];
+            }
+
+            if ($name == null) {
                 continue;
             }
-            $user->district_id = 88;
-            $user->parish .= 1; 
-            $user->save();
-            continue;
+
+            if ($name == 'AUMA SANTA') {
+                continue;
+            }
+
+            $local_id = $line[0];
+            $user = Person::where([
+                'name' => $name,
+                'local_id' => $local_id,
+            ])->first();
+            if ($user != null) {
+                continue;
+            }
 
 
 
-            /* if ((Person::count('id') >= 3963)) {
-                die("done");
-            } */
 
             $p = new Person();
-            $p->name = 'N/A';
+            $p->name = $name;
+            $p->group_id = $local_id;
 
 
+            $p->sex = 'N/A';
+            if (
+                isset($line[3]) &&
+                $line[3] != null &&
+                strlen($line[3]) > 0
+            ) {
+                if (strtolower(substr($line[3], 0, 1)) == 'm') {
+                    $p->sex = 'Male';
+                } else {
+                    $p->sex = 'Female';
+                }
+            }
 
             $p->subcounty_description = null;
             if (
-                isset($line[10]) &&
-                $line[10] != null &&
-                strlen($line[10]) > 2
+                isset($line[4]) &&
+                $line[4] != null &&
+                strlen($line[4]) > 1
             ) {
-                $dis = $line[10];
+                $p->dob = $line[4];
+            }
+
+
+            $p->phone_number = null;
+            if (
+                isset($line[6]) &&
+                $line[6] != null &&
+                strlen($line[6]) > 5
+            ) {
+                $p->phone_number = Utils::prepare_phone_number($line[6]);
+            }
+
+
+
+
+            $p->district_id = 88;
+            $p->parish .= 1;
+
+            $p->subcounty_description = null;
+            if (
+                isset($line[7]) &&
+                $line[7] != null &&
+                strlen($line[7]) > 2
+            ) {
+                $dis = $line[7];
                 $_dis = Location::where(
                     'name',
                     'LIKE',
@@ -109,96 +160,101 @@ administrator_id
             }
 
 
-            $p->subcounty_description = null;
+            $p->email = null;
             if (
                 isset($line[8]) &&
                 $line[8] != null &&
-                strlen($line[8]) > 1
+                strlen($line[8]) > 3
             ) {
-                $p->dob = $line[8];
+                $p->disability_description = $line[8];
             }
 
-            $p->subcounty_description = null;
+            $p->email = null;
             if (
-                isset($line[7]) &&
-                $line[7] != null &&
-                strlen($line[7]) > 3
+                isset($line[9]) &&
+                $line[9] != null &&
+                strlen($line[9]) > 3
             ) {
-                $p->caregiver_name = $line[7];
-                $p->has_caregiver = 'Yes';
-            } else {
-                $p->has_caregiver = 'No';
+                $p->address = $line[9];
             }
 
-            $p->subcounty_description = null;
+
             if (
-                isset($line[4]) &&
-                $line[4] != null &&
-                strlen($line[4]) > 3
+                isset($line[11]) &&
+                $line[11] != null &&
+                strlen($line[11]) > 2
             ) {
-                $p->disability_description = $line[4];
+                $p->village = trim($line[11]);
             }
 
-            $p->education_level = null;
             if (
-                isset($line[5]) &&
-                $line[5] != null &&
-                strlen($line[5]) > 1
+                isset($line[13]) &&
+                $line[13] != null &&
+                strlen($line[13]) > 2
             ) {
-                //$p->education_level = $line[5];
+                $p->caregiver_name = trim($line[13]);
+            }
+
+            if (
+                isset($line[14]) &&
+                $line[14] != null &&
+                strlen($line[14]) > 2
+            ) {
+                $p->caregiver_sex = trim($line[14]);
             }
 
             $p->job = null;
             if (
-                isset($line[6]) &&
-                $line[6] != null &&
-                strlen($line[6]) > 1
+                isset($line[12]) &&
+                $line[12] != null &&
+                strlen($line[12]) > 1
             ) {
-                $p->employment_status = 'Yes';
-                $p->job = $line[6];
+                $p->employment_status = 'Employed';
+                $p->job = $line[12];
             } else {
-                $p->employment_status = 'No';
+                $p->employment_status = 'Not Employed';
             }
 
             if (
-                isset($line[0]) &&
-                $line[0] != null &&
-                strlen($line[0]) > 2
+                isset($line[15]) &&
+                $line[15] != null &&
+                strlen($line[15]) > 2
             ) {
-                $p->name = trim($line[0]);
+                $p->caregiver_phone_number = trim($line[15]);
             }
 
-            $p->sex = 'N/A';
             if (
-                isset($line[1]) &&
-                $line[1] != null &&
-                strlen($line[1]) > 0
+                isset($line[16]) &&
+                $line[16] != null &&
+                strlen($line[16]) > 2
             ) {
-                if (strtolower(substr($line[0], 0, 1)) == 'm') {
-                    $p->sex = 'Male';
-                } else {
-                    $p->sex = 'Female';
-                }
+                $p->caregiver_age = trim($line[16]);
             }
 
-            $p->phone_number = null;
             if (
-                isset($line[2]) &&
-                $line[2] != null &&
-                strlen($line[2]) > 5
+                isset($line[17]) &&
+                $line[17] != null &&
+                strlen($line[17]) > 2
             ) {
-                $p->phone_number = Utils::prepare_phone_number($line[2]);
+                $p->caregiver_relationship = trim($line[17]);
+            }
+
+
+            $cat = 'physical';
+            if (isset($line[5])) {
+                $cat = trim(strtolower($line[5]));
             }
 
             if (
-                isset($line[3]) &&
-                $line[3] != null &&
-                strlen($line[3]) > 2
+                isset($line[5]) &&
+                $line[5] != null &&
+                strlen($line[5]) > 2
             ) {
                 $cat =  trim(strtolower($line[3]));
 
                 if (in_array($cat, [
-                    'epilepsy'
+                    'epilepsy',
+                    "epilepsy", "epilepsy",
                 ])) {
                     $p->disability_id = 1;
                     $p->disability_description = $line[3];
@@ -209,6 +265,7 @@ administrator_id
                     'visual disability',
                     'visual impairmrnt',
                     'blind',
+                    "visual",
                 ])) {
                     $p->disability_id = 2;
                     $p->disability_description = $line[3];
@@ -224,7 +281,9 @@ administrator_id
                     'deaf rep',
                     'deaf rep.',
                     'deaf',
+                    'hearing impairment',
                     'deafblind',
+                    "deaf", "hi", "hard of hearing", "hearing disability",
                 ])) {
                     $p->disability_id = 3;
                     $p->disability_description = $line[3];
@@ -232,7 +291,12 @@ administrator_id
                     'visual disabilty',
                     "low vision",
                     "visual",
+                    "spine damage",
                     "visual impairment",
+                    "visual disability", "vi", "deaf-blind", "visaual impairment", "visual impairment",
+                    "parents of children with disabilities",
+                    "youth with disabilities",
+                    "women with disabilities",
                 ])) {
                     $p->disability_id = 4;
                     $p->disability_description = $line[3];
@@ -249,6 +313,16 @@ administrator_id
                     'mental retardation',
                     'mental health',
                     'mental illness',
+                    'parent to cwd',
+                    'epi',
+                    'ep',
+                    "mh", "mental retardation",
+                    'db',
+                    'me',
+                    "parent of children with disabilities",
+                    "parent of cwd",
+                    "little person", "persons of short stature (little persons)", "little persons",
+                    "interllectual disability", "intellectual", "intellectual disability",
                 ])) {
 
                     $p->disability_id = 5;
@@ -263,10 +337,11 @@ administrator_id
                     'epilepsy',
                     'hydrosphlus',
                     'epilpesy',
+                    "lp", "ywd", "wwd", "pcwd",
                     'celebral palsy',
                     'women rep .celebral palsy',
-                ])) {
 
+                ])) {
                     $p->disability_id = 6;
                     $p->disability_description = $line[3];
                 } elseif (in_array($cat, [
@@ -294,6 +369,8 @@ administrator_id
                     'youth rep,',
                     'women rep',
                     'youth rep.',
+                    "ph", "multiple disability", "multiple disabilities",
+                    "phy", "physical impairment", "physical disability", "physical disability", "physical"
                 ])) {
                     $p->disability_id = 7;
                     $p->disability_description = $line[3];
@@ -305,6 +382,7 @@ administrator_id
                     'albino',
                     'albinsim',
                     'albinism',
+                    "albinism", "alb",
                 ])) {
                     $p->disability_id = 8;
                     $p->disability_description = $line[3];
@@ -328,20 +406,6 @@ administrator_id
                 $p->disability_description = 'Other';
             }
 
-            $p->subcounty_description = null;
-            if (
-                isset($line[2]) &&
-                $line[2] != null &&
-                strlen($line[2]) > 5
-            ) {
-                $p->phone_number = Utils::prepare_phone_number($line[2]);
-            }
-
-            $_p = Person::where(['name' => $p->name, 'district_id' => $p->district_id])->first();
-            if ($_p != null) {
-                echo "FOUND => $_p->name<=========<hr>";
-                continue;
-            }
 
             try {
                 $p->save();
@@ -352,9 +416,12 @@ administrator_id
             }
         }
 
-        dd($disability_description);
-        echo "done! with $p->id <pre>";
         die('');
+
+
+        /* 
+DELETE FROM people WHERE id > 8954
+*/
 
         dd($path);
     }

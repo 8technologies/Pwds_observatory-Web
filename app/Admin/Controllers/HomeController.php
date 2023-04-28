@@ -24,6 +24,18 @@ class HomeController extends Controller
     {
 
 
+       
+        
+/*         
+        Utils::importPwdsProfiles(Utils::docs_root().'/people-2.csv');  
+        foreach (Person::all() as $key => $p) {
+            if($p->employment_status == 'Yes'){
+                $p->employment_status = 'Employed';
+            }else{
+                $p->employment_status = 'Not Employed';
+            }
+            $p->save();  
+        } */
         /*  
         Utils::importPwdsProfiles(Utils::docs_root().'/people.csv');
         die();
@@ -34,7 +46,7 @@ class HomeController extends Controller
             $as->save();
         } */
 
-
+   /*  
 
         $faker = Faker::create();
         $name = [
@@ -76,7 +88,7 @@ class HomeController extends Controller
         foreach (Location::get_sub_counties_array() as $key => $value) {
             $subs[] =  $key;
         }
-        /*  
+     
         foreach ($name as $key => $value) {
             $as = new Association();
             shuffle($subs);
@@ -106,6 +118,7 @@ class HomeController extends Controller
             $as->save();  
         } */
 
+        /*  
         $ass = [];
 
         $groups = [];
@@ -113,7 +126,6 @@ class HomeController extends Controller
             $groups[] = $ass->id;
         }
 
-        /*  
 
         foreach (Association::all() as $key => $ass) {
 
@@ -207,6 +219,20 @@ deleted_at
  */
 
         $u = Admin::user();
+
+        if($u->sex == null){
+            $content->row(function (Row $row) {
+                $row->column(12, function (Column $column) {
+                    $column->append(view('widgets.alert', [
+                        'color' => false,
+                        'title' => 'New members',
+                        'msg' => 'You have not completed your profile information. ',
+                        'link_text' => 'Joined 30 days ago.',
+                        'link' => admin_url('auth/setting'),
+                    ]));
+                });
+            });
+        }
 
 
         $content->row(function (Row $row) {

@@ -48,6 +48,25 @@ class Group extends Model
         });
     }
 
+
+    
+    public function getDisabilitiesAttribute($pictures)
+    {
+        if ($pictures != null)
+            return json_decode($pictures, true);
+    }
+
+
+    public function setDisabilitiesAttribute($pictures)
+    {
+        if (is_array($pictures)) {
+            $this->attributes['disabilities'] = json_encode($pictures);
+        }
+    }
+
+
+    
+
     public function getNameTextAttribute()
     {
 

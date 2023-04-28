@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Models\Job;
 use App\Models\Location;
+use App\Models\Utils;
 use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -34,119 +35,38 @@ class JobController extends AdminController
 
       
         $grid = new Grid(new Job());
-        /*       
-          foreach (Job::all() as $key => $m) {
-            $m->photo = 'jobs-' . rand(1, 20) . '.jpg';
-            $m->save();
-        }
+   
+        $grid->disableFilter();
+        $grid->disableBatchActions();
+        $grid->quickSearch('title')->placeholder('Search by Job Title');
+        $grid->model()->orderBy('id', 'desc');
 
-
-        
-         $faker = Faker::create(); 
-        $subcounty_id = [];
-        foreach (Location::get_sub_counties_array() as $key => $s) {
-            $subcounty_id[] = $key;
-        }
-        $title = [
-            'Human Resource Manager',
-            'CSAT Officer - Uganda',
-            'REQUEST FOR PROPOSALS (RFP) UNDERTAKE A DETAILED STUDY OF THE FERTILIZER SUB-SECTOR IN UGANDA',
-            'Sales Manager',
-            'Imports Supervisor',
-            'Agroforestry Technicians (2) - Masaka',
-            'Various Vacancies',
-            'REQUEST FOR QUOTATION (RFQ) for a consultant to Support Uganda National Metrological Authority',
-            'Monitoring & Evaluation Officer',
-            'Laboratory Technician',
-            'Biology/Chemistry teacher - Nimule, Eastern Equatorial State - South Sudan',
-            'Marketing Agents',
-            'Administration Supervisor',
-            'Development of Gender and Equity Guidelines',
-            'Accountant',
-            'Project Finance Officer',
-            'Production Supervisor',
-            'Sales Representative',
-            'Sales Supervisor (BMMC)',
-            'Human Resource Manager',
-            'CSAT Officer - Uganda',
-            'REQUEST FOR PROPOSALS (RFP) UNDERTAKE A DETAILED STUDY OF THE FERTILIZER SUB-SECTOR IN UGANDA',
-            'Sales Officer',
-            'Accounts Supervisor',
-            'Sales Manager (FMCG)',
-            'Retail Sales Supervisor',
-            'Programs and M&E Officer',
-            'Senior Business Intelligence Analyst',
-            'Consultant to support Midterm review of the Equal Opportunities Strategic Plan 2020/21 – 2024/25',
-            'Marketing Assistant',
-            'Commercial Manager',
-            'Production Manager'
-        ];
-
-        $nature_of_job = [
-            'Full time', 'Part time', 'Remote work'
-        ];
-        $minimum_academic_qualification = [
-            'None', 'Below primary', 'Primary', 'Secondary', 'A-Level', 'Bachelor', 'Masters', 'PhD',
-        ];
-        $category = [
-            'Mass Communication',
-            'Agriculture',
-            'Automotive',
-            'Banking and Finance',
-            'Construction',
-            'Education',
-            'Electricity',
-            'Entertainment',
-            'Government',
-            'Hospitality and Hotel',
-            'Information Technology',
-            'Manufacturing and Warehousing',
-            'NGO',
-            'Recruitment',
-            'Tourism and Travel'
-        ];
-        for ($i = 0; $i < 50; $i++) {
-            $m = new Job();
-            shuffle($title);
-            shuffle($nature_of_job);
-            shuffle($category);
-            shuffle($subcounty_id);
-            shuffle($minimum_academic_qualification);
-
-            $m->title = $title[rand(1, 0)];
-            $m->short_description = $title[rand(1, 0)];
-            $m->administrator_id = 1;
-            $m->photo = 'job-' . rand(1, 20) . '.jpg';
-            $m->details = '';
-            $m->required_expirience = 'In a field relevant to this job';
-            $m->expirience_period = rand(1, 5);
-            $m->minimum_academic_qualification = $minimum_academic_qualification[0];
-            $m->category = $category[2];
-            $m->nature_of_job = $nature_of_job[1];
-            $m->subcounty_id = $subcounty_id[rand(1, 40)];
-            $m->deadline = $faker->dateTimeBetween('+1 month', '+3 month');
-            $m->whatsapp = '+8801632257609';
-            $m->slots = rand(1, 20);
-            $m->save(); 
-        } */
-
-        $grid->column('id', __('Id'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
-        $grid->column('administrator_id', __('Administrator id'));
-        $grid->column('title', __('Title'));
-        $grid->column('short_description', __('Short description'));
-        $grid->column('details', __('Details'));
+        $grid->column('created_at', __('Regisetered'))->display(
+            function ($x) {
+                return Utils::my_date($x);
+            }
+        )->sortable(); 
+        $grid->column('title', __('Job Title'))->sortable();  
+        $grid->column('details', __('Details'))->hide();
         $grid->column('nature_of_job', __('Nature of job'));
         $grid->column('minimum_academic_qualification', __('Minimum academic qualification'));
         $grid->column('required_expirience', __('Required expirience'));
-        $grid->column('expirience_period', __('Expirience period'));
-        $grid->column('category', __('Category'));
-        $grid->column('photo', __('Photo'));
-        $grid->column('how_to_apply', __('How to apply'));
+        $grid->column('expirience_period', __('Expirience period (Years)'));
+        $grid->column('category', __('Category'));  
         $grid->column('whatsapp', __('Whatsapp'));
-        $grid->column('subcounty_id', __('Subcounty id'));
-        $grid->column('district_id', __('District id'));
+
+        $grid->column('subcounty_id', __('Subcounty'))
+            ->display(
+                function ($x) {
+                    $dis = Location::find($x);
+                    if ($dis == null) {
+                        return '-';
+                    }
+                    return $dis->name_text;
+                }
+            )->sortable(); 
+ 
+        $grid->column('short_description', __('Short description'))->sortable();  
 
         return $grid;
     }

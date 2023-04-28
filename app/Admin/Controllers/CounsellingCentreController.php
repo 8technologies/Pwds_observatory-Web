@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Models\CounsellingCentre;
 use App\Models\Disability;
 use App\Models\Location;
+use App\Models\Utils;
 use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -30,29 +31,61 @@ class CounsellingCentreController extends AdminController
     {
         $grid = new Grid(new CounsellingCentre());
 
-        $grid->column('id', __('Id'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
-        $grid->column('administrator_id', __('Administrator id'));
-        $grid->column('disability_id', __('Disability id'));
-        $grid->column('name', __('Name'));
-        $grid->column('about', __('About'));
+
+
+        $grid->filter(function ($f) {
+            // Remove the default id filter
+            $f->disableIdFilter();
+            $f->between('created_at', 'Filter by registered')->date();
+        });
+
+        $grid->disableFilter();
+        $grid->disableBatchActions();
+        $grid->quickSearch('name')->placeholder('Search by name');
+        $grid->model()->orderBy('id', 'desc');
+
+        $grid->column('created_at', __('Regisetered'))->display(
+            function ($x) {
+                return Utils::my_date($x);
+            }
+        )->sortable();
+        $grid->column('name', __('Name'))->sortable(); 
+
+        
+  
+        $grid->column('skills', __('Skills'));
+        $grid->column('fees_range', __('Fees range')); 
+        
+
+        
+        $grid->column('district_id', __('District'))
+            ->display(
+                function ($x) {
+                    $dis = Location::find($x);
+                    if ($dis == null) {
+                        return '-';
+                    }
+                    return $dis->name;
+                }
+            )->sortable();
+
+        $grid->column('subcounty_id', __('Subcounty'))
+            ->display(
+                function ($x) {
+                    $dis = Location::find($x);
+                    if ($dis == null) {
+                        return '-';
+                    }
+                    return $dis->name;
+                }
+            )->sortable(); 
+
         $grid->column('address', __('Address'));
         $grid->column('parish', __('Parish'));
         $grid->column('village', __('Village'));
         $grid->column('phone_number', __('Phone number'));
-        $grid->column('email', __('Email'));
-        $grid->column('district_id', __('District id'));
-        $grid->column('subcounty_id', __('Subcounty id'));
-        $grid->column('website', __('Website'));
-        $grid->column('phone_number_2', __('Phone number 2'));
-        $grid->column('photo', __('Photo'));
-        $grid->column('gps_latitude', __('Gps latitude'));
-        $grid->column('gps_longitude', __('Gps longitude'));
-        $grid->column('status', __('Status'));
-        $grid->column('skills', __('Skills'));
-        $grid->column('fees_range', __('Fees range'));
-        $grid->column('deleted_at', __('Deleted at'));
+        $grid->column('email', __('Email')); 
+        $grid->column('website', __('Website')); 
 
         return $grid;
     }
@@ -131,11 +164,11 @@ class CounsellingCentreController extends AdminController
 
         $form->text('name', __('Counselling Centre Name'))->rules('required');
 
-        $form->select('disability_id', __('Select Category of persons with disabilities offered'))
+        $form->select('disability_id', __('Select Category of persons with disabilities'))
             ->rules('required')
             ->options(Disability::where([])->get()->pluck('name', 'id'));
 
-        $form->tags('skills', __('Skills offered'));
+        $form->tags('skills', __('Select counselling services offered'));
         $form->text('fees_range', __('Fees range'));
 
         $form->select('subcounty_id', __('Counselling Centre Subcounty'))
@@ -157,8 +190,7 @@ class CounsellingCentreController extends AdminController
         $form->text('gps_longitude', __('Counselling Centre Gps longitude'));
         $form->image('photo', __('Counselling Centre logo'));
         $form->quill('about', __('About The Counselling Centre'))->rules('required');
-        $form->disableCreatingCheck();
-        $form->disableEditingCheck();
+
         $form->disableReset();
         $form->disableViewCheck();
 
