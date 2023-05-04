@@ -21,8 +21,11 @@
                 <div class="col-lg-5 d-flex flex-column pt-lg-4 pt-xl-5">
                     <h5 class="my-2">Welcome!</h5>
                     <h1 class="display-3 mb-4"> <span class="text-primary">ICT</span> for Persons With Disabilities</h1>
-                    <p class="fs-lg mb-5">This System will help you, Enhance your Knowledge Management, ICT Adoption, Digital
-                        Skills, And Access To E-Services For Persons With Disabilities.!</p>
+                    
+                    
+                    <p class="fs-lg mb-5"><b>NUDIPU</b> in collaboration with UCC, 8Tech Consults and other  stakeholders.!
+                        join hands together to  put in place for you this System that will help you, Enhance your Knowledge Management, ICT Adoption, Digital
+                        Skills, And Access To E-Services For Persons With Disabilities.!</p>  
 
                     <!-- Desktop form -->
                     <form class="d-none d-sm-flex mb-5">

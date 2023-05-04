@@ -38,22 +38,19 @@ if (!isset($header_style)) {
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">About</a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="{{ url('about-us') }}" class="dropdown-item">Project Overview</a>
+                            <a href="{{ url('about-us') }}" class="dropdown-item">Program Overview</a>
                         </li>
                         <li>
-                            <a href="{{ url('vision-mission') }}" class="dropdown-item">Project objectives</a>
+                            <a href="{{ url('vision-mission') }}" class="dropdown-item">Governance</a>
                         </li>
                         <li>
-                            <a href="{{ url('constitution') }}" class="dropdown-item">Project Profile</a>
+                            <a href="{{ url('constitution') }}" class="dropdown-item">Partnerships</a>
                         </li>
                         <li>
-                            <a href="{{ url('our-team') }}" class="dropdown-item">Our team</a>
+                            <a href="{{ url('our-team') }}" class="dropdown-item">Message from the program lead </a>
                         </li>
                         <li>
-                            <a href="{{ url('ucc') }}" class="dropdown-item">UCC Message</a>
-                        </li>
-                        <li>
-                            <a href="?" class="dropdown-item">Contact us</a>
+                            <a href="?" class="dropdown-item">Who can use the system</a>
                         </li>
                     </ul>
                 </li>
