@@ -111,20 +111,28 @@ class PersonController extends AdminController
             }
         )->sortable();
         $grid->column('name', __('Name'))->sortable();
-        $grid->column('sex', __('Sex'))->filter([
+        $grid->column('other_names', __('Other Names'))->sortable();
+        $grid->column('sex', __('Gender'))->filter([
             'Male' => 'Male',
             'Female' => 'Female',
         ])->sortable();
 
         $grid->column('dob', __('AGE/D.O.B'));
 
-        $grid->column('disability_id', __('Disability'))
+        $grid->column('disabilities', __('Disabilities'))
             ->display(
                 function ($x) {
-                    if ($this->disability == null) {
-                        return '-';
+                    //disabilities in badges
+                    if ($this->disabilities()->count() > 0) {
+                        $disabilities = $this->disabilities->map(function ($item) {
+                            return "<span class='badge badge-info'>" . $item->name . "</span>";
+                        })->toArray();
+                        return join(' ', $disabilities);
                     }
-                    return $this->disability->name;
+                    // if ($this->disability == null) {
+                    //     return '-';
+                    // }
+                    // return $this->disability->name;
                 }
             )->sortable();
         $grid->column('phone_number', __('Phone number'))->sortable();
@@ -182,33 +190,37 @@ class PersonController extends AdminController
     {
         $show = new Show(Person::findOrFail($id));
 
-        $show->field('id', __('Id'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
         $show->field('association_id', __('Association id'));
         $show->field('group_id', __('Group id'));
         $show->field('name', __('Name'));
+        $show->field('other_names', __('Other names'));
+        $show->field('id_number', __('Id number'));
+        $show->field('dob', __('Dob'));
+        $show->field('sex', __('Gender'));
+        $show->field('ethnicity', __('Ethnicity'));
+        $show->field('religion', __('Religion'));
+        $show->field('marital_status', __('Marital status'));
+        $show->field('place_of_birth', __('Place of birth'));
+        $show->field('languages', __('Languages'));
         $show->field('address', __('Address'));
-        $show->field('parish', __('Parish'));
-        $show->field('village', __('Village'));
+        // $show->field('parish', __('Parish'));
+        // $show->field('village', __('Village'));
         $show->field('phone_number', __('Phone number'));
         $show->field('email', __('Email'));
-        $show->field('district_id', __('District id'));
-        $show->field('subcounty_id', __('Subcounty id'));
-        $show->field('disability_id', __('Disability id'));
+        // $show->field('district_id', __('District id'));
+        // $show->field('subcounty_id', __('Subcounty id'));
+        // $show->field('disability_id', __('Disability id'));
         $show->field('phone_number_2', __('Phone number 2'));
-        $show->field('dob', __('Dob'));
-        $show->field('sex', __('Sex'));
-        $show->field('education_level', __('Education level'));
+
+        // $show->field('education_level', __('Education level'));
         $show->field('employment_status', __('Employment status'));
-        $show->field('has_caregiver', __('Has caregiver'));
-        $show->field('caregiver_name', __('Caregiver name'));
-        $show->field('caregiver_sex', __('Caregiver sex'));
-        $show->field('caregiver_phone_number', __('Caregiver phone number'));
-        $show->field('caregiver_age', __('Caregiver age'));
-        $show->field('caregiver_relationship', __('Caregiver relationship'));
+        // $show->field('has_caregiver', __('Has caregiver'));
+        // $show->field('caregiver_name', __('Caregiver name'));
+        // $show->field('caregiver_sex', __('Caregiver sex'));
+        // $show->field('caregiver_phone_number', __('Caregiver phone number'));
+        // $show->field('caregiver_age', __('Caregiver age'));
+        // $show->field('caregiver_relationship', __('Caregiver relationship'));
         $show->field('photo', __('Photo'));
-        $show->field('deleted_at', __('Deleted at'));
 
         return $show;
     }
@@ -255,14 +267,21 @@ class PersonController extends AdminController
 
 
         $form->image('photo', __('Photo'));
-        $form->text('name', __('Full Name'))->rules('required');
-
+        $form->text('name', __('Sir Name'))->rules('required');
+        $form->text('other_names', __('Other Names'))->rules('required');
+        $form->text('id_number', __('ID Number'))
+                ->help("NIN, Passport Number, Driving Permit Number")
+                ->rules('required');
         $form->date('dob', __('Date of Birth'));
-        $form->radio('sex', __('Sex'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
-
-
-
-        $form->select('disability_id', __('Select disability'))
+        $form->radio('sex', __('Gender'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
+        $form->radio('marital_status', __('Marital Status'))->options(['Single' => 'Single', 'Married' => 'Married', 'Divorced' => 'Divorced', 'Widowed' => 'Widowed'])->rules('required');
+        $form->text('ethnicity', __('Ethnicity'))->rules('required')
+            ->help('Your Tribe');
+        $form->text('religion', __('Religion'))->rules('required');
+        $form->radio('place_of_birth', __('Place Of Birth'))->options(['Hospital' => 'Hospital', 'Home' => 'Home'])->rules('required');
+        $form->text('languages', __('Languages'))->rules('required')
+            ->help('English, Luganda, Runyakitara, etc');
+        $form->multipleSelect('disabilities', __('Select disabilities'))
             ->rules('required')
             ->options(Disability::where([])->orderBy('name', 'asc')->get()->pluck('name', 'id'));
 
@@ -272,37 +291,37 @@ class PersonController extends AdminController
         $form->text('phone_number', __('Phone number'));
         $form->text('phone_number_2', __('Alternative Phone number'));
 
-        $form->select('subcounty_id', __('Subcounty'))
-            ->rules('required')
-            ->help('Where is this business located?')
-            ->options(Location::get_sub_counties_array());
+        // $form->select('subcounty_id', __('Subcounty'))
+        //     ->rules('required')
+        //     ->help('Where is this business located?')
+        //     ->options(Location::get_sub_counties_array());
 
-        $form->text('parish', __('Parish'));
-        $form->text('village', __('Village'));
-        $form->text('address', __('Address'));
+        // $form->text('parish', __('Parish'));
+        // $form->text('village', __('Village'));
+        // $form->text('address', __('Address'));
 
-        $form->select('education_level', __('Education level'))
-            ->options([
-                'None' => 'None - (Not educated at all)',
-                'Below primary' => 'Below primary - (Did not complete P.7)',
-                'Primary' => 'Primary - (Completed P.7)',
-                'Secondary' => 'Secondary - (Completed S.4)',
-                'A-Level' => 'Advanced level - (Completed S.6)',
-                'Bachelor' => 'Bachelor - (Degree)',
-                'Masters' => 'Masters',
-                'PhD' => 'PhD',
-            ]);
+        // $form->select('education_level', __('Education level'))
+        //     ->options([
+        //         'None' => 'None - (Not educated at all)',
+        //         'Below primary' => 'Below primary - (Did not complete P.7)',
+        //         'Primary' => 'Primary - (Completed P.7)',
+        //         'Secondary' => 'Secondary - (Completed S.4)',
+        //         'A-Level' => 'Advanced level - (Completed S.6)',
+        //         'Bachelor' => 'Bachelor - (Degree)',
+        //         'Masters' => 'Masters',
+        //         'PhD' => 'PhD',
+        //     ]);
 
-        $form->radio('employment_status', __('Employment status'))->options(['Employed' => 'Employed', 'Not Employed' => 'Not Employed'])->rules('required');
-        $form->radio('has_caregiver', __('Has caregiver?'))
-            ->options(['Yes' => 'Yes', 'No' => 'No'])
-            ->when('Yes', function ($form) {
-                $form->text('caregiver_name', __('Caregiver Name'));
-                $form->radio('caregiver_sex', __('Caregiver Sex'))->options(['Male' => 'Male', 'Female' => 'Female']);
-                $form->text('caregiver_phone_number', __('Caregiver phone number'));
-                $form->text('caregiver_age', __('Caregiver age'));
-                $form->text('caregiver_relationship', __('Caregiver relationship'));
-            });
+        // $form->radio('employment_status', __('Employment status'))->options(['Employed' => 'Employed', 'Not Employed' => 'Not Employed'])->rules('required');
+        // $form->radio('has_caregiver', __('Has caregiver?'))
+        //     ->options(['Yes' => 'Yes', 'No' => 'No'])
+        //     ->when('Yes', function ($form) {
+        //         $form->text('caregiver_name', __('Caregiver Name'));
+        //         $form->radio('caregiver_sex', __('Caregiver Sex'))->options(['Male' => 'Male', 'Female' => 'Female']);
+        //         $form->text('caregiver_phone_number', __('Caregiver phone number'));
+        //         $form->text('caregiver_age', __('Caregiver age'));
+        //         $form->text('caregiver_relationship', __('Caregiver relationship'));
+        //     });
 
 
 

@@ -10,6 +10,7 @@ class Person extends Model
 {
     use HasFactory;
 
+
     public static function boot()
     {
         parent::boot();
@@ -67,8 +68,8 @@ class Person extends Model
         return $this->belongsTo(Association::class);
     }
 
-    public function disability(){
-        return $this->belongsTo(Disability::class,'disability_id');
+    public function disabilities(){
+        return $this->belongsToMany(Disability::class);
     }
 
     public function district(){

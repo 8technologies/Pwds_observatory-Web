@@ -11,6 +11,6 @@ class Disability extends Model
 
     public function people()
     {
-        return $this->hasMany(Person::class, 'disability_id');
+        return $this->belongsToMany(Person::class);
     }
 }
