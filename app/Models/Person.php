@@ -72,9 +72,30 @@ class Person extends Model
         return $this->belongsToMany(Disability::class);
     }
 
-    public function district(){
-        return $this->belongsTo(Location::class,'district_id');
+    // public function district(){
+    //     return $this->belongsTo(Location::class,'district_id');
+    // }
+    public function districtOfOrigin()
+    {
+        return $this->belongsTo(District::class, 'district_id');
     }
+    /**
+     * Get Organisation Affiliation Records
+     */
+    public function affiliated_organisations()
+    {
+        return $this->belongsToMany(Organisation::class, 'organisation_person', 'person_id', 'organisation_id')->withTimestamps();
+    }
+
+    public function academic_qualifications(){
+        return $this->hasMany(AcademicQualification::class);
+    }
+
+    public function employment_history()
+    {
+        return $this->hasMany(EmploymentHistory::class);
+    }
+
     public function getDisabilityTextAttribute()
     {
         $d = Disability::find($this->disability_id);

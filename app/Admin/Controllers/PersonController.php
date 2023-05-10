@@ -258,9 +258,12 @@ class PersonController extends AdminController
         $form->tab('Academics' , function ($form) {
             $form->radio('is_formal_education', __('Attended Formal Education'))->options(['Yes' => 'Yes', 'No' => 'No'])->rules('required')
             ->when('Yes', function (Form $form) {
-                $form->text('education_institution', __('Institution'))->rules('required');
-                $form->text('education_qualification', __('Qualification'))->rules('required');
-                $form->text('eduaction_year', __('Year'))->rules('required');
+                $form->hasMany('academic_qualifications', function (Form\NestedForm $form) {
+                    $form->text('institution', __('Institution'))->rules('required');
+                    $form->text('qualification', __('Qualification'))->rules('required');
+                    $form->text('year_of_completion', __('Year Of Completion'))->rules('required');
+                });
+              
             });
 
         });
@@ -272,19 +275,24 @@ class PersonController extends AdminController
         $form->tab('Employment' , function ($form) {
             $form->radio('is_employed', __('Employment History'))->options(['Yes' => 'Yes', 'No' => 'No'])->rules('required')
             ->when('Yes', function (Form $form) {
-                $form->text('employer_name', __('Employer Name'))->rules('required');
-                $form->text('employer_position', __('Position'))->rules('required');
-                $form->text('employer_years', __('Period of service'))->rules('required');
-            })
+                $form->hasMany('employment_history', function (Form\NestedForm $form) {
+                    $form->text('employer', __('Employer Name'))->rules('required');
+                    $form->text('position', __('Position'))->rules('required');
+                    $form->text('year_of_employment', __('Period of service'))->rules('required');
+                });
+               })
             ->help("Are you currently employed? or have you ever been employed?");
         });
 
         $form->tab('Memberships' , function ($form) {
             $form->radio('is_member', __('Membership'))->options(['Yes' => 'Yes', 'No' => 'No'])->rules('required')
             ->when('Yes', function (Form $form) {
-                $form->text('membership_name', __('Name of Association'))->rules('required');
-                $form->text('membership_position', __('Position'))->rules('required');
-                $form->text('membership_years', __('Period of service'))->rules('required');
+                $form->hasMany('affiliated_organisations', function (Form\NestedForm $form) {
+                    $form->text('organisation_name', __('Name of Organisation'))->rules('required');
+                    $form->text('organisation_position', __('Position'))->rules('required');
+                    $form->text('organisation_years', __('Membership period'))->rules('required');
+                });
+              
             })
             ->help("Are you currently a member of any association? or have you ever been a member of any association?");
         });

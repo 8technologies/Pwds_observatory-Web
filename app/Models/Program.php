@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Program extends Model
 {
     use HasFactory;
+
+    /**
+     * Ran by an organisation
+     */
+    public function organisation()
+    {
+        return $this->belongsTo(Organisation::class);
+    }
+
 }
