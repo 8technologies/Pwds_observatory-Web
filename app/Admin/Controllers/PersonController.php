@@ -233,6 +233,86 @@ class PersonController extends AdminController
     protected function form()
     {
         $form = new Form(new Person());
+        $form->tab('Bio' , function ($form) {
+            $form->text('name', __('Sir Name'))->rules('required');
+            $form->text('other_names', __('Other Names'))->rules('required');
+            $form->text('id_number', __('ID Number'))
+                    ->help("NIN, Passport Number, Driving Permit Number")
+                    ->rules('required');
+            $form->date('dob', __('Date of Birth'));
+            $form->radio('sex', __('Gender'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
+            $form->radio('marital_status', __('Marital Status'))->options(['Single' => 'Single', 'Married' => 'Married', 'Divorced' => 'Divorced', 'Widowed' => 'Widowed'])->rules('required');
+            $form->text('ethnicity', __('Ethnicity'))->rules('required')
+                ->help('Your Tribe');
+            $form->text('religion', __('Religion'))->rules('required');
+            $form->radio('place_of_birth', __('Place Of Birth'))->options(['Hospital' => 'Hospital', 'Home' => 'Home'])->rules('required');
+            $form->text('languages', __('Languages'))->rules('required')
+                ->help('English, Luganda, Runyakitara, etc');
+            $form->multipleSelect('disabilities', __('Select disabilities'))
+                ->rules('required')
+                ->options(Disability::where([])->orderBy('name', 'asc')->get()->pluck('name', 'id'));
+    
+    
+        });
+
+        $form->tab('Academics' , function ($form) {
+            $form->radio('is_formal_education', __('Attended Formal Education'))->options(['Yes' => 'Yes', 'No' => 'No'])->rules('required')
+            ->when('Yes', function (Form $form) {
+                $form->text('education_institution', __('Institution'))->rules('required');
+                $form->text('education_qualification', __('Qualification'))->rules('required');
+                $form->text('eduaction_year', __('Year'))->rules('required');
+            });
+
+        });
+
+        $form->tab('Skills and Experience' , function ($form) {
+            $form->textarea('skills', __('Skills'))->rows(10)->rules('required');
+        });
+
+        $form->tab('Employment' , function ($form) {
+            $form->radio('is_employed', __('Employment History'))->options(['Yes' => 'Yes', 'No' => 'No'])->rules('required')
+            ->when('Yes', function (Form $form) {
+                $form->text('employer_name', __('Employer Name'))->rules('required');
+                $form->text('employer_position', __('Position'))->rules('required');
+                $form->text('employer_years', __('Period of service'))->rules('required');
+            })
+            ->help("Are you currently employed? or have you ever been employed?");
+        });
+
+        $form->tab('Memberships' , function ($form) {
+            $form->radio('is_member', __('Membership'))->options(['Yes' => 'Yes', 'No' => 'No'])->rules('required')
+            ->when('Yes', function (Form $form) {
+                $form->text('membership_name', __('Name of Association'))->rules('required');
+                $form->text('membership_position', __('Position'))->rules('required');
+                $form->text('membership_years', __('Period of service'))->rules('required');
+            })
+            ->help("Are you currently a member of any association? or have you ever been a member of any association?");
+        });
+
+        $form->tab('Next of Kin' , function ($form) {
+            $form->text('next_of_kin_last_name', __('Sir Name'))->rules('required');
+            $form->text('next_of_kin_other_names', __('Other Names'))->rules('required');
+            $form->text('next_of_kin_phone_number', __('Phone Number'))->rules('required');
+            $form->text('next_of_kin_relationship', __('Relationship'))->rules('required');
+            $form->text('next_of_kin_address', __('Address'))->rules('required');
+            $form->text('next_of_kin_email', __('Email'))->rules('required');
+            $form->text('next_of_kin_alternative_phone_number', __('Alternative Phone Number'))->rules('required');
+
+        });
+        $form->tab('Aspirations & Areas of Interest' , function ($form) {
+            $form->textarea('aspirations', __('Aspirations'))->rules('required');
+            $form->textarea('areas_of_interest', __('Areas of Interest'))->rules('required');
+        });
+
+        $form->tab('Address & Contacts', function( $form){
+            $form->radio('is_same_address', __('Is the same as next of kin?'))->options(['Yes' => 'Yes', 'No' => 'No'])->rules('required')
+                ->when('No', function (Form $form) {
+                    $form->text('address', __('Address'))->rules('required');
+                    $form->text('phone_number', __('Phone Number'))->rules('required');
+                    $form->text('email', __('Email'))->rules('required');
+                });
+        });
+    
 
 
         if (
@@ -267,25 +347,6 @@ class PersonController extends AdminController
 
 
         $form->image('photo', __('Photo'));
-        $form->text('name', __('Sir Name'))->rules('required');
-        $form->text('other_names', __('Other Names'))->rules('required');
-        $form->text('id_number', __('ID Number'))
-                ->help("NIN, Passport Number, Driving Permit Number")
-                ->rules('required');
-        $form->date('dob', __('Date of Birth'));
-        $form->radio('sex', __('Gender'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
-        $form->radio('marital_status', __('Marital Status'))->options(['Single' => 'Single', 'Married' => 'Married', 'Divorced' => 'Divorced', 'Widowed' => 'Widowed'])->rules('required');
-        $form->text('ethnicity', __('Ethnicity'))->rules('required')
-            ->help('Your Tribe');
-        $form->text('religion', __('Religion'))->rules('required');
-        $form->radio('place_of_birth', __('Place Of Birth'))->options(['Hospital' => 'Hospital', 'Home' => 'Home'])->rules('required');
-        $form->text('languages', __('Languages'))->rules('required')
-            ->help('English, Luganda, Runyakitara, etc');
-        $form->multipleSelect('disabilities', __('Select disabilities'))
-            ->rules('required')
-            ->options(Disability::where([])->orderBy('name', 'asc')->get()->pluck('name', 'id'));
-
-
 
         $form->email('email', __('Email address'));
         $form->text('phone_number', __('Phone number'));
