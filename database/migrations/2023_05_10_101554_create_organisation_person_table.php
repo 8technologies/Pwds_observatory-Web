@@ -15,7 +15,8 @@ class CreateOrganisationPersonTable extends Migration
     {
         Schema::create('organisation_person', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('organisation_id')->constrained('organisations')->onDelete('cascade'); //organisation affiliated with
+            $table->foreignId('organisation_id')->nullable()->constrained('organisations')->onDelete('cascade'); //organisation affiliated with
+            $table->string('organisation_name')->nullable();
             $table->foreignId('person_id')->constrained('people')->onDelete('cascade');
             $table->string('position');
             $table->string('Year_of_membership');

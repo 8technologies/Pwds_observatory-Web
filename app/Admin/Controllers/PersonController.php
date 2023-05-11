@@ -190,8 +190,9 @@ class PersonController extends AdminController
     {
         $show = new Show(Person::findOrFail($id));
 
-        $show->field('association_id', __('Association id'));
-        $show->field('group_id', __('Group id'));
+        $show->field('photo', __('Photo'));
+        // $show->field('association_id', __('Association id'));
+        // $show->field('group_id', __('Group id'));
         $show->field('name', __('Name'));
         $show->field('other_names', __('Other names'));
         $show->field('id_number', __('Id number'));
@@ -210,17 +211,58 @@ class PersonController extends AdminController
         // $show->field('district_id', __('District id'));
         // $show->field('subcounty_id', __('Subcounty id'));
         // $show->field('disability_id', __('Disability id'));
-        $show->field('phone_number_2', __('Phone number 2'));
+        // $show->field('phone_number_2', __('Phone number 2'));
 
         // $show->field('education_level', __('Education level'));
-        $show->field('employment_status', __('Employment status'));
+        // $show->field('employment_status', __('Employment status'));
         // $show->field('has_caregiver', __('Has caregiver'));
         // $show->field('caregiver_name', __('Caregiver name'));
         // $show->field('caregiver_sex', __('Caregiver sex'));
         // $show->field('caregiver_phone_number', __('Caregiver phone number'));
         // $show->field('caregiver_age', __('Caregiver age'));
         // $show->field('caregiver_relationship', __('Caregiver relationship'));
-        $show->field('photo', __('Photo'));
+
+        $show->disabilities('Disabilities', function ($disabilities) use($show) {
+            $disabilities->resource('/admin/disabilities');
+            // $disabilities->id();
+            $disabilities->name();
+            $disabilities->description()->limit(0);
+
+            $disabilities->disableCreateButton();
+            $disabilities->disableActions();
+
+        });
+
+        $show->affiliated_organisations('Affiliated organisations', function ($affiliated_organisations) {
+            $affiliated_organisations->resource('/admin/affiliated-organisations');
+            $affiliated_organisations->organisation_name();
+            $affiliated_organisations->position();
+            $affiliated_organisations->Year_of_membership();
+
+            $affiliated_organisations->disableCreateButton();
+            $affiliated_organisations->disableActions();
+        });
+
+        $show->academic_qualifications('Academic qualifications', function ($academic_qualifications) {
+            $academic_qualifications->resource('/admin/academic-qualifications');
+            $academic_qualifications->institution();
+            $academic_qualifications->qualification();
+            $academic_qualifications->year_of_completion();
+
+            $academic_qualifications->disableCreateButton();
+            $academic_qualifications->disableActions();
+
+        });
+
+        $show->employment_history('Employment history', function ($employment_history) {
+            $employment_history->resource('/admin/employment-history');
+            $employment_history->employer();
+            $employment_history->position();
+            $employment_history->year_of_employment();
+
+            $employment_history->disableCreateButton();
+            $employment_history->disableActions();
+        });
 
         return $show;
     }
@@ -256,42 +298,42 @@ class PersonController extends AdminController
         });
 
         $form->tab('Academics' , function ($form) {
-            $form->radio('is_formal_education', __('Attended Formal Education'))->options(['Yes' => 'Yes', 'No' => 'No'])->rules('required')
-            ->when('Yes', function (Form $form) {
+            $form->radio('is_formal_education', __('Attended Formal Education'))->options([1 => 'Yes', 0 => 'No'])->rules('required')
+            ->when(1, function (Form $form) {
                 $form->hasMany('academic_qualifications', function (Form\NestedForm $form) {
                     $form->text('institution', __('Institution'))->rules('required');
                     $form->text('qualification', __('Qualification'))->rules('required');
                     $form->text('year_of_completion', __('Year Of Completion'))->rules('required');
-                });
+                })->default(0);
               
             });
 
         });
 
         $form->tab('Skills and Experience' , function ($form) {
-            $form->textarea('skills', __('Skills'))->rows(10)->rules('required');
+            $form->textarea('skills', __('Skills'))->rows(10)->placeholder("knitting, dancing, teamwork, etc")->rules('required');
         });
 
         $form->tab('Employment' , function ($form) {
-            $form->radio('is_employed', __('Employment History'))->options(['Yes' => 'Yes', 'No' => 'No'])->rules('required')
-            ->when('Yes', function (Form $form) {
+            $form->radio('is_employed', __('Employment History'))->options([1 => 'Yes', 0 => 'No'])->rules('required')
+            ->when(1 , function (Form $form) {
                 $form->hasMany('employment_history', function (Form\NestedForm $form) {
                     $form->text('employer', __('Employer Name'))->rules('required');
-                    $form->text('position', __('Position'))->rules('required');
-                    $form->text('year_of_employment', __('Period of service'))->rules('required');
-                });
+                    $form->text('position', __('Position'))->placeholder("Manager")->rules('required');
+                    $form->text('year_of_employment', __('Period of service'))->placeholder("2022 - 2023")->rules('required');
+                })->default(0);
                })
             ->help("Are you currently employed? or have you ever been employed?");
         });
 
         $form->tab('Memberships' , function ($form) {
-            $form->radio('is_member', __('Membership'))->options(['Yes' => 'Yes', 'No' => 'No'])->rules('required')
-            ->when('Yes', function (Form $form) {
+            $form->radio('is_member', __('Membership'))->options([1 => 'Yes', 0 => 'No'])->rules('required')
+            ->when(1 , function (Form $form) {
                 $form->hasMany('affiliated_organisations', function (Form\NestedForm $form) {
                     $form->text('organisation_name', __('Name of Organisation'))->rules('required');
-                    $form->text('organisation_position', __('Position'))->rules('required');
-                    $form->text('organisation_years', __('Membership period'))->rules('required');
-                });
+                    $form->text('position', __('Position'))->rules('required');
+                    $form->text('Year_of_membership', __('Membership period'))->placeholder("2022 -2023")->rules('required');
+                })->default(0);
               
             })
             ->help("Are you currently a member of any association? or have you ever been a member of any association?");
@@ -303,7 +345,7 @@ class PersonController extends AdminController
             $form->text('next_of_kin_phone_number', __('Phone Number'))->rules('required');
             $form->text('next_of_kin_relationship', __('Relationship'))->rules('required');
             $form->text('next_of_kin_address', __('Address'))->rules('required');
-            $form->text('next_of_kin_email', __('Email'))->rules('required');
+            $form->email('next_of_kin_email', __('Email'))->rules('required');
             $form->text('next_of_kin_alternative_phone_number', __('Alternative Phone Number'))->rules('required');
 
         });
@@ -313,12 +355,12 @@ class PersonController extends AdminController
         });
 
         $form->tab('Address & Contacts', function( $form){
-            $form->radio('is_same_address', __('Is the same as next of kin?'))->options(['Yes' => 'Yes', 'No' => 'No'])->rules('required')
-                ->when('No', function (Form $form) {
+            $form->radio('is_same_address', __('Is the same as next of kin?'))->options([1 => 'Yes', 0 => 'No'])->rules('required')
+                ->when(0, function (Form $form) {
                     $form->text('address', __('Address'))->rules('required');
                     $form->text('phone_number', __('Phone Number'))->rules('required');
                     $form->text('email', __('Email'))->rules('required');
-                });
+                })->default(0);
         });
     
 

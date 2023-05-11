@@ -10,7 +10,13 @@ class Person extends Model
 {
     use HasFactory;
 
-
+    protected $guarded = [
+        'is_formal_education',
+        'is_employed',
+        'is_member',
+        'is_same_address'
+    ];
+    
     public static function boot()
     {
         parent::boot();
@@ -84,7 +90,7 @@ class Person extends Model
      */
     public function affiliated_organisations()
     {
-        return $this->belongsToMany(Organisation::class, 'organisation_person', 'person_id', 'organisation_id')->withTimestamps();
+        return $this->hasMany(Affiliation::class);
     }
 
     public function academic_qualifications(){

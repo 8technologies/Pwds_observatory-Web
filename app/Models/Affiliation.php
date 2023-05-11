@@ -5,13 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AcademicQualification extends Model
+class Affiliation extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function person(){
+
+    protected $table = "organisation_person";
+
+    public function organisation()
+    {
+        return $this->belongsTo(Organisation::class);
+    }
+
+    public function person()
+    {
         return $this->belongsTo(Person::class);
     }
 }

@@ -39,7 +39,7 @@ class Organisation extends Model
 
     public function member_pwds()
     {
-        return $this->belongsToMany(Person::class, 'organisation_person', 'organisation_id', 'person_id')->withTimestamps();
+        return $this->hasMany(Person::class)->pivot('position', 'Year_of_membership');
     }
 
 }
