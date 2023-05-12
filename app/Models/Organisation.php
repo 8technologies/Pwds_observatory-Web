@@ -29,17 +29,22 @@ class Organisation extends Model
 
     public function parentOrganisation()
     {
-        return $this->belongsToMany(Organisation::class);
+        return $this->hasMany(Membership::class, 'child_organisation_id');
     }
 
     public function childOrganisations()
     {
-        return $this->belongsToMany(Organisation::class);
+        return $this->hasMany(Membership::class, 'parent_organisation_id');
     }
 
     public function member_pwds()
     {
         return $this->hasMany(Person::class)->pivot('position', 'Year_of_membership');
+    }
+
+    public function contact_persons()
+    {
+        return $this->hasMany(OrganisationContactPerson::class);
     }
 
 }

@@ -16,7 +16,7 @@ class CreateLeadershipsTable extends Migration
         Schema::create('leaderships', function (Blueprint $table) {
             $table->id();
             $table->foreignId('organisation_id')->constrained('organisations')->onDelete('cascade');
-            $table->json('leadership'); //leadership positions and names
+            $table->json('members'); //leadership positions and names
             $table->date('term_of_office_start');
             $table->date('term_of_office_end');
             $table->timestamps();

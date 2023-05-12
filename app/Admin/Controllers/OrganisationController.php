@@ -79,16 +79,56 @@ class OrganisationController extends AdminController
     {
         $form = new Form(new Organisation());
 
-        $form->text('name', __('Name'));
-        $form->text('registration_number', __('Registration number'));
-        $form->text('date_of_registration', __('Date of registration'));
-        $form->textarea('mission', __('Mission'));
-        $form->textarea('vision', __('Vision'));
-        $form->textarea('core_values', __('Core values'));
-        $form->textarea('brief_profile', __('Brief profile'));
-        $form->text('membership_type', __('Membership type'));
-        $form->text('physical_address', __('Physical address'));
-        $form->text('contact_persons', __('Contact persons'));
+        $form->tab('Bio', function ($form) {
+            $form->text('name', __('Name'));
+            $form->text('registration_number', __('Registration number'));
+            $form->date('date_of_registration', __('Date of registration'));
+            $form->textarea('mission', __('Mission'));
+            $form->textarea('vision', __('Vision'));
+            $form->textarea('core_values', __('Core values'));
+            $form->quill('brief_profile', __('Brief profile'));
+        });
+
+        $form->tab('Leadership', function ($form) {
+            $form->hasMany('leaderships', function (Form\NestedForm $form) {
+                // $form->table('members', 'Members', function ($form) {
+                //     $form->text('name', __('Name'));
+                //     $form->text('position', __('Position'));
+                // });
+                $form->date('term_of_office_start', __('Term of office start'));
+                $form->date('term_of_office_end', __('Term of office end'));
+            });
+        });
+
+        $form->tab('Membership', function ($form) {
+            $form->radio('membership_type', __('Membership type'))->options(['member' => 'Member', 'pwd' => 'PWD'])
+            ->when('pwd', function (Form $form) {
+
+            })
+            ->when('member', function (Form $form) {
+                // $form->hasMany('memberships', function (Form\NestedForm $form) {
+                //     $form->text('member_to', __('Member To'))->rules('required');
+                //     $form->text('nature_of_relationship', __('Nature Of Relationship'))->rules('required');
+                //     $form->text('duration', __('Duration'))->placeholder('2022 -2023')->rules('required');
+                // });
+            })->default('member')
+            ->required();
+        });
+
+        $form->tab('Contact', function ($form) {
+            $form->text('physical_address', __('Physical address'));
+
+            $form->hasMany('contact_persons', 'Contact Persons', function ($form) {
+                $form->text('name', __('Name'))->required();
+                $form->text('position', __('Position'))->required();
+                $form->email('email', __('Email'))->required();
+                $form->text('phone1', __('Phone Tel'))->required();
+                $form->text('phone2', __('Other Tel'));
+            });
+        });
+
+
+
 
         return $form;
     }
