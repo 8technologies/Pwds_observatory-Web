@@ -188,6 +188,11 @@ class PersonController extends AdminController
      */
     protected function detail($id)
     {
+        $s = Person::findOrFail($id);
+        return view('admin.person', [
+            's' => $s
+        ]);
+
         $show = new Show(Person::findOrFail($id));
 
         $show->field('photo', __('Photo'));
