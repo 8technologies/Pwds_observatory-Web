@@ -9,6 +9,8 @@ class OrganisationContactPerson extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function organisation()
     {
         return $this->belongsTo(Organisation::class);

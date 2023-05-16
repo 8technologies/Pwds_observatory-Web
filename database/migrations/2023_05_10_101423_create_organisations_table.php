@@ -18,13 +18,18 @@ class CreateOrganisationsTable extends Migration
             $table->string("name");
             $table->string("registration_number");
             $table->string("date_of_registration");
+            $table->foreignId('user_id')->constrained('users');
             $table->text("mission");
             $table->text("vision");
             $table->text("core_values");
             $table->text("brief_profile");
-            $table->enum("membership_type", ["member", "pwd"]);
+            $table->string("type"); // (association, group, cooperative, company, etc
+            $table->enum("membership_type", ["member", "pwd", "both"]);
+
             $table->string("physical_address");
-            $table->json("contact_persons");
+            $table->json('attachments')->nullable();
+            $table->string('logo')->nullable();
+            $table->string('certificate_of_registration')->nullable();
             $table->timestamps();
         });
     }

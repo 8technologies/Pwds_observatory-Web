@@ -9,6 +9,16 @@ class Organisation extends Model
 {
     use HasFactory;
 
+    public function setAttachmentsAttribute($value)
+    {
+        $this->attributes['attachments'] = json_encode($value);
+    }
+
+    public function getAttachmentsAttribute($value)
+    {
+        return json_decode($value);
+    }
+
     public function districtsOfOperation()
     {
         return $this->belongsToMany(District::class)->withTimestamps();
@@ -45,6 +55,15 @@ class Organisation extends Model
     public function contact_persons()
     {
         return $this->hasMany(OrganisationContactPerson::class);
+    }
+
+    public function memberships()
+    {
+        return $this->hasMany(Organisation::class);
+    }
+
+    public function administrator() {
+        return $this->belongsTo(Person::class, 'user_id');
     }
 
 }
