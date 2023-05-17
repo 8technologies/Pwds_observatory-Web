@@ -1,7 +1,7 @@
 @component('mail::message')
 # Hello
 
-You have been made the Administrator of a District Union {{ $name }}.
+You have been made the Administrator of a District Union <b>{{ $name }} </b>.
 <br> Please find your login details below.
 <br><br>
 

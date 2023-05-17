@@ -25,4 +25,20 @@ class District extends Model
     {
         return $this->hasMany(Person::class);
     }
+
+    /**
+     * Has many service- providers
+     */
+    public function service_providers()
+    {
+        return $this->belongsToMany(ServiceProvider::class);
+    }
+
+    /**
+     * Has many products
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
+    }
 }

@@ -7,6 +7,11 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Models\User;
+use App\Mail\CreatedOPDMail;
+use App\Admin\Extensions\OPDExcelExporter;
 
 class OPDController extends AdminController
 {
@@ -25,7 +30,7 @@ class OPDController extends AdminController
     {
         $grid = new Grid(new Organisation());
         $grid->model()->where('relationship_type', 'opd')->orderBy('updated_at', 'desc');
-
+        $grid->exporter(new OPDExcelExporter());
         $grid->column('name', __('Name'));
         $grid->column('registration_number', __('Registration number'));
         $grid->column('date_of_registration', __('Date of registration'));
@@ -102,6 +107,11 @@ class OPDController extends AdminController
     {
         $form = new Form(new Organisation());    
 
+        // Only show form if organisation_id is set
+        if (session('organisation_id')  == null && $form->isCreating()) {
+            return redirect('admin/organisations');
+        }
+
         $form->footer(function ($footer) {
             $footer->disableReset();
             $footer->disableViewCheck();
@@ -111,14 +121,14 @@ class OPDController extends AdminController
         });
 
         $form->tab('Bio', function ($form) {
-            $form->text('name', __('Name'));
-            $form->text('registration_number', __('Registration number'));
-            $form->date('date_of_registration', __('Date of registration'));
-            $form->radio('type', __('Type Of Organisation'))->options(['NGO'=> 'NGO', 'SACCO'=> 'SACCO'])->required();
-            $form->textarea('mission', __('Mission'));
-            $form->textarea('vision', __('Vision'));
-            $form->textarea('core_values', __('Core values'));
-            $form->quill('brief_profile', __('Brief profile'));
+            $form->text('name', __('Name'))->required();
+            $form->text('registration_number', __('Registration number'))->required();
+            $form->date('date_of_registration', __('Date of registration'))->required();
+            $form->radio('type', __('Type Of Organisation'))->options(['NGO' => 'NGO', 'SACCO' => 'SACCO'])->required();
+            $form->textarea('mission', __('Mission'))->required();
+            $form->textarea('vision', __('Vision'))->required();
+            $form->textarea('core_values', __('Core values'))->required();
+            $form->quill('brief_profile', __('Brief profile'))->required();
         });
 
         // $form->tab('Leadership', function ($form) {
@@ -144,36 +154,74 @@ class OPDController extends AdminController
                 $form->text('position', __('Position'))->required();
                 $form->email('email', __('Email'))->required();
                 $form->text('phone1', __('Phone Tel'))->required();
-                $form->text('phone2', __('Other Tel') );
+                $form->text('phone2', __('Other Tel'));
             });
         });
-        $form->tab('Attachments', function($form) {
+
+        $form->tab('Attachments', function ($form) {
             $form->file('logo', __('Logo'))->removable()->rules('mimes:png,jpg,jpeg')->required()
-            ->help("Upload image logo in png, jpg, jpeg format (max: 2MB)");
+                ->help("Upload image logo in png, jpg, jpeg format (max: 2MB)");
             $form->file('certificate_of_registration', __('Certificate of registration'))->removable()->rules('mimes:pdf')->required()
-            ->help("Upload certificate of registration in pdf format (max: 2MB)");
-            
+                ->help("Upload certificate of registration in pdf format (max: 2MB)");
+
             $form->multipleFile('attachments', __('Other Attachments'))->removable()->rules('mimes:pdf,png,jpg,jpeg')
-            ->help("Upload files such as certificate (pdf), logo (png, jpg, jpeg)");
-
-            $form->html('<button type="submit" class="btn btn-primary">Submit</button>');
-
+                ->help("Upload files such as certificate (pdf), logo (png, jpg, jpeg)");
         });
-        
-        $form->tab('Membership Duration', function ( $form) {
-            $form->date('start_date', __('Start date'))->default(date('Y-m-d'));
-            $form->date('end_date', __('End date'))->default(date('Y-m-d'))->rules('after:start_date');
+        $form->tab('Membership Duration', function ($form) {
+            $form->date('valid_from', __('Valid From'))->default(date('Y-m-d'));
+            $form->date('valid_to', __('Valid To'))->default(date('Y-m-d'))->rules('after:start_date');
+            $form->hidden('relationship_type')->default('opd');
+            $form->hidden('parent_organisation_id')->default(session('organisation_id'));
+
             $form->divider();
-            $form->html('<button type="submit" class="btn btn-primary">Submit</button>');
 
+            // $form->html('<button type="submit" class="btn btn-primary float-right">Submit</button>');
+        });
+        $form->tab('Administrator', function ($form) {
+            $form->email('admin_email', ('Administrator'))->required()
+                ->help("This will be emailed with the password to log into the system");
+
+            $form->divider();
+
+            $form->html('<button type="submit" class="btn btn-primary float-right">Submit</button>');
+        });
+        $form->hidden('user_id')->default(0);
+
+
+        $form->saving(function ($form) {
+            // save the admin in users and map to this du
+            if ($form->isCreating()) {
+                //generate random password for user and send it to the user's email
+                $alpha_list = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz1234567890';
+                $password = substr(str_shuffle($alpha_list), 0, 8);
+
+                $admin_email = $form->admin_email;
+
+                $new_password = $password;
+                $password = Hash::make($password);
+
+                //check if user exists
+                $admin = User::where('email', $admin_email)->first();
+
+                if($admin == null) {
+                    $admin = User::create([
+                        'username' => $admin_email,
+                        'email' => $form->admin_email,
+                        'password' => $password
+                    ]);
+                }
+
+                $form->user_id = $admin->id;
+        
+                session(['password' => $new_password]);
+            }
         });
 
-        //TODO check if admin exists and if not create one and send email
-        $form->saved(function (Form $form) {
-            $organisation = $form->model();
-            if ($form->isCreating()) {
 
-                $organisation->save();
+        $form->saved(function (Form $form) {
+            if ($form->isCreating()) {
+                $admin_password = session('password');      
+                Mail::to($form->admin_email)->send(new CreatedOPDMail($form->name, $form->admin_email, $admin_password));
             }
         });
 

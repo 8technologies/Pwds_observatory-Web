@@ -8,11 +8,10 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
-use Illuminate\Support\Facades\DB;
 use App\Models\User;
-use Error;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Admin\Extensions\DistrictUnionsExcelExporter;
 
 class DistrictUnionController extends AdminController
 {
@@ -31,6 +30,7 @@ class DistrictUnionController extends AdminController
     {
         $grid = new Grid(new Organisation());
         $grid->model()->where('relationship_type', 'du')->orderBy('updated_at', 'desc');
+        $grid->exporter(new DistrictUnionsExcelExporter());
 
         $grid->column('name', __('Name'));
         $grid->column('registration_number', __('Registration number'));
@@ -53,6 +53,7 @@ class DistrictUnionController extends AdminController
     {
         $show = new Show(Organisation::findOrFail($id));
         $model = Organisation::findOrFail($id);
+        session(['organisation_id' => $model->id]); //set a global organisation id
 
         //Add new button to the top
         $show->panel()
@@ -200,32 +201,26 @@ class DistrictUnionController extends AdminController
 
                 $new_password = $password;
                 $password = Hash::make($password);
-                $admin = User::create([
-                    'username' => $admin_email,
-                    'email' => $form->admin_email,
-                    'password' => $password
-                ]);
-                error_log($admin->id);
+                //check if user exists
+                $admin = User::where('email', $admin_email)->first();
+    
+                if($admin == null) {
+                    $admin = User::create([
+                        'username' => $admin_email,
+                        'email' => $form->admin_email,
+                        'password' => $password
+                    ]);
+                }
                 $form->user_id = $admin->id;
         
                 session(['password' => $new_password]);
             }
         });
 
-        //TODO check if admin existsand if not create one and send email
 
         $form->saved(function (Form $form) {
             if ($form->isCreating()) {
                 $admin_password = session('password');        
-
-                // DB::table('organisation_organisation')->insert([
-                //     'parent_organisation_id' => $parent_organisation,
-                //     'child_organisation_id' => $form->model()->id,
-                //     'relationship_type' => 'du',
-                //     'valid_from' => $form->valid_from,
-                //     'valid_to' => $form->valid_to
-                // ]);
-
 
                 Mail::to($form->admin_email)->send(new CreatedDistrictUnionMail($form->name, $form->admin_email, $admin_password));
             }

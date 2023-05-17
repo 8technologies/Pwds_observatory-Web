@@ -12,6 +12,7 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Widgets\MultipleSteps;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use App\Admin\Extensions\OrganisationsExcelExporter;
 
 class OrganisationController extends AdminController
 {
@@ -30,8 +31,9 @@ class OrganisationController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Organisation());
-        $grid->model()->where('relationship_type', '!=', 'du')->where('relationship_type', '!=', 'opd')->orderBy('updated_at', 'desc');
-
+        $grid->model()->whereNull('relationship_type')->orderBy('updated_at', 'desc');
+        // handle exports
+        $grid->exporter(new OrganisationsExcelExporter());
         $grid->column('name', __('Name'));
         $grid->column('registration_number', __('Registration number'));
         $grid->column('date_of_registration', __('Date of registration'));
