@@ -92,7 +92,7 @@ class PersonController extends AdminController
             'Female' => 'Female',
         ])->sortable();
 
-        $grid->column('dob', __('AGE/D.O.B'));
+        $grid->column('dob', __('D.O.B'));
 
         $grid->column('disabilities', __('Disabilities'))
             ->display(
@@ -163,7 +163,12 @@ class PersonController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(Person::findOrFail($id));
+        $persons = Person::findOrFail($id);
+        $show = new Show($persons);
+
+        return view('admin.persons.show',  [
+            'pwd' => $persons
+        ]);
 
         $show->photo()->image();
         $show->field('name', __('Name'));

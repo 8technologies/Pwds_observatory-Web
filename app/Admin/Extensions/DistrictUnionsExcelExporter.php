@@ -2,23 +2,19 @@
 
 namespace App\Admin\Extensions;
 
-use Encore\Admin\Grid\Exporters\AbstractExporter;
+use Encore\Admin\Grid\Exporters\ExcelExporter;
 
-class DistrictUnionsExcelExporter extends AbstractExporter
+class DistrictUnionsExcelExporter extends ExcelExporter
 {
-    protected $filename = 'DistrictUnions.xlsx';
+    protected $fileName = 'DistrictUnions.xlsx';
 
     protected $columns = [
-        'id' => 'ID',
         'name' => 'Name',
-        'district_id' => 'District',
-        'created_at' => 'Created at',
-        'updated_at' => 'Updated at',
+        'registration_number' => 'Registration number',
+        'date_of_registration' => 'Date of registration',
+        'type' => 'Type Of Organisation',
+        'membership_type' => 'Membership type',
+        'physical_address' => 'Physical address'
     ];
     
-    public function export()
-    {
-        $filename = 'DistrictUnions-'.date('Y-m-d-H-i-s').'.xlsx';
-        $this->download($filename);
-    }
 }

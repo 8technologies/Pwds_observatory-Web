@@ -2,11 +2,11 @@
 
 namespace App\Admin\Extensions;
 
-use Encore\Admin\Grid\Exporters\AbstractExporter;
+use Encore\Admin\Grid\Exporters\ExcelExporter;
 
-class OPDExcelExporter extends AbstractExporter
+class OPDExcelExporter extends ExcelExporter
 {
-    protected $filename = 'OPDs.xlsx';
+    protected $fileName = 'OPDs.xlsx';
 
     protected $columns = [
         'id' => 'ID',
@@ -15,13 +15,7 @@ class OPDExcelExporter extends AbstractExporter
         'date_of_registration' => 'Date of registration',
         'type' => 'Type Of Organisation',
         'membership_type' => 'Membership type',
-        'physical_address' => 'Physical address',
-        'contact_persons' => 'Contact persons',
+        'physical_address' => 'Physical address'
     ];
 
-    public function export()
-    {
-        $filename = 'OPD-'.date('Y-m-d-H-i-s').'.xlsx';
-        $this->download($filename);
-    }
 }

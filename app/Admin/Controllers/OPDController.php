@@ -29,6 +29,9 @@ class OPDController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Organisation());
+        $grid->disableFilter();
+        $grid->disableBatchActions();
+        $grid->quickSearch('name')->placeholder('Search by Name');
         $grid->model()->where('relationship_type', 'opd')->orderBy('updated_at', 'desc');
         $grid->exporter(new OPDExcelExporter());
         $grid->column('name', __('Name'));
@@ -52,6 +55,10 @@ class OPDController extends AdminController
     {
         $show = new Show(Organisation::findOrFail($id));
         $model = Organisation::findOrFail($id);
+
+        return view('admin.organisations.show', [
+            'organisation' => $model
+        ]);
 
         //Add new button to the top
         $show->panel()
@@ -143,7 +150,7 @@ class OPDController extends AdminController
         // });
 
         $form->tab('Membership', function ($form) {
-            $form->radio('membership_type', __('Membership type'))->options(['member' => 'Member-Based', 'pwd' => 'Individual-based', 'all' => 'Both'])->required();
+            $form->radio('membership_type', __('Membership type'))->options(['member' => 'Member-Based', 'pwd' => 'Individual-based', 'both' => 'Both'])->required();
         });
 
         $form->tab('Contact', function ($form) {

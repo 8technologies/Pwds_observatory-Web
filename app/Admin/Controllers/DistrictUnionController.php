@@ -29,6 +29,10 @@ class DistrictUnionController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Organisation());
+        $grid->disableFilter();
+        $grid->disableBatchActions();
+        $grid->quickSearch('name')->placeholder('Search by Name');
+
         $grid->model()->where('relationship_type', 'du')->orderBy('updated_at', 'desc');
         $grid->exporter(new DistrictUnionsExcelExporter());
 
@@ -53,6 +57,11 @@ class DistrictUnionController extends AdminController
     {
         $show = new Show(Organisation::findOrFail($id));
         $model = Organisation::findOrFail($id);
+
+        return view('admin.organisations.show', [
+            'organisation' => $model
+        ]);
+        
         session(['organisation_id' => $model->id]); //set a global organisation id
 
         //Add new button to the top
@@ -145,7 +154,7 @@ class DistrictUnionController extends AdminController
         // });
 
         $form->tab('Membership', function ($form) {
-            $form->radio('membership_type', __('Membership type'))->options(['member' => 'Member-Based', 'pwd' => 'Individual-based', 'all' => 'Both'])->required();
+            $form->radio('membership_type', __('Membership type'))->options(['member' => 'Member-Based', 'pwd' => 'Individual-based', 'both' => 'Both'])->required();
         });
 
         $form->tab('Contact', function ($form) {

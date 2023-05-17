@@ -3,14 +3,10 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Organisation;
-use Encore\Admin\Admin;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
-use Encore\Admin\Layout\Content;
-use Encore\Admin\Widgets\MultipleSteps;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use App\Admin\Extensions\OrganisationsExcelExporter;
 
@@ -31,6 +27,9 @@ class OrganisationController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Organisation());
+        $grid->disableFilter();
+        $grid->disableBatchActions();
+        $grid->quickSearch('name')->placeholder('Search by Name');
         $grid->model()->whereNull('relationship_type')->orderBy('updated_at', 'desc');
         // handle exports
         $grid->exporter(new OrganisationsExcelExporter());
@@ -56,6 +55,10 @@ class OrganisationController extends AdminController
         $model = Organisation::findOrFail($id);
         $show = new Show($model);
         session(['organisation_id' => $model->id]); //set a global organisation id
+
+        return view('admin.organisations.show', [
+            'organisation' => $model
+        ]);
     
         //Add new button to the top
         $show->panel()
@@ -65,7 +68,7 @@ class OrganisationController extends AdminController
             if($model->membership_type == 'member') {
                 $tools->append('<a class="btn btn-sm btn-primary mx-3" href="' . url('admin/opds/create') . '">Add OPD</a>');
                 $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/district-unions/create') . '">Add District Union</a>');
-            }else if($model->membership_type == 'all') {
+            }else if($model->membership_type == 'both') {
                 $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/people/create') . '">Add Person With Disability</a>');
                 $tools->append('<a class="btn btn-sm btn-primary mx-3" href="' . url('admin/opds/create') . '">Add OPD</a>');
                 $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/district-unions/create') . '">Add District Union</a>');
@@ -163,7 +166,7 @@ class OrganisationController extends AdminController
         // });
 
         $form->tab('Membership', function ($form) {
-            $form->radio('membership_type', __('Membership type'))->options(['member' => 'Member-Based', 'pwd' => 'Individual-based', 'all' => 'Both'])->required();
+            $form->radio('membership_type', __('Membership type'))->options(['member' => 'Member-Based', 'pwd' => 'Individual-based', 'both' => 'Both'])->required();
         });
 
         $form->tab('Contact', function ($form) {
