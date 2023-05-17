@@ -3,25 +3,19 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Organisation;
-use Encore\Admin\Admin;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
-use Encore\Admin\Layout\Content;
-use Encore\Admin\Widgets\MultipleSteps;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 
-class OrganisationController extends AdminController
+class OPDController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = 'Organisation';
-
+    protected $title = 'OPDs';
     /**
      * Make a grid builder.
      *
@@ -30,7 +24,7 @@ class OrganisationController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Organisation());
-        $grid->model()->where('relationship_type', '!=', 'du')->where('relationship_type', '!=', 'opd')->orderBy('updated_at', 'desc');
+        $grid->model()->where('relationship_type', 'opd')->orderBy('updated_at', 'desc');
 
         $grid->column('name', __('Name'));
         $grid->column('registration_number', __('Registration number'));
@@ -51,10 +45,9 @@ class OrganisationController extends AdminController
      */
     protected function detail($id)
     {
+        $show = new Show(Organisation::findOrFail($id));
         $model = Organisation::findOrFail($id);
-        $show = new Show($model);
-        session(['organisation_id' => $model->id]); //set a global organisation id
-    
+
         //Add new button to the top
         $show->panel()
         ->tools(function ($tools) use ($model) {
@@ -70,8 +63,7 @@ class OrganisationController extends AdminController
             }else{
                 $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/people/create') . '">Add Person With Disability</a>');
             }
-       });  
-
+        });  
         $show->field('name', __('Name'));
         $show->field('registration_number', __('Registration number'));
         $show->field('date_of_registration', __('Date of registration'));
@@ -100,25 +92,6 @@ class OrganisationController extends AdminController
 
         return $show;
     }
-    //     /**
-    //  * Create interface.
-    //  *
-    //  * @param Content $content
-    //  *
-    //  * @return Content
-    //  */
-    // public function create(Content $content)
-    // {
-    //     $form = new Form(new Organisation());
-    //     $forms = [
-    //         'bio' => new \App\Admin\Forms\Organisation\Bio($form),
-    //     ];
-
-    //     // Create a custom html content
-    //     return $content
-    //         ->title('Create Organisation')
-    //         ->body(MultipleSteps::make($forms, null, $form));
-    // }
 
     /**
      * Make a form builder.
@@ -127,9 +100,8 @@ class OrganisationController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Organisation());
+        $form = new Form(new Organisation());    
 
-        
         $form->footer(function ($footer) {
             $footer->disableReset();
             $footer->disableViewCheck();
@@ -139,14 +111,14 @@ class OrganisationController extends AdminController
         });
 
         $form->tab('Bio', function ($form) {
-            $form->text('name', __('Name'))->required();
-            $form->text('registration_number', __('Registration number'))->required();
-            $form->date('date_of_registration', __('Date of registration'))->required();
+            $form->text('name', __('Name'));
+            $form->text('registration_number', __('Registration number'));
+            $form->date('date_of_registration', __('Date of registration'));
             $form->radio('type', __('Type Of Organisation'))->options(['NGO'=> 'NGO', 'SACCO'=> 'SACCO'])->required();
-            $form->textarea('mission', __('Mission'))->required();
-            $form->textarea('vision', __('Vision'))->required();
-            $form->textarea('core_values', __('Core values'))->required();
-            $form->quill('brief_profile', __('Brief profile'))->required();
+            $form->textarea('mission', __('Mission'));
+            $form->textarea('vision', __('Vision'));
+            $form->textarea('core_values', __('Core values'));
+            $form->quill('brief_profile', __('Brief profile'));
         });
 
         // $form->tab('Leadership', function ($form) {
@@ -175,7 +147,6 @@ class OrganisationController extends AdminController
                 $form->text('phone2', __('Other Tel') );
             });
         });
-
         $form->tab('Attachments', function($form) {
             $form->file('logo', __('Logo'))->removable()->rules('mimes:png,jpg,jpeg')->required()
             ->help("Upload image logo in png, jpg, jpeg format (max: 2MB)");
@@ -185,22 +156,28 @@ class OrganisationController extends AdminController
             $form->multipleFile('attachments', __('Other Attachments'))->removable()->rules('mimes:pdf,png,jpg,jpeg')
             ->help("Upload files such as certificate (pdf), logo (png, jpg, jpeg)");
 
+            $form->html('<button type="submit" class="btn btn-primary">Submit</button>');
+
+        });
+        
+        $form->tab('Membership Duration', function ( $form) {
+            $form->date('start_date', __('Start date'))->default(date('Y-m-d'));
+            $form->date('end_date', __('End date'))->default(date('Y-m-d'))->rules('after:start_date');
             $form->divider();
-
-            $form->html('<button type="submit" class="btn btn-primary float-right">Submit</button>');
+            $form->html('<button type="submit" class="btn btn-primary">Submit</button>');
 
         });
-        $form->hidden('user_id')->default(Auth::guard('admin')->user()->id);
 
-        $form->saving(function (Form $form) {
-            $form->user_id = Auth::guard('admin')->user()->id;
-        });
+        //TODO check if admin exists and if not create one and send email
         $form->saved(function (Form $form) {
-            return redirect()->route('admin.organisations.show', $form->model()->id);
+            $organisation = $form->model();
+            if ($form->isCreating()) {
+
+                $organisation->save();
+            }
         });
 
 
         return $form;
     }
-    
 }

@@ -20,24 +20,18 @@ class CreateCounsellingCentresTable extends Migration
             $table->timestamps();
             $table->foreignIdFor(Administrator::class);
             $table->foreignIdFor(Disability::class);
-            $table->text('name')->nullable();
+            $table->string('name')->nullable();
             $table->text('about')->nullable();
-            $table->text('address')->nullable();
-            $table->text('parish')->nullable();
-            $table->text('village')->nullable();
-            $table->text('phone_number')->nullable();
-            $table->text('email')->nullable();
-            $table->text('district_id')->nullable();
-            $table->integer('subcounty_id')->nullable();
-            $table->text('website')->nullable();
-            $table->text('phone_number_2')->nullable();
-            $table->text('photo')->nullable();
-            $table->text('gps_latitude')->nullable();
-            $table->text('gps_longitude')->nullable();
-            $table->text('status')->default('Pending')->nullable();
-            $table->text('skills')->default()->nullable();
-            $table->text('fees_range')->default()->nullable();
-            $table->softDeletes();
+            $table->string('address')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('email')->nullable();
+            $table->string('website')->nullable();
+            $table->string('phone_number_2')->nullable();
+            $table->string('photo')->nullable();
+            $table->string('gps_latitude')->nullable();
+            $table->string('gps_longitude')->nullable();
+            $table->text('skills')->nullable();
+            $table->string('fees_range')->nullable();
         });
     }
 

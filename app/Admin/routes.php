@@ -36,4 +36,6 @@ Route::group([
     $router->resource('product-orders', ProductOrderController::class); 
 
     $router->resource('organisations', OrganisationController::class);
+    $router->resource('opds', OPDController::class);
+    $router->resource('district-unions', DistrictUnionController::class);
 });

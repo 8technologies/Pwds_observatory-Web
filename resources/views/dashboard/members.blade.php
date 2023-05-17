@@ -15,7 +15,7 @@ use App\Models\Utils;
         border-radius: 5px;
     }
 </style>
-<div class="card  mb-4 mb-md-5 border-0">
+{{-- <div class="card  mb-4 mb-md-5 border-0">
     <!--begin::Header-->
     <div class="d-flex justify-content-between px-3 px-md-4 ">
         <h3>
@@ -126,4 +126,4 @@ use App\Models\Utils;
         <!--end::Table container-->
     </div>
     <!--begin::Body-->
-</div>
+</div> --}}

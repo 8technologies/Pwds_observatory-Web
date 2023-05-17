@@ -16,9 +16,8 @@ class CreatedOPDMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(public readonly string $name, public readonly string $email, public readonly string $password)
     {
-        //
     }
 
     /**

@@ -17,6 +17,8 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasFactory; 
     use Notifiable;
+
+    protected $guarded = [];
  
     public function getJWTIdentifier()
     {
