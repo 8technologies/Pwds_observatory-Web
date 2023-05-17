@@ -2,21 +2,15 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Association;
 use App\Models\Disability;
-use App\Models\Group;
-use App\Models\Location;
 use App\Models\Organisation;
 use App\Models\Person;
 use App\Models\Utils;
-use Dflydev\DotAccessData\Util;
-use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
-use Illuminate\Support\Facades\Auth;
-use Encore\Admin\Admin;
+use App\Admin\Extensions\PersonsExcelExporter;
 
 class PersonController extends AdminController
 {
@@ -77,6 +71,7 @@ class PersonController extends AdminController
         $grid->quickSearch('name')->placeholder('Search by name');
 
         $grid->model()->orderBy('id', 'desc');
+        $grid->exporter(new PersonsExcelExporter());
         $grid->disableBatchActions();
 
         $grid->column('id', __('Id'))->sortable();

@@ -22,7 +22,7 @@
                     BACK
                     TO ALL LIST</a>
             @endisset
-            <a href="{{ url('people/' . $organisation->id . '/edit') }}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i>
+            <a href="{{ admin_url(request()->segment(2) .'/'. $organisation->id . '/edit') }}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i>
                 EDIT</a>
             <a href="#" onclick="window.print();return false;" class="btn btn-primary btn-sm"><i
                     class="fa fa-print"></i> PRINT</a>

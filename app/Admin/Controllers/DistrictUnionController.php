@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Admin\Extensions\DistrictUnionsExcelExporter;
+use Encore\Admin\Admin;
 
 class DistrictUnionController extends AdminController
 {
@@ -32,14 +33,20 @@ class DistrictUnionController extends AdminController
         $grid->disableFilter();
         $grid->disableBatchActions();
         $grid->quickSearch('name')->placeholder('Search by Name');
+        // if(auth('admin')->user()->isRole('administrator')) {
+            
+        // }
+        
 
+        // if(Admin::user()->isRole('district-union')) {
+
+        // }
         $grid->model()->where('relationship_type', 'du')->orderBy('updated_at', 'desc');
         $grid->exporter(new DistrictUnionsExcelExporter());
 
         $grid->column('name', __('Name'));
         $grid->column('registration_number', __('Registration number'));
         $grid->column('date_of_registration', __('Date of registration'));
-        $grid->column('type', __('Type Of Organisation'));
         $grid->column('membership_type', __('Membership type'));
         $grid->column('physical_address', __('Physical address'));
         // $grid->column('contact_persons', __('Contact persons'));
@@ -61,7 +68,7 @@ class DistrictUnionController extends AdminController
         return view('admin.organisations.show', [
             'organisation' => $model
         ]);
-        
+
         session(['organisation_id' => $model->id]); //set a global organisation id
 
         //Add new button to the top
@@ -135,7 +142,7 @@ class DistrictUnionController extends AdminController
             $form->text('name', __('Name'))->required();
             $form->text('registration_number', __('Registration number'))->required();
             $form->date('date_of_registration', __('Date of registration'))->required();
-            $form->radio('type', __('Type Of Organisation'))->options(['NGO' => 'NGO', 'SACCO' => 'SACCO'])->required();
+            // $form->radio('type', __('Type Of Organisation'))->options(['NGO' => 'NGO', 'SACCO' => 'SACCO'])->required();
             $form->textarea('mission', __('Mission'))->required();
             $form->textarea('vision', __('Vision'))->required();
             $form->textarea('core_values', __('Core values'))->required();
@@ -219,6 +226,8 @@ class DistrictUnionController extends AdminController
                         'email' => $form->admin_email,
                         'password' => $password
                     ]);
+
+                    $admin->assignRole('district-union');
                 }
                 $form->user_id = $admin->id;
         

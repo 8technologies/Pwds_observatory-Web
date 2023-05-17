@@ -23,7 +23,7 @@ class CreateOrganisationsTable extends Migration
             $table->text("vision");
             $table->text("core_values");
             $table->text("brief_profile");
-            $table->string("type"); // (association, group, cooperative, company, etc
+            // $table->string("type"); // (association, group, cooperative, company, etc
             $table->enum("membership_type", ["member", "pwd", "both"]);
 
             $table->string("physical_address");

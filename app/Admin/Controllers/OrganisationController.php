@@ -36,7 +36,7 @@ class OrganisationController extends AdminController
         $grid->column('name', __('Name'));
         $grid->column('registration_number', __('Registration number'));
         $grid->column('date_of_registration', __('Date of registration'));
-        $grid->column('type', __('Type Of Organisation'));
+        
         $grid->column('membership_type', __('Membership type'));
         $grid->column('physical_address', __('Physical address'));
         // $grid->column('contact_persons', __('Contact persons'));
@@ -147,7 +147,7 @@ class OrganisationController extends AdminController
             $form->text('name', __('Name'))->required();
             $form->text('registration_number', __('Registration number'))->required();
             $form->date('date_of_registration', __('Date of registration'))->required();
-            $form->radio('type', __('Type Of Organisation'))->options(['NGO'=> 'NGO', 'SACCO'=> 'SACCO'])->required();
+            // $form->radio('type', __('Type Of Organisation'))->options(['NGO'=> 'NGO', 'SACCO'=> 'SACCO'])->required();
             $form->textarea('mission', __('Mission'))->required();
             $form->textarea('vision', __('Vision'))->required();
             $form->textarea('core_values', __('Core values'))->required();
