@@ -30,7 +30,7 @@ class Person extends Model
     // }
     public function districtOfOrigin()
     {
-        return $this->belongsTo(District::class, 'district_id');
+        return $this->belongsTo(District::class, 'district_of_origin');
     }
 
     public function academic_qualifications(){

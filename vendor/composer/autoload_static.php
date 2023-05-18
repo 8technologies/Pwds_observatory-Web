@@ -667,6 +667,7 @@ class ComposerStaticInitda89eef54c810448a827ed04bb3da82f
         'App\\Admin\\Extensions\\Nav\\Shortcut' => __DIR__ . '/../..' . '/app/Admin/Extensions/Nav/Shortcut.php',
         'App\\Admin\\Extensions\\OPDExcelExporter' => __DIR__ . '/../..' . '/app/Admin/Extensions/OPDExcelExporter.php',
         'App\\Admin\\Extensions\\OrganisationsExcelExporter' => __DIR__ . '/../..' . '/app/Admin/Extensions/OrganisationsExcelExporter.php',
+        'App\\Admin\\Extensions\\PersonsExcelExporter' => __DIR__ . '/../..' . '/app/Admin/Extensions/PersonsExcelExporter.php',
         'App\\Admin\\Extensions\\Tools\\Button' => __DIR__ . '/../..' . '/app/Admin/Extensions/Tools/Button.php',
         'App\\Admin\\Extensions\\Tools\\ButtonGroup' => __DIR__ . '/../..' . '/app/Admin/Extensions/Tools/ButtonGroup.php',
         'App\\Admin\\Extensions\\Tools\\DatePicker' => __DIR__ . '/../..' . '/app/Admin/Extensions/Tools/DatePicker.php',

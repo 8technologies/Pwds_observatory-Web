@@ -47,6 +47,7 @@ return array(
     'App\\Admin\\Extensions\\Nav\\Shortcut' => $baseDir . '/app/Admin/Extensions/Nav/Shortcut.php',
     'App\\Admin\\Extensions\\OPDExcelExporter' => $baseDir . '/app/Admin/Extensions/OPDExcelExporter.php',
     'App\\Admin\\Extensions\\OrganisationsExcelExporter' => $baseDir . '/app/Admin/Extensions/OrganisationsExcelExporter.php',
+    'App\\Admin\\Extensions\\PersonsExcelExporter' => $baseDir . '/app/Admin/Extensions/PersonsExcelExporter.php',
     'App\\Admin\\Extensions\\Tools\\Button' => $baseDir . '/app/Admin/Extensions/Tools/Button.php',
     'App\\Admin\\Extensions\\Tools\\ButtonGroup' => $baseDir . '/app/Admin/Extensions/Tools/ButtonGroup.php',
     'App\\Admin\\Extensions\\Tools\\DatePicker' => $baseDir . '/app/Admin/Extensions/Tools/DatePicker.php',

@@ -30,7 +30,10 @@ class CreateJobsTable extends Migration
             $table->text('how_to_apply')->nullable();
             $table->text('whatsapp')->nullable();
             $table->text('subcounty_id')->nullable();
-            $table->text('district_id')->nullable(); 
+            $table->foreignId('district_id')->constrained('districts')->onDelete('cascade');
+            $table->string('deadline')->nullable();
+            $table->integer('slots')->nullable();
+
         });
     }
 

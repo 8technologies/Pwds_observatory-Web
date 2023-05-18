@@ -18,7 +18,7 @@ class CreateOrganisationsTable extends Migration
             $table->string("name");
             $table->string("registration_number");
             $table->string("date_of_registration");
-            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->text("mission");
             $table->text("vision");
             $table->text("core_values");

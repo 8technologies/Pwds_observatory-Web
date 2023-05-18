@@ -56,10 +56,14 @@
                 't' => 'marital status',
                 's' => $pwd->marital_status,
             ])
+            @include('components.detail-item', [
+                't' => 'district of origin',
+                's' => $pwd->districtOfOrigin->name ?? '',
+            ])
 
         </div>
 
-        <div class="col-9 col-md-5">
+        <div class="col-9 col-md-4">
             <h3 class="text-uppercase h4 p-0 m-0"><b> NEXT OF KIN</b></h3>
             <hr class="my-1 my-md-3">
 

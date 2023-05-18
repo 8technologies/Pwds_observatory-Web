@@ -11,6 +11,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use App\Admin\Extensions\PersonsExcelExporter;
+use App\Models\District;
 
 class PersonController extends AdminController
 {
@@ -57,7 +58,7 @@ class PersonController extends AdminController
             // })
             //     ->ajax($district_ajax_url);
 
-            $f->equal('sex', 'Filter by Sex')->select([
+            $f->equal('sex', 'Filter by Gender')->select([
                 'Male' => 'Male',
                 'Female' => 'Female',
             ]);
@@ -105,47 +106,6 @@ class PersonController extends AdminController
                     // return $this->disability->name;
                 }
             )->sortable();
-        // $grid->column('phone_number', __('Phone number'))->sortable();
-        // $grid->column('district_id', __('District'))
-        //     ->display(
-        //         function ($x) {
-        //             if ($this->district == null) {
-        //                 return '-';
-        //             }
-        //             return $this->district->name;
-        //         }
-        //     )->sortable();
-
-        // $grid->column('email', __('Email'))->hide();
-        // $grid->column('address', __('Address'))->hide();
-        // $grid->column('parish', __('Parish'))->hide();
-        // $grid->column('village', __('Village'))->hide();
-
-
-        // $grid->column('employment_status', __('Is Employed'))->dot([
-        //     'Employed' => 'success',
-        //     'Not Employed' => 'danger',
-        // ])->sortable();
-
-        // $grid->column('has_caregiver', __('Has caregiver'))->hide();
-        // $grid->column('caregiver_name', __('Caregiver name'))->hide();
-        // $grid->column('caregiver_sex', __('Caregiver sex'))->hide();
-        // $grid->column('caregiver_phone_number', __('Caregiver phone number'))->hide();
-        // $grid->column('caregiver_age', __('Caregiver age'))->hide();
-        // $grid->column('caregiver_relationship', __('Caregiver relationship'))->hide();
-        // $grid->column('photo', __('Photo'))->hide();
-
-        // $grid->column('association_id', __('Association'))
-        //     ->display(
-        //         function ($x) {
-        //             if ($this->association == null) {
-        //                 return '-';
-        //             }
-        //             return $this->association->name;
-        //         }
-        //     )->sortable();
-
-
 
         return $grid;
     }
@@ -269,7 +229,11 @@ class PersonController extends AdminController
             $form->text('ethnicity', __('Ethnicity'))->rules('required')
                 ->help('Your Tribe');
             $form->text('religion', __('Religion'))->rules('required');
-            $form->radio('place_of_birth', __('Place Of Birth'))->options(['Hospital' => 'Hospital', 'Home' => 'Home'])->rules('required');
+            $form->select('district_of_origin', __('District Origin'))->options(District::pluck('name','id'))->required();
+            $form->radio('place_of_birth', __('Place Of Birth'))->options(['Hospital' => 'Hospital', 'Other' => 'Other'])
+            ->when('Hospital', function ($form) {
+                $form->text('birth_hospital', __('Hospital Name'));
+            })->rules('required');
             $form->text('languages', __('Languages'))->rules('required')
                 ->help('English, Luganda, Runyakitara, etc');
             $form->multipleSelect('disabilities', __('Select disabilities'))
@@ -283,9 +247,9 @@ class PersonController extends AdminController
             $form->radio('is_formal_education', __('Attended Formal Education'))->options([1 => 'Yes', 0 => 'No'])->rules('required')
             ->when(1, function (Form $form) {
                 $form->hasMany('academic_qualifications', "Start with highest Qualification", function (Form\NestedForm $form) {
-                    $form->text('institution', __('Institution'))->rules('required');
-                    $form->text('qualification', __('Qualification'))->rules('required');
-                    $form->text('year_of_completion', __('Year Of Completion'))->rules('required');
+                    $form->text('institution', __('Institution'));
+                    $form->text('qualification', __('Qualification'));
+                    $form->text('year_of_completion', __('Year Of Completion'));
                 })->default(0);
               
             });
@@ -300,8 +264,8 @@ class PersonController extends AdminController
             $form->radio('is_employed', __('Employment'))->options([1 => 'Yes', 0 => 'No'])->rules('required')
             ->when(1 , function (Form $form) {
                 $form->text('employer', __('Current Employer Name'))->rules('required');
-                $form->text('position', __('Current Position'))->placeholder("Manager")->rules('required');
-                $form->text('year_of_employment', __('Current Period of service'))->placeholder("2022 - 2023")->rules('required');
+                $form->text('position', __('Current Position'))->placeholder("Manager");
+                $form->text('year_of_employment', __('Current Period of service'))->placeholder("2022 - 2023");
 
                 $form->radio('is_formerly_employed', __('Employment History'))->options([1 => 'Yes', 0 => 'No'])
                 ->help("Are you formerly employed anywhere?")
@@ -347,8 +311,8 @@ class PersonController extends AdminController
         $form->tab('Address & Contacts', function( $form){
             $form->radio('is_same_address', __('Is the same as next of kin?'))->options([1 => 'Yes', 0 => 'No'])->rules('required')
                 ->when(0, function (Form $form) {
-                    $form->text('address', __('Address'))->rules('required');
-                    $form->mobile('phone_number', __('Phone Number'))->rules('required');
+                    $form->text('address', __('Address'));
+                    $form->mobile('phone_number', __('Phone Number'));
                     $form->mobile('phone_number_2', __('Other Phone Number'));
                     $form->text('email', __('Email'));
                 })->default(0);

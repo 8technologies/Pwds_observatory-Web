@@ -18,11 +18,13 @@ class CreateNewsPostsTable extends Migration
         Schema::create('news_posts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->text('title');
+            $table->string('title');
             $table->longText('details');
-            $table->foreignIdFor(Administrator::class);
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignIdFor(PostCategory::class);
-            $table->integer('views');
+            $table->integer('views')->default(0);
+            $table->text('description')->nullable();
+            $table->string('photo')->nullable();
         });
     }
 

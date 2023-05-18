@@ -14,5 +14,5 @@ font-size: 16px;
 
     {{ $msg }}
 
-    <b><a href="{{ $link }}">COMPLETE PROFILE</a></b>
+    {{-- <b><a href="{{ $link }}">COMPLETE PROFILE</a></b> --}}
 </div>

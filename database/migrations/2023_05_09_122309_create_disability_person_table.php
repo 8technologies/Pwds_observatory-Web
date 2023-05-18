@@ -15,8 +15,8 @@ class CreateDisabilityPersonTable extends Migration
     {
         Schema::create('disability_person', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('person_id')->constrained('people');
-            $table->foreignId('disability_id')->constrained('disabilities');
+            $table->foreignId('person_id')->constrained('people')->onDelete('cascade');
+            $table->foreignId('disability_id')->constrained('disabilities')->onDelete('cascade');
             $table->timestamps();
         });
     }

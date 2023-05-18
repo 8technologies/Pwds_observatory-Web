@@ -25,31 +25,33 @@ class CreatePeopleTable extends Migration
             $table->text('dob')->nullable();
             $table->text('sex')->nullable();
             $table->text('photo')->nullable();
+            $table->foreignId('district_of_origin')->nullable()->constrained('districts');
 
-            $table->string('other_names');
-            $table->string('id_number'); // National ID, Passport, etc
-            $table->string('ethnicity');
-            $table->string('marital_status');
-            $table->string('religion');
-            $table->string('place_of_birth'); // Hospital, Home, etc
-            $table->string('languages'); // JSON array of languages
+            $table->string('other_names')->nullable();
+            $table->string('id_number')->nullable(); // National ID, Passport, etc
+            $table->string('ethnicity')->nullable();
+            $table->string('marital_status')->nullable();
+            $table->string('religion')->nullable();
+            $table->string('place_of_birth')->nullable(); // Hospital, Other
+            $table->string("birth_hospital")->nullable();
+            $table->string('languages')->nullable(); // JSON array of languages
 
-            $table->string('next_of_kin_last_name');
-            $table->string('next_of_kin_other_names');
+            $table->string('next_of_kin_last_name')->nullable();
+            $table->string('next_of_kin_other_names')->nullable();
             $table->string('next_of_kin_id_number')->nullable();
-            $table->enum('next_of_kin_gender',['Male','Female']);
-            $table->string('next_of_kin_phone_number');
+            $table->enum('next_of_kin_gender',['Male','Female'])->nullable();
+            $table->string('next_of_kin_phone_number')->nullable();
             $table->string('next_of_kin_email')->nullable();
-            $table->string('next_of_kin_relationship');
-            $table->string('next_of_kin_address');
+            $table->string('next_of_kin_relationship')->nullable();
+            $table->string('next_of_kin_address')->nullable();
             $table->string('next_of_kin_alternative_phone_number')->nullable();
 
-            $table->string('employer');
-            $table->string('position');
-            $table->string('year_of_employment');
+            $table->string('employer')->nullable();
+            $table->string('position')->nullable();
+            $table->string('year_of_employment')->nullable();
 
-            $table->string('organisation_name');
-            $table->string('Year_of_membership');
+            $table->string('organisation_name')->nullable();
+            $table->string('Year_of_membership')->nullable();
 
             $table->text('aspirations')->nullable();
             $table->text('areas_of_interest')->nullable();
