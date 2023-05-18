@@ -19,9 +19,10 @@ class CreateEventSpeakersTable extends Migration
             $table->timestamps();
 
             $table->foreignIdFor(Event::class);
-            $table->text('name');
-            $table->text('photo');
+            $table->string('name');
+            $table->string('photo');
             $table->text('details');
+            $table->string('designation');
         });
     }
 

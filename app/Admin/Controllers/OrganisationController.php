@@ -3,15 +3,12 @@
 namespace App\Admin\Controllers;
 
 use App\Models\Organisation;
-use Encore\Admin\Admin;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
-use Encore\Admin\Layout\Content;
-use Encore\Admin\Widgets\MultipleSteps;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use App\Admin\Extensions\OrganisationsExcelExporter;
 
 class OrganisationController extends AdminController
 {
@@ -30,11 +27,16 @@ class OrganisationController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Organisation());
-
+        $grid->disableFilter();
+        $grid->disableBatchActions();
+        $grid->quickSearch('name')->placeholder('Search by Name');
+        $grid->model()->whereNull('relationship_type')->orderBy('updated_at', 'desc');
+        // handle exports
+        $grid->exporter(new OrganisationsExcelExporter());
         $grid->column('name', __('Name'));
         $grid->column('registration_number', __('Registration number'));
         $grid->column('date_of_registration', __('Date of registration'));
-        $grid->column('type', __('Type Of Organisation'));
+        
         $grid->column('membership_type', __('Membership type'));
         $grid->column('physical_address', __('Physical address'));
         // $grid->column('contact_persons', __('Contact persons'));
@@ -52,6 +54,11 @@ class OrganisationController extends AdminController
     {
         $model = Organisation::findOrFail($id);
         $show = new Show($model);
+        session(['organisation_id' => $model->id]); //set a global organisation id
+
+        return view('admin.organisations.show', [
+            'organisation' => $model
+        ]);
     
         //Add new button to the top
         $show->panel()
@@ -59,6 +66,10 @@ class OrganisationController extends AdminController
             $tools->disableList();
             $tools->disableDelete();
             if($model->membership_type == 'member') {
+                $tools->append('<a class="btn btn-sm btn-primary mx-3" href="' . url('admin/opds/create') . '">Add OPD</a>');
+                $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/district-unions/create') . '">Add District Union</a>');
+            }else if($model->membership_type == 'both') {
+                $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/people/create') . '">Add Person With Disability</a>');
                 $tools->append('<a class="btn btn-sm btn-primary mx-3" href="' . url('admin/opds/create') . '">Add OPD</a>');
                 $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/district-unions/create') . '">Add District Union</a>');
             }else{
@@ -136,7 +147,7 @@ class OrganisationController extends AdminController
             $form->text('name', __('Name'))->required();
             $form->text('registration_number', __('Registration number'))->required();
             $form->date('date_of_registration', __('Date of registration'))->required();
-            $form->radio('type', __('Type Of Organisation'))->options(['NGO'=> 'NGO', 'SACCO'=> 'SACCO'])->required();
+            // $form->radio('type', __('Type Of Organisation'))->options(['NGO'=> 'NGO', 'SACCO'=> 'SACCO'])->required();
             $form->textarea('mission', __('Mission'))->required();
             $form->textarea('vision', __('Vision'))->required();
             $form->textarea('core_values', __('Core values'))->required();
@@ -155,7 +166,7 @@ class OrganisationController extends AdminController
         // });
 
         $form->tab('Membership', function ($form) {
-            $form->radio('membership_type', __('Membership type'))->options(['member' => 'Member-Based', 'pwd' => 'Individual-based'])->required();
+            $form->radio('membership_type', __('Membership type'))->options(['member' => 'Member-Based', 'pwd' => 'Individual-based', 'both' => 'Both'])->required();
         });
 
         $form->tab('Contact', function ($form) {
@@ -179,7 +190,9 @@ class OrganisationController extends AdminController
             $form->multipleFile('attachments', __('Other Attachments'))->removable()->rules('mimes:pdf,png,jpg,jpeg')
             ->help("Upload files such as certificate (pdf), logo (png, jpg, jpeg)");
 
-            $form->html('<button type="submit" class="btn btn-primary">Submit</button>');
+            $form->divider();
+
+            $form->html('<button type="submit" class="btn btn-primary float-right">Submit</button>');
 
         });
         $form->hidden('user_id')->default(Auth::guard('admin')->user()->id);
@@ -188,7 +201,6 @@ class OrganisationController extends AdminController
             $form->user_id = Auth::guard('admin')->user()->id;
         });
         $form->saved(function (Form $form) {
-
             return redirect()->route('admin.organisations.show', $form->model()->id);
         });
 

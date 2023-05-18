@@ -52,7 +52,7 @@ use App\Models\Utils;
                         <p class="col"><b>{{ $i->title }}</b>
                             <br>
                             <span class="text-muted fw-bold d-block">
-                                By {{ $i->created_by->name }} - {{ Utils::my_date($i->created_at) }}
+                                By {{ $i->created_by ? $i->created_by->name : '' }} - {{ Utils::my_date($i->created_at) }}
                             </span>
                         </p>
                     </div>

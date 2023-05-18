@@ -10,13 +10,16 @@ use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject ;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use DB;
+use App\Models\AdminRole;
 
 
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory; 
     use Notifiable;
+
+    protected $guarded = [];
  
     public function getJWTIdentifier()
     {
@@ -41,6 +44,20 @@ class User extends Authenticatable implements JWTSubject
     public function managedOrganisations()
     {
         return $this->hasMany(Organisation::class, 'user_id');
+    }
+
+    public function service_provider()
+    {
+        return $this->hasOne(ServiceProvider::class, 'user_id');
+    }
+
+    public function assignRole(String $role)
+    {
+        $role = AdminRole::where('slug', $role)->first();
+        DB::table('admin_role_users')->insert([
+            'role_id' => $role->id,
+            'user_id' => $this->id
+        ]);
     }
  
 }

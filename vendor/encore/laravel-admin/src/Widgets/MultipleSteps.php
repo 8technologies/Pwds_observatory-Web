@@ -3,6 +3,7 @@
 namespace Encore\Admin\Widgets;
 
 use Illuminate\Contracts\Support\Renderable;
+use Encore\Admin\Form;
 
 class MultipleSteps implements Renderable
 {
@@ -17,6 +18,11 @@ class MultipleSteps implements Renderable
     protected $steps = [];
 
     /**
+     * @var Form
+     */
+    protected $form;
+
+    /**
      * @var string
      */
     protected $stepName = 'step';
@@ -27,11 +33,13 @@ class MultipleSteps implements Renderable
      * @param array $steps
      * @param null  $current
      */
-    public function __construct($steps = [], $current = null)
+    public function __construct($steps = [], $current = null, $form = null)
     {
         $this->steps = $steps;
 
         $this->current = $this->resolveCurrentStep($steps, $current);
+
+        $this->form = $form;
     }
 
     /**
@@ -40,9 +48,9 @@ class MultipleSteps implements Renderable
      *
      * @return static
      */
-    public static function make($steps, $current = null): self
+    public static function make($steps, $current = null, $form = null): self
     {
-        return new static($steps, $current);
+        return new static($steps, $current, $form);
     }
 
     /**
@@ -76,7 +84,7 @@ class MultipleSteps implements Renderable
         }
 
         /** @var StepForm $step */
-        $step = new $class();
+        $step = $class::make($this->form);
 
         return $step
             ->setSteps(array_keys($this->steps))

@@ -23,6 +23,22 @@ class District extends Model
      */
     public function people()
     {
-        return $this->hasMany(Person::class);
+        return $this->hasMany(Person::class, 'district_of_origin');
+    }
+
+    /**
+     * Has many service- providers
+     */
+    public function service_providers()
+    {
+        return $this->belongsToMany(ServiceProvider::class);
+    }
+
+    /**
+     * Has many products
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
     }
 }

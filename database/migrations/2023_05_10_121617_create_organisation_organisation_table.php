@@ -18,8 +18,9 @@ class CreateOrganisationOrganisationTable extends Migration
             $table->id();
             $table->foreignId('parent_organisation_id')->constrained('organisations')->onDelete('cascade');
             $table->foreignId('child_organisation_id')->constrained('organisations')->onDelete('cascade');
-            $table->string('membership_type');
-            $table->string('duration_of_membership');
+            $table->string('relationship_type'); // du, opd
+            $table->date('valid_from');
+            $table->date('valid_to');
             $table->timestamps();
         });
     }

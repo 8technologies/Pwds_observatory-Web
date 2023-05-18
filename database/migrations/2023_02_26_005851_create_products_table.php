@@ -16,18 +16,15 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->foreignIdFor(Administrator::class);
-            $table->text('name')->nullable();
-            $table->text('type')->nullable();
-            $table->text('photo')->nullable();
+            $table->foreignId('service_provider_id')->constrained('service_providers');
+            $table->string('name');
+            $table->enum('type', ['product', 'service']);
+            $table->string('photo')->nullable();
             $table->text('details')->nullable();
-            $table->text('price')->nullable();
-            $table->text('offer_type')->nullable();
-            $table->text('state')->nullable();
-            $table->text('category')->nullable();
-            $table->text('subcounty_id')->nullable();
-            $table->text('district_id')->nullable();
+            $table->double('price')->nullable();
+            $table->enum('offer_type',['rent','free','sale'])->default('sale');
+            $table->timestamps();
+
         });
     }
 
@@ -38,6 +35,8 @@ class CreateProductsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('products');
+        Schema::enableForeignKeyConstraints();
     }
 }

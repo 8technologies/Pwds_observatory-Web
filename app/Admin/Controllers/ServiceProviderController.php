@@ -2,15 +2,14 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Location;
 use App\Models\ServiceProvider;
-use App\Models\Utils;
-use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\Auth;
+use App\Models\District;
+
 
 class ServiceProviderController extends AdminController
 {
@@ -19,7 +18,7 @@ class ServiceProviderController extends AdminController
      *
      * @var string
      */
-    protected $title = 'Service providers';
+    protected $title = 'ServiceProvider';
 
     /**
      * Make a grid builder.
@@ -29,51 +28,20 @@ class ServiceProviderController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new ServiceProvider());
-        $grid->disableFilter();
-        $grid->disableBatchActions();
-        $grid->quickSearch('name')->placeholder('Search by name');
-        $grid->model()->orderBy('id', 'desc');
 
-        $grid->column('created_at', __('Regisetered'))->display(
-            function ($x) {
-                return Utils::my_date($x);
-            }
-        )->sortable();
-        $grid->column('name', __('Name'))->sortable(); 
-
-        
-        $grid->column('phone_number', __('Phone number'));
-        $grid->column('email', __('Email'));
-
-        
-        $grid->column('district_id', __('District'))
-            ->display(
-                function ($x) {
-                    $dis = Location::find($x);
-                    if ($dis == null) {
-                        return '-';
-                    }
-                    return $dis->name;
-                }
-            )->sortable();
-
-        $grid->column('subcounty_id', __('Subcounty'))
-            ->display(
-                function ($x) {
-                    $dis = Location::find($x);
-                    if ($dis == null) {
-                        return '-';
-                    }
-                    return $dis->name;
-                }
-            )->sortable(); 
- 
-        $grid->column('address', __('Address'));
-        $grid->column('parish', __('Parish'));
-        $grid->column('village', __('Village'));
-        $grid->column('website', __('Website')); 
-        $grid->column('services_offered', __('Services offered'));
-        $grid->column('photo', __('Photo'));  
+        $grid->column('id', __('Id'));
+        $grid->column('name', __('Name'));
+        $grid->column('registration_number', __('Registration number'));
+        $grid->column('date_of_registration', __('Date of registration'));
+        $grid->column('user_id', __('User id'));
+        $grid->column('brief_profile', __('Brief profile'));
+        $grid->column('physical_address', __('Physical address'));
+        $grid->column('attachments', __('Attachments'));
+        $grid->column('logo', __('Logo'));
+        $grid->column('license', __('License'));
+        $grid->column('certificate_of_registration', __('Certificate of registration'));
+        $grid->column('created_at', __('Created at'));
+        $grid->column('updated_at', __('Updated at'));
 
         return $grid;
     }
@@ -89,26 +57,18 @@ class ServiceProviderController extends AdminController
         $show = new Show(ServiceProvider::findOrFail($id));
 
         $show->field('id', __('Id'));
+        $show->field('name', __('Name'));
+        $show->field('registration_number', __('Registration number'));
+        $show->field('date_of_registration', __('Date of registration'));
+        $show->field('user_id', __('User id'));
+        $show->field('brief_profile', __('Brief profile'));
+        $show->field('physical_address', __('Physical address'));
+        $show->field('attachments', __('Attachments'));
+        $show->field('logo', __('Logo'));
+        $show->field('license', __('License'));
+        $show->field('certificate_of_registration', __('Certificate of registration'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
-        $show->field('administrator_id', __('Administrator id'));
-        $show->field('name', __('Name'));
-        $show->field('about', __('About'));
-        $show->field('address', __('Address'));
-        $show->field('parish', __('Parish'));
-        $show->field('village', __('Village'));
-        $show->field('phone_number', __('Phone number'));
-        $show->field('email', __('Email'));
-        $show->field('district_id', __('District id'));
-        $show->field('subcounty_id', __('Subcounty id'));
-        $show->field('website', __('Website'));
-        $show->field('phone_number_2', __('Phone number 2'));
-        $show->field('services_offered', __('Services offered'));
-        $show->field('photo', __('Photo'));
-        $show->field('gps_latitude', __('Gps latitude'));
-        $show->field('gps_longitude', __('Gps longitude'));
-        $show->field('status', __('Status'));
-        $show->field('deleted_at', __('Deleted at'));
 
         return $show;
     }
@@ -122,58 +82,69 @@ class ServiceProviderController extends AdminController
     {
         $form = new Form(new ServiceProvider());
 
+        $form->footer(function ($footer) {
+            $footer->disableReset();
+            $footer->disableViewCheck();
+            $footer->disableEditingCheck();
+            $footer->disableCreatingCheck();
+            $footer->disableSubmit();
+        });
 
-        if (
-            (Auth::user()->isRole('staff')) ||
-            (Auth::user()->isRole('admin'))
-        ) {
+        $form->tab('Bio', function ($form) {
+            $form->text('name', __('Name'));
+            $form->text('registration_number', __('Registration number'));
+            $form->date('date_of_registration', __('Date of registration'))->rules('required');
 
-            $ajax_url = url(
-                '/api/ajax?'
-                    . "search_by_1=name"
-                    . "&search_by_2=id"
-                    . "&model=User"
-            );
-            $form->select('administrator_id', "Applicant")
-                ->options(function ($id) {
-                    $a = Administrator::find($id);
-                    if ($a) {
-                        return [$a->id => "#" . $a->id . " - " . $a->name];
-                    }
-                })
-                ->ajax($ajax_url)->rules('required');
-        } else {
-            $form->select('administrator_id', __('Applicant'))
-                ->options(Administrator::where('id', Auth::user()->id)->get()->pluck('name', 'id'))->default(Auth::user()->id)->readOnly()->rules('required');
-        }
-
-
-        $form->text('name', __('Enterprise/Business Name'))->rules('required');
-        $form->text('address', __('Enterprise/Business Address'));
-
-        $form->select('subcounty_id', __('Subcounty'))
+            $form->multipleSelect('districts_of_operation', __('Select districts'))
             ->rules('required')
-            ->help('Where is this business located?')
-            ->options(Location::get_sub_counties_array());
-        $form->text('village', __('Village'))->rules('required');
-        $form->text('parish', __('Parish'))->rules('required');
+            ->options(District::orderBy('name', 'asc')->get()->pluck('name', 'id'));
+            
+            $form->quill('brief_profile', __('Brief profile'));
 
-        $form->text('phone_number', __('Phone number'))->rules('required');
-        $form->text('phone_number_2', __('Alternative Phone number'));
-        $form->email('email', __('Email address'));
+        });
 
-        $form->url('website', __('Website'));
+        $form->tab('Address & Contacts', function ($form) {
+            $form->text('physical_address', __('Physical address'));
 
-        $form->tags('services_offered', __('Services offered'))
-            ->help('Seperated with commas.')
-            ->rules('required');
-        $form->text('gps_latitude', __('Business Gps latitude'));
-        $form->text('gps_longitude', __('Business Gps longitude'));
-        $form->image('photo', __('Business logo')); 
-        $form->quill('about', __('About business'))->rules('required');
- 
-        $form->disableReset();
-        $form->disableViewCheck();  
+            
+            $form->hasMany('contact_persons', 'Contact Persons', function (Form\NestedForm $form) {
+                $form->text('name', __('Name'))->required();
+                $form->text('position', __('Position'))->required();
+                $form->email('email', __('Email'))->required();
+                $form->text('phone1', __('Phone Tel'))->required();
+                $form->text('phone2', __('Other Tel') );
+            });
+
+
+        });
+
+        $form->tab('Attachmments',  function($form) {
+            $form->file('logo', __('Logo'))
+            ->help("Upload image logo in png, jpg, jpeg format (max: 2MB)");
+            $form->file('certificate_of_registration', __('Certificate of registration'))
+            ->required()
+            ->help("Upload certificate of registration in pdf format (max: 2MB)");
+
+            $form->file('license', __('License'))
+            ->required()
+            ->help("Upload your trade license");
+
+            $form->multipleFile('attachments', __('Attachments'))
+            ->help("Upload files such as certificate (pdf), logo (png, jpg, jpeg)");
+
+            $form->divider();
+
+            $form->html('<button type="submit" class="btn btn-primary float-right">Submit</button>');
+        });
+
+        $form->hidden('user_id')->default(Auth::guard('admin')->user()->id);
+
+        $form->saving(function (Form $form) {
+            $form->user_id = Auth::guard('admin')->user()->id;
+        });
+        $form->saved(function (Form $form) {
+            return redirect()->route('admin.service-providers.show', $form->model()->id);
+        });
 
         return $form;
     }

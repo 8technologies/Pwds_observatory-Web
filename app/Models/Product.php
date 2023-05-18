@@ -9,14 +9,17 @@ class Product extends Model
 {
     use HasFactory;
 
-    public function getSubcountyTextAttribute()
+    protected $guarded=[];
+
+
+    public function serviceProvider()
     {
-        $d = Location::find($this->subcounty_id);
-        if ($d == null) {
-            return 'Not Subcounty.';
-        }
-        return $d->name_text;
+        return $this->belongsTo(ServiceProvider::class);
     }
-    protected $appends = ['subcounty_text'];
+
+    public function districts()
+    {
+        return $this->belongsToMany(District::class);
+    }
 
 }

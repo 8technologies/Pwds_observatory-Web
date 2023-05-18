@@ -9,47 +9,38 @@ class ServiceProvider extends Model
 {
     use HasFactory;
 
-
-    public static function boot()
+    public function setAttachmentsAttribute($value)
     {
-        parent::boot();
-        self::deleting(function ($m) {
-        });
-        self::created(function ($m) {
-        });
-        self::creating(function ($m) {
-
-            $m->district_id = 1;
-
-            if ($m->subcounty_id != null) {
-                $sub = Location::find($m->subcounty_id);
-                if ($sub != null) {
-                    $m->district_id = $sub->parent;
-                }
-            }
-            return $m;
-        });
-        self::updating(function ($m) {
-
-            $m->district_id = 1;
-            if ($m->subcounty_id != null) {
-                $sub = Location::find($m->subcounty_id);
-                if ($sub != null) {
-                    $m->district_id = $sub->parent;
-                }
-            }
-
-            return $m;
-        });
+        $this->attributes['attachments'] = json_encode($value);
     }
 
-    public function getSubcountyTextAttribute()
+    public function getAttachmentsAttribute($value)
     {
-        $d = Location::find($this->subcounty_id);
-        if ($d == null) {
-            return 'Not group.';
-        }
-        return $d->name_text;
+        return json_decode($value);
     }
-    protected $appends = ['subcounty_text'];
+
+    public function districts_of_operation()
+    {
+        return $this->belongsToMany(District::class);
+    }
+
+    public function contact_persons()
+    {
+        return $this->hasMany(ServiceProviderContactPerson::class);
+    }
+
+    public function products()
+    {
+
+    }
+
+    public function services()
+    {
+        
+    }
+    public function administrator()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
 }

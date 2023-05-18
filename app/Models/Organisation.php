@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Admin\Extensions\Column\OpenMap;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,17 +40,17 @@ class Organisation extends Model
 
     public function parentOrganisation()
     {
-        return $this->hasMany(Membership::class, 'child_organisation_id');
+        return $this->hasOne(Organisation::class, 'parent_organisation_id')->where('id', $this->id);
     }
 
-    public function childOrganisations()
+    public function opds()
     {
-        return $this->hasMany(Membership::class, 'parent_organisation_id');
+        return $this->hasMany(Organisation::class, 'parent_organisation_id')->where('relationship_type','opd');
     }
 
-    public function member_pwds()
+    public function district_unions()
     {
-        return $this->hasMany(Person::class)->pivot('position', 'Year_of_membership');
+        return $this->hasMany(Organisation::class, 'parent_organisation_id')->where('relationship_type','du');
     }
 
     public function contact_persons()
