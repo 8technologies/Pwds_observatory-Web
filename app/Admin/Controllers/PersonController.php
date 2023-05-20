@@ -46,16 +46,16 @@ class PersonController extends AdminController
             $f->between('created_at', 'Filter by registered')->date();
 
 
-            // $f->equal('disability_id', 'Filter Type of disability')->select(
+            // $f->equal('disabilities', 'Filter Type of disability')->select(
             //     Disability::where([])->orderBy('name', 'asc')->get()->pluck('name', 'id')
             // );
-            // $f->where(function ($query) {
+            $f->where(function ($query) {
 
-            //     $query->whereHas('disabilities', function ($query) {
-            //         $query->where('name', 'like', "%{$this->input}%");
-            //     });
+                $query->whereHas('disabilities', function ($query) {
+                    $query->where('name', 'like', "%{$this->input}%");
+                });
             
-            // }, 'Filter by Disability');
+            }, 'Filter by Disability');
             
             
 
@@ -88,13 +88,14 @@ class PersonController extends AdminController
         $grid->quickSearch('name')->placeholder('Search by name');
 
         $user = auth("admin")->user();
-        $organisation = $user->managedorganisation;
-        if(!$user->inRoles(['nudipu', 'Administrator'])) {
+        $organisation = Organisation::where('user_id', $user->id)->first();
+
+        if(!$user->inRoles(['nudipu', 'administrator'])) {
             $grid->model()->orderBy('id', 'desc');
         }else if($user->isRole('district-union')) {
             $grid->model()->where('district_id', $organisation->district_id)->orWhere('membership_type','individual-based')->orWhere('membership_type', 'both')->orderBy('id', 'desc');
-        }else {
-            $grid->model()->where('organisation_id', $organisation->id)->orWhere('membership_type','individual-based')->orWhere('membership_type', 'both')->orderBy('id', 'desc');
+        }else if($user->isRole('opd')) {
+            $grid->model()->where('opd_id', $organisation->id)->orWhere('membership_type','individual-based')->orWhere('membership_type', 'both')->orderBy('id', 'desc');
         }
 
         $grid->exporter(new PersonsExcelExporter());
@@ -439,7 +440,7 @@ class PersonController extends AdminController
                     $user_password = session('password');
                     error_log("Password: ". $user_password);
                     error_log("Email: ". $form->email);
-                    
+
                     if($user_password != null) {
 
                         if($form->email != null) {
