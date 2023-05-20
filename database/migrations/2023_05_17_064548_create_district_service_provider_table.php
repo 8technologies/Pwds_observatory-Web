@@ -15,8 +15,8 @@ class CreateDistrictServiceProviderTable extends Migration
     {
         Schema::create('district_service_provider', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('district_id')->constrained('districts');
-            $table->foreignId('service_provider_id')->constrained('service_providers');
+            $table->foreignId('district_id')->constrained('districts')->onDelete('cascade');
+            $table->foreignId('service_provider_id')->constrained('service_providers')->onDelete('cascade');
             $table->timestamps();
         });
     }

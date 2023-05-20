@@ -272,7 +272,7 @@ class AuthController extends Controller
 
         $form->text('first_name', 'First name')->rules('required');
         $form->text('last_name', 'Last name')->rules('required');
-        $form->radio('sex', 'Sex')->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
+        $form->radio('gender', 'Gender')->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
         $form->date('dob', 'Date of birth');
 
         $form->textarea('intro', 'Breifly Introduce yourself')->help('Write a very short bio about yourself'); 
@@ -295,32 +295,32 @@ class AuthController extends Controller
 
 
 
-        $form->divider('Academic Program(s) Accomplised');
+        // $form->divider('Academic Program(s) Accomplised');
 
-        $form->morphMany('programs', 'Click on new to add a program', function (Form\NestedForm $form) {
-            $u = Admin::user();
-            $form->hidden('user_id')->default($u->id);
-            $form->select('program_award', 'program_award')
-                ->options([
-                    'Certificate' => 'Certificate',
-                    'Diploma' => 'Diploma',
-                    "Bachelor's degree" => "Bachelor's degree",
-                    "Master's degree" => "Master's degree",
-                    'PHD' => 'PHD',
-                ])->rules('required');
-            $form->text('program_name', 'Program name')->rules('required')->placeholder('E.g Information technology');
+        // $form->morphMany('programs', 'Click on new to add a program', function (Form\NestedForm $form) {
+        //     $u = Admin::user();
+        //     $form->hidden('user_id')->default($u->id);
+        //     $form->select('program_award', 'program_award')
+        //         ->options([
+        //             'Certificate' => 'Certificate',
+        //             'Diploma' => 'Diploma',
+        //             "Bachelor's degree" => "Bachelor's degree",
+        //             "Master's degree" => "Master's degree",
+        //             'PHD' => 'PHD',
+        //         ])->rules('required');
+        //     $form->text('program_name', 'Program name')->rules('required')->placeholder('E.g Information technology');
 
-            $years = [];
+        //     $years = [];
 
-            for ($i = 1988; $i <= date("Y", time()); $i++) {
-                $years[$i] = $i;
-            }
+        //     for ($i = 1988; $i <= date("Y", time()); $i++) {
+        //         $years[$i] = $i;
+        //     }
 
-            $form->select('program_year', 'Program year of admission')
-                ->options($years)->rules('required');
+        //     $form->select('program_year', 'Program year of admission')
+        //         ->options($years)->rules('required');
 
   
-        });
+        // });
 
 
 

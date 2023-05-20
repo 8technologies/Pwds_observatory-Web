@@ -25,6 +25,11 @@ class Organisation extends Model
         return $this->belongsToMany(District::class)->withTimestamps();
     }
 
+    public function districtOfOperation()
+    {
+        return $this->belongsTo(District::class, 'district_id');
+    }
+
     /**
      * Programs or initiatives run by this organisation
      */
