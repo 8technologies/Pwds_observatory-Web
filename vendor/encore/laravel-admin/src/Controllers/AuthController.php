@@ -255,43 +255,43 @@ class AuthController extends Controller
 
         $form->divider('Bio information');
 
-        $form->radio('title', 'Title')
-            ->options([
-                'Mr' => 'Mr',
-                'Ms' => 'Ms',
-                'Mrs' => 'Mrs',
-                'Dr' => 'Dr',
-                'Prof' => 'Prof',
-                'Haji' => 'Haji',
-                'Hajjat' => 'Hajjat',
-                'Imam' => 'Imam',
-                'Shaykh' => 'Shaykh',
-                'Mufti' => 'Mufti',
-            ])
-            ->rules('required');
+        // $form->radio('title', 'Title')
+        //     ->options([
+        //         'Mr' => 'Mr',
+        //         'Ms' => 'Ms',
+        //         'Mrs' => 'Mrs',
+        //         'Dr' => 'Dr',
+        //         'Prof' => 'Prof',
+        //         'Haji' => 'Haji',
+        //         'Hajjat' => 'Hajjat',
+        //         'Imam' => 'Imam',
+        //         'Shaykh' => 'Shaykh',
+        //         'Mufti' => 'Mufti',
+        //     ])
+        //     ->rules('required');
 
-        $form->text('first_name', 'First name')->rules('required');
-        $form->text('last_name', 'Last name')->rules('required');
-        $form->radio('gender', 'Gender')->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
-        $form->date('dob', 'Date of birth');
+        $form->text('first_name', 'First name');
+        $form->text('last_name', 'Last name');
+        // $form->radio('gender', 'Gender')->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
+        // $form->date('dob', 'Date of birth');
 
-        $form->textarea('intro', 'Breifly Introduce yourself')->help('Write a very short bio about yourself'); 
+        // $form->textarea('intro', 'Breifly Introduce yourself')->help('Write a very short bio about yourself'); 
 
  
  
 
-        $form->select('country', 'Nationality')
-            ->help('Your country of origin')
-            ->options(Utils::COUNTRIES())->rules('required');
+        // $form->select('country', 'Nationality')
+        //     ->help('Your country of origin')
+        //     ->options(Utils::COUNTRIES())->rules('required');
 
 
-        $form->text('occupation', 'Occupation');
+        // $form->text('occupation', 'Occupation');
 
         $form->quill('about', 'About you')->help('Write something about yourself.');
 
 
         $form->image('avatar', 'Porfile photo');
-        $form->file('cv', 'CV File')->rules('mimes:doc,docx,pdf');
+        // $form->file('cv', 'CV File')->rules('mimes:doc,docx,pdf');
 
 
 
@@ -330,14 +330,14 @@ class AuthController extends Controller
         $form->mobile('phone_number', 'Phone number')->options(['mask' => '+999 9999 99999'])->help('Leave this field empty if you don\'t want it to appear on your profile.');
 
 
-        $form->select('language', 'Fluent Language')
-            ->options([
-                'English' => 'English',
-                'Arabic' => 'Arabic',
-                'Swahili' => 'Swahili',
-                'French' => 'French',
-                'Other' => 'Other',
-            ]);
+        // $form->select('language', 'Fluent Language')
+        //     ->options([
+        //         'English' => 'English',
+        //         'Arabic' => 'Arabic',
+        //         'Swahili' => 'Swahili',
+        //         'French' => 'French',
+        //         'Other' => 'Other',
+        //     ]);
 
         $form->url('website', 'Personal website');
         $form->text('twitter', 'Twitter hundle (Username)');

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use App\Mail\CreatedOPDMail;
 use App\Admin\Extensions\OPDExcelExporter;
+use App\Models\District;
 
 class OPDController extends AdminController
 {
@@ -189,11 +190,15 @@ class OPDController extends AdminController
             $form->date('valid_from', __('Valid From'))->default(date('Y-m-d'));
             $form->date('valid_to', __('Valid To'))->default(date('Y-m-d'))->rules('after:start_date');
             $form->hidden('relationship_type')->default('opd');
-            $form->hidden('parent_organisation_id')->default(session('organisation_id'));
+            $form->hidden('parent_organisation_id');
 
             $form->divider();
 
             // $form->html('<button type="submit" class="btn btn-primary float-right">Submit</button>');
+        });
+
+        $form->tab('Districts of Operation', function ($form) {
+            $form->multipleSelect('districtsOfOperation', __('Select Districts'))->options(District::all()->pluck('name', 'id'));
         });
         $form->tab('Administrator', function ($form) {
             $form->email('admin_email', ('Administrator'))->required()
@@ -225,14 +230,22 @@ class OPDController extends AdminController
                     $admin = User::create([
                         'username' => $admin_email,
                         'email' => $form->admin_email,
-                        'password' => $password
+                        'password' => $password,
+                        'name' => $form->name,
+                        'profile_photo' => $form->logo,
+
                     ]);
 
 
                     $admin->assignRole('opd');
                 }
-
                 $form->user_id = $admin->id;
+
+                $current_user = auth("admin")->user();
+                $organisation = Organisation::where('user_id', $current_user->id)->first();
+
+                $form->parent_organisation_id = $organisation ? $organisation->id : null;
+                $form->relationship_type = 'opd';
         
                 session(['password' => $new_password]);
             }

@@ -41,14 +41,9 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(UserHasProgram::class, 'user_id');
     }
 
-    public function managedOrganisations()
-    {
-        return $this->hasMany(Organisation::class, 'user_id');
-    }
-
     public function managedOrganisation()
     {
-        return $this->managedOrganisations()->where('admin_email', '!=', null)->first();
+        return Organisation::where('user_id', $this->id)->first();
     }
 
 

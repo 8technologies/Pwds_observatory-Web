@@ -41,8 +41,8 @@ class CreatePeopleTable extends Migration
             $table->string('position')->nullable();
             $table->string('year_of_employment')->nullable();
 
-            $table->string('organisation_name')->nullable();
-            $table->foreignId('organisation_id')->constrainted('organisations')->nullable();
+            $table->foreignId('district_id')->nullable()->constrained('districts'); // We map the district so to map the DU
+            $table->foreignId('opd_id')->nullable()->constrainted('organisations');
 
             $table->text('aspirations')->nullable();
             $table->text('skills')->nullable();            

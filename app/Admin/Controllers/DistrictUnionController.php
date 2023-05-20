@@ -221,7 +221,9 @@ class DistrictUnionController extends AdminController
                     $admin = User::create([
                         'username' => $admin_email,
                         'email' => $form->admin_email,
-                        'password' => $password
+                        'password' => $password,
+                        'name' => $form->name,
+                        'profile_photo' => $form->logo,
                     ]);
 
                     $admin->assignRole('district-union');
