@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use App\Mail\CreatedOPDMail;
 use App\Admin\Extensions\OPDExcelExporter;
+use App\Models\District;
 
 class OPDController extends AdminController
 {
@@ -32,7 +33,23 @@ class OPDController extends AdminController
         $grid->disableFilter();
         $grid->disableBatchActions();
         $grid->quickSearch('name')->placeholder('Search by Name');
-        $grid->model()->where('relationship_type', 'opd')->orderBy('updated_at', 'desc');
+
+        $user = auth("admin")->user();
+
+        if($user->inRoles(['district-union','nudipu','organisation'])) {
+            $grid->disableCreateButton();
+            $grid->disableActions();
+        }
+
+        if($user->isRole('district-union')) {
+            //get the district union manager by the current user
+            $district_union = Organisation::where('admin_email', $user->email)->first();
+
+            $grid->model()->where('parent_organisation_id', $district_union->id)->where('relationship_type', 'opd')->orderBy('updated_at', 'desc');
+        }else {
+            $grid->model()->where('relationship_type', 'opd')->orderBy('updated_at', 'desc');
+        }
+
         $grid->exporter(new OPDExcelExporter());
         $grid->column('name', __('Name'));
         $grid->column('registration_number', __('Registration number'));
@@ -114,11 +131,6 @@ class OPDController extends AdminController
     {
         $form = new Form(new Organisation());    
 
-        // Only show form if organisation_id is set
-        if (session('organisation_id')  == null && $form->isCreating()) {
-            return redirect('admin/organisations');
-        }
-
         $form->footer(function ($footer) {
             $footer->disableReset();
             $footer->disableViewCheck();
@@ -129,13 +141,12 @@ class OPDController extends AdminController
 
         $form->tab('Bio', function ($form) {
             $form->text('name', __('Name'))->required();
-            $form->text('registration_number', __('Registration number'))->required();
-            $form->date('date_of_registration', __('Date of registration'))->required();
-            // $form->radio('type', __('Type Of Organisation'))->options(['NGO' => 'NGO', 'SACCO' => 'SACCO'])->required();
-            $form->textarea('mission', __('Mission'))->required();
-            $form->textarea('vision', __('Vision'))->required();
-            $form->textarea('core_values', __('Core values'))->required();
-            $form->quill('brief_profile', __('Brief profile'))->required();
+            $form->text('registration_number', __('Registration number'));
+            $form->date('date_of_registration', __('Date of registration'));
+            $form->textarea('mission', __('Mission'));
+            $form->textarea('vision', __('Vision'));
+            $form->textarea('core_values', __('Core values'));
+            $form->quill('brief_profile', __('Brief profile'));
         });
 
         // $form->tab('Leadership', function ($form) {
@@ -150,11 +161,12 @@ class OPDController extends AdminController
         // });
 
         $form->tab('Membership', function ($form) {
-            $form->radio('membership_type', __('Membership type'))->options(['member' => 'Member-Based', 'pwd' => 'Individual-based', 'both' => 'Both'])->required();
+            $form->radio('membership_type', __('Membership type'))->options(['organisation-based' => 'Organisation-based', 'individual-based' => 'Individual-based', 'both' => 'Both'])->required();
         });
 
         $form->tab('Contact', function ($form) {
-            $form->text('physical_address', __('Physical address'));
+            $form->text('physical_address', __('Physical address'))->required();
+
 
             $form->hasMany('contact_persons', 'Contact Persons', function (Form\NestedForm $form) {
                 $form->text('name', __('Name'))->required();
@@ -166,23 +178,27 @@ class OPDController extends AdminController
         });
 
         $form->tab('Attachments', function ($form) {
-            $form->file('logo', __('Logo'))->removable()->rules('mimes:png,jpg,jpeg')->required()
+            $form->file('logo', __('Logo'))->removable()->rules('mimes:png,jpg,jpeg')
                 ->help("Upload image logo in png, jpg, jpeg format (max: 2MB)");
-            $form->file('certificate_of_registration', __('Certificate of registration'))->removable()->rules('mimes:pdf')->required()
+            $form->file('certificate_of_registration', __('Certificate of registration'))->removable()->rules('mimes:pdf')
                 ->help("Upload certificate of registration in pdf format (max: 2MB)");
 
             $form->multipleFile('attachments', __('Other Attachments'))->removable()->rules('mimes:pdf,png,jpg,jpeg')
-                ->help("Upload files such as certificate (pdf), logo (png, jpg, jpeg)");
+                ->help("Upload files such as certificate (pdf), logo (png, jpg, jpeg), constitution, etc (max: 2MB)");
         });
         $form->tab('Membership Duration', function ($form) {
             $form->date('valid_from', __('Valid From'))->default(date('Y-m-d'));
             $form->date('valid_to', __('Valid To'))->default(date('Y-m-d'))->rules('after:start_date');
             $form->hidden('relationship_type')->default('opd');
-            $form->hidden('parent_organisation_id')->default(session('organisation_id'));
+            $form->hidden('parent_organisation_id');
 
             $form->divider();
 
             // $form->html('<button type="submit" class="btn btn-primary float-right">Submit</button>');
+        });
+
+        $form->tab('Districts of Operation', function ($form) {
+            $form->multipleSelect('districtsOfOperation', __('Select Districts'))->options(District::all()->pluck('name', 'id'));
         });
         $form->tab('Administrator', function ($form) {
             $form->email('admin_email', ('Administrator'))->required()
@@ -214,14 +230,22 @@ class OPDController extends AdminController
                     $admin = User::create([
                         'username' => $admin_email,
                         'email' => $form->admin_email,
-                        'password' => $password
+                        'password' => $password,
+                        'name' => $form->name,
+                        'profile_photo' => $form->logo,
+
                     ]);
 
 
                     $admin->assignRole('opd');
                 }
-
                 $form->user_id = $admin->id;
+
+                $current_user = auth("admin")->user();
+                $organisation = Organisation::where('user_id', $current_user->id)->first();
+
+                $form->parent_organisation_id = $organisation ? $organisation->id : null;
+                $form->relationship_type = 'opd';
         
                 session(['password' => $new_password]);
             }

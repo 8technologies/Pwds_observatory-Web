@@ -34,27 +34,17 @@ class CreatePeopleTable extends Migration
             $table->string('religion')->nullable();
             $table->string('place_of_birth')->nullable(); // Hospital, Other
             $table->string("birth_hospital")->nullable();
+            $table->string("birth_no_hospital_description")->nullable(); // if pwd not born in hospital
             $table->string('languages')->nullable(); // JSON array of languages
-
-            $table->string('next_of_kin_last_name')->nullable();
-            $table->string('next_of_kin_other_names')->nullable();
-            $table->string('next_of_kin_id_number')->nullable();
-            $table->enum('next_of_kin_gender',['Male','Female'])->nullable();
-            $table->string('next_of_kin_phone_number')->nullable();
-            $table->string('next_of_kin_email')->nullable();
-            $table->string('next_of_kin_relationship')->nullable();
-            $table->string('next_of_kin_address')->nullable();
-            $table->string('next_of_kin_alternative_phone_number')->nullable();
 
             $table->string('employer')->nullable();
             $table->string('position')->nullable();
             $table->string('year_of_employment')->nullable();
 
-            $table->string('organisation_name')->nullable();
-            $table->string('Year_of_membership')->nullable();
+            $table->foreignId('district_id')->nullable()->constrained('districts'); // We map the district so to map the DU
+            $table->foreignId('opd_id')->nullable()->constrainted('organisations');
 
             $table->text('aspirations')->nullable();
-            $table->text('areas_of_interest')->nullable();
             $table->text('skills')->nullable();            
 
             $table->boolean('is_formal_education')->default(false);
@@ -62,6 +52,7 @@ class CreatePeopleTable extends Migration
             $table->boolean('is_member')->default(false);
             $table->boolean('is_same_address')->default(false);
             $table->boolean('is_formerly_employed')->default(false);
+            $table->boolean('is_approved')->default(false);
         });
     }
 

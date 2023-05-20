@@ -41,4 +41,9 @@ class District extends Model
     {
         return $this->belongsToMany(Product::class);
     }
+
+    public function districtUnion()
+    {
+        return $this->hasOne(Organisation::class, 'district_id');
+    }
 }

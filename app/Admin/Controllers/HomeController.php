@@ -220,7 +220,7 @@ deleted_at
 
         $u = Admin::user();
 
-        if($u->sex == null){
+        if($u->gender == null){
             $content->row(function (Row $row) {
                 $row->column(12, function (Column $column) {
                     $column->append(view('widgets.alert', [

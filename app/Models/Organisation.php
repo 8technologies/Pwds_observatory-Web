@@ -25,6 +25,11 @@ class Organisation extends Model
         return $this->belongsToMany(District::class)->withTimestamps();
     }
 
+    public function districtOfOperation()
+    {
+        return $this->belongsTo(District::class, 'district_id');
+    }
+
     /**
      * Programs or initiatives run by this organisation
      */
@@ -64,7 +69,7 @@ class Organisation extends Model
     }
 
     public function administrator() {
-        return $this->belongsTo(Person::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
 }

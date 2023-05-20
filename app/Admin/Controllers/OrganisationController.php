@@ -166,11 +166,11 @@ class OrganisationController extends AdminController
         // });
 
         $form->tab('Membership', function ($form) {
-            $form->radio('membership_type', __('Membership type'))->options(['member' => 'Member-Based', 'pwd' => 'Individual-based', 'both' => 'Both'])->required();
+            $form->radio('membership_type', __('Membership type'))->options(['organisation-based' => 'Organisation-based', 'individual-based' => 'Individual-based', 'both' => 'Both'])->required();
         });
 
         $form->tab('Contact', function ($form) {
-            $form->text('physical_address', __('Physical address'));
+            $form->text('physical_address', __('Physical address'))->required();
 
             $form->hasMany('contact_persons', 'Contact Persons', function (Form\NestedForm $form) {
                 $form->text('name', __('Name'))->required();

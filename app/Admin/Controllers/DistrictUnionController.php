@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Admin\Extensions\DistrictUnionsExcelExporter;
 use Encore\Admin\Admin;
+use App\Models\District;
 
 class DistrictUnionController extends AdminController
 {
@@ -33,14 +34,10 @@ class DistrictUnionController extends AdminController
         $grid->disableFilter();
         $grid->disableBatchActions();
         $grid->quickSearch('name')->placeholder('Search by Name');
-        // if(auth('admin')->user()->isRole('administrator')) {
-            
-        // }
-        
-
-        // if(Admin::user()->isRole('district-union')) {
-
-        // }
+        if(!auth('admin')->user()->isRole('nudipu')) {
+            $grid->disableCreateButton();
+            $grid->disableActions();
+        }
         $grid->model()->where('relationship_type', 'du')->orderBy('updated_at', 'desc');
         $grid->exporter(new DistrictUnionsExcelExporter());
 
@@ -125,11 +122,6 @@ class DistrictUnionController extends AdminController
     {
         $form = new Form(new Organisation());
 
-        // Only show form if organisation_id is set
-        if (session('organisation_id') == null && $form->isCreating()) {
-            return redirect('admin/organisations');
-        }
-
         $form->footer(function ($footer) {
             $footer->disableReset();
             $footer->disableViewCheck();
@@ -140,13 +132,13 @@ class DistrictUnionController extends AdminController
 
         $form->tab('Bio', function ($form) {
             $form->text('name', __('Name'))->required();
-            $form->text('registration_number', __('Registration number'))->required();
-            $form->date('date_of_registration', __('Date of registration'))->required();
-            // $form->radio('type', __('Type Of Organisation'))->options(['NGO' => 'NGO', 'SACCO' => 'SACCO'])->required();
-            $form->textarea('mission', __('Mission'))->required();
-            $form->textarea('vision', __('Vision'))->required();
-            $form->textarea('core_values', __('Core values'))->required();
-            $form->quill('brief_profile', __('Brief profile'))->required();
+            $form->select('district_id', __('District Of Operation'))->options(District::pluck('name', 'id'))->required();
+            $form->text('registration_number', __('Registration number'));
+            $form->date('date_of_registration', __('Date of registration'));
+            $form->textarea('mission', __('Mission'));
+            $form->textarea('vision', __('Vision'));
+            $form->textarea('core_values', __('Core values'));
+            $form->quill('brief_profile', __('Brief profile'));
         });
 
         // $form->tab('Leadership', function ($form) {
@@ -161,11 +153,12 @@ class DistrictUnionController extends AdminController
         // });
 
         $form->tab('Membership', function ($form) {
-            $form->radio('membership_type', __('Membership type'))->options(['member' => 'Member-Based', 'pwd' => 'Individual-based', 'both' => 'Both'])->required();
+            $form->radio('membership_type', __('Membership type'))->options(['organisation-based' => 'Organisation-based', 'individual-based' => 'Individual-based', 'both' => 'Both'])->required();
         });
 
         $form->tab('Contact', function ($form) {
-            $form->text('physical_address', __('Physical address'));
+            $form->text('physical_address', __('Physical address'))->required();
+
 
             $form->hasMany('contact_persons', 'Contact Persons', function (Form\NestedForm $form) {
                 $form->text('name', __('Name'))->required();
@@ -177,13 +170,13 @@ class DistrictUnionController extends AdminController
         });
 
         $form->tab('Attachments', function ($form) {
-            $form->file('logo', __('Logo'))->removable()->rules('mimes:png,jpg,jpeg')->required()
+            $form->file('logo', __('Logo'))->removable()->rules('mimes:png,jpg,jpeg')
                 ->help("Upload image logo in png, jpg, jpeg format (max: 2MB)");
-            $form->file('certificate_of_registration', __('Certificate of registration'))->removable()->rules('mimes:pdf')->required()
+            $form->file('certificate_of_registration', __('Certificate of registration'))->removable()->rules('mimes:pdf')
                 ->help("Upload certificate of registration in pdf format (max: 2MB)");
 
             $form->multipleFile('attachments', __('Other Attachments'))->removable()->rules('mimes:pdf,png,jpg,jpeg')
-                ->help("Upload files such as certificate (pdf), logo (png, jpg, jpeg)");
+                ->help("Upload files such as certificate (pdf), logo (png, jpg, jpeg), constitution, etc (max: 2MB)");
         });
         $form->tab('Membership Duration', function ($form) {
             $form->date('valid_from', __('Valid From'))->default(date('Y-m-d'));
@@ -205,8 +198,12 @@ class DistrictUnionController extends AdminController
         });
         $form->hidden('user_id')->default(0);
 
-
         $form->saving(function ($form) {
+            $du_exists = Organisation::where('district_id', $form->district_id)->where('relationship_type', 'du')->exists();
+            if ($du_exists) {
+                admin_error('District Union already exists', 'Please check the district and try again');
+                return back();
+            }
             // save the admin in users and map to this du
             if ($form->isCreating()) {
                 //generate random password for user and send it to the user's email
@@ -224,12 +221,16 @@ class DistrictUnionController extends AdminController
                     $admin = User::create([
                         'username' => $admin_email,
                         'email' => $form->admin_email,
-                        'password' => $password
+                        'password' => $password,
+                        'name' => $form->name,
+                        'profile_photo' => $form->logo,
                     ]);
 
                     $admin->assignRole('district-union');
                 }
                 $form->user_id = $admin->id;
+                
+                $form->parent_organisation_id = session('organisation_id');
         
                 session(['password' => $new_password]);
             }

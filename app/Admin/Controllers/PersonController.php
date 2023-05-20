@@ -12,6 +12,12 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use App\Admin\Extensions\PersonsExcelExporter;
 use App\Models\District;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NextOfKin;
+use App\Mail\PwdCreated;
+use Error;
 
 class PersonController extends AdminController
 {
@@ -31,6 +37,8 @@ class PersonController extends AdminController
     {
         $grid = new Grid(new Person());
 
+        //TODO: fix filters, and also display users from the pdo, and district unions
+
 
         $grid->filter(function ($f) {
             // Remove the default id filter
@@ -38,9 +46,18 @@ class PersonController extends AdminController
             $f->between('created_at', 'Filter by registered')->date();
 
 
-            $f->equal('disability_id', 'Filter Type of disability')->select(
-                Disability::where([])->orderBy('name', 'asc')->get()->pluck('name', 'id')
-            );
+            // $f->equal('disability_id', 'Filter Type of disability')->select(
+            //     Disability::where([])->orderBy('name', 'asc')->get()->pluck('name', 'id')
+            // );
+            // $f->where(function ($query) {
+
+            //     $query->whereHas('disabilities', function ($query) {
+            //         $query->where('name', 'like', "%{$this->input}%");
+            //     });
+            
+            // }, 'Filter by Disability');
+            
+            
 
 
             // $district_ajax_url = url(
@@ -68,14 +85,22 @@ class PersonController extends AdminController
 
         });
 
-
         $grid->quickSearch('name')->placeholder('Search by name');
 
-        $grid->model()->orderBy('id', 'desc');
+        $user = auth("admin")->user();
+        $organisation = $user->managedorganisation;
+        if(!$user->inRoles(['nudipu', 'Administrator'])) {
+            $grid->model()->orderBy('id', 'desc');
+        }else if($user->isRole('district-union')) {
+            $grid->model()->where('district_id', $organisation->district_id)->orWhere('membership_type','individual-based')->orWhere('membership_type', 'both')->orderBy('id', 'desc');
+        }else {
+            $grid->model()->where('organisation_id', $organisation->id)->orWhere('membership_type','individual-based')->orWhere('membership_type', 'both')->orderBy('id', 'desc');
+        }
+
         $grid->exporter(new PersonsExcelExporter());
         $grid->disableBatchActions();
 
-        $grid->column('id', __('Id'))->sortable();
+        // $grid->column('id', __('Id'))->sortable();
         $grid->column('created_at', __('Regisetered'))->display(
             function ($x) {
                 return Utils::my_date($x);
@@ -83,10 +108,7 @@ class PersonController extends AdminController
         )->sortable();
         $grid->column('name', __('Name'))->sortable();
         $grid->column('other_names', __('Other Names'))->sortable();
-        $grid->column('sex', __('Gender'))->filter([
-            'Male' => 'Male',
-            'Female' => 'Female',
-        ])->sortable();
+        $grid->column('sex', __('Gender'))->sortable();
 
         $grid->column('dob', __('D.O.B'));
 
@@ -223,7 +245,7 @@ class PersonController extends AdminController
             $form->text('id_number', __('ID Number'))
                     ->help("NIN, Passport Number, Driving Permit Number")
                     ->rules('required');
-            $form->date('dob', __('Date of Birth'));
+            $form->date('dob', __('Date of Birth'))->required();
             $form->radio('sex', __('Gender'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
             $form->radio('marital_status', __('Marital Status'))->options(['Single' => 'Single', 'Married' => 'Married', 'Divorced' => 'Divorced', 'Widowed' => 'Widowed'])->rules('required');
             $form->text('ethnicity', __('Ethnicity'))->rules('required')
@@ -233,7 +255,11 @@ class PersonController extends AdminController
             $form->radio('place_of_birth', __('Place Of Birth'))->options(['Hospital' => 'Hospital', 'Other' => 'Other'])
             ->when('Hospital', function ($form) {
                 $form->text('birth_hospital', __('Hospital Name'));
-            })->rules('required');
+            })
+            ->when('Other', function ($form) {
+                $form->textarea('birth_no_hospital_description', __('Description'))->placeholder('Where were you given birth to?')->required();
+            })
+            ->required();
             $form->text('languages', __('Languages'))->rules('required')
                 ->help('English, Luganda, Runyakitara, etc');
             $form->multipleSelect('disabilities', __('Select disabilities'))
@@ -256,8 +282,8 @@ class PersonController extends AdminController
 
         });
 
-        $form->tab('Skills and Experience' , function ($form) {
-            $form->textarea('skills', __('Skills'))->rows(10)->placeholder("knitting, dancing, teamwork, etc")->rules('required');
+        $form->tab('Skills' , function ($form) {
+            $form->textarea('skills', __('Skills'))->rows(10)->placeholder("Enter skills forexample: knitting, dancing, teamwork, etc")->required();
         });
 
         $form->tab('Employment' , function ($form) {
@@ -283,32 +309,54 @@ class PersonController extends AdminController
             ->help("Are you currently employed? or have you ever been employed?");
         });
 
-        $form->tab('Memberships' , function ($form) {
-            $form->radio('is_member', __('Membership'))->options([1 => 'Yes', 0 => 'No'])->rules('required')
-            ->when(1 , function (Form $form) {
-                $form->select('organisation_name', __('Name of Organisation'))->options(array_merge(Organisation::where('membership_type','pwd')->pluck('name','id')->toArray(), ['no_listed' => 'Other / No Listed']) )->placeholder('Select an Organisation')->required();
-                $form->text('Year_of_membership', __('Membership period'))->placeholder("2022 -2023")->rules('required');              
-            })
-            ->help("Are you currently a member of any association? or have you ever been a member of any association?");
-        });
+        //TODO: Check if individual is a member or an organisation
+        //TODO: If individual, select a district then an organisation under that district
+
+        $user = auth("admin")->user();
+
+        if(!$user->inRoles(['district-union','pdo'])) {
+            $form->tab('Memberships' , function ($form) {
+                $form->radio('is_member', __('Membership'))->options([1 => 'Yes', 0 => 'No'])->rules('required')
+                ->when(1 , function (Form $form) {
+                    $form->radio('select_opd_or_du', __('Select '))->options(['opd' => 'OPD', 'du' => 'DU'])
+                    ->help("Are you a member of an OPD or DU?")
+                    ->when('du', function (Form $form) {
+                        $form->select('district_id', __('Select  District'))->options(District::pluck('name','id') )->placeholder('Select District')->required()
+                        ->help("Select the District where your DU is located");
+                    })
+                    ->when('opd', function (Form $form) {
+
+                        $form->select('opd_id', __('Select  OPD'))->options(Organisation::where('membership_type','individual-based')->where('relationship_type','opd')->pluck('name','id') )->placeholder('Select an OPD')->required();
+                    })
+                    ->default('opd');
+                    // $form->select('organisation_name', __('Select  DU / OPD'))->options(Organisation::where('membership_type','pwd')->pluck('name','id') )->placeholder('Select an Organisation')->required();
+
+                })
+                ->help("Are you currently a member of any association? or have you ever been a member of any association?");
+            });
+    
+        }
 
         $form->tab('Next of Kin' , function ($form) {
-            $form->text('next_of_kin_last_name', __('Surname'))->rules('required');
-            $form->text('next_of_kin_other_names', __('Other Names'))->rules('required');
-            $form->radio('next_of_kin_gender',__('Gender'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
-            $form->mobile('next_of_kin_phone_number', __('Phone Number'))->rules('required');
-            $form->mobile('next_of_kin_alternative_phone_number', __('Alternative Phone Number'));
-            $form->email('next_of_kin_email', __('Email'));
-            $form->text('next_of_kin_relationship', __('Relationship'))->rules('required');
-            $form->text('next_of_kin_address', __('Address'))->rules('required');
+
+            $form->hasMany('next_of_kins', ' Add New Next of Kin', function (Form\NestedForm $form) {
+                $form->text('next_of_kin_last_name', __('Surname'))->rules('required');
+                $form->text('next_of_kin_other_names', __('Other Names'))->rules('required');
+                $form->radio('next_of_kin_gender',__('Gender'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
+                $form->mobile('next_of_kin_phone_number', __('Phone Number'))->rules('required');
+                $form->mobile('next_of_kin_alternative_phone_number', __('Alternative Phone Number'));
+                $form->email('next_of_kin_email', __('Email'));
+                $form->text('next_of_kin_relationship', __('Relationship'))->rules('required');
+                $form->text('next_of_kin_address', __('Address'))->rules('required');
+            });
 
         });
-        $form->tab('Aspirations & Areas of Interest' , function ($form) {
+        $form->tab('Aspirations' , function ($form) {
             $form->quill('aspirations', __('Aspirations'));
-            $form->quill('areas_of_interest', __('Areas of Interest'));
         });
 
         $form->tab('Address & Contacts', function( $form){
+
             $form->radio('is_same_address', __('Is the same as next of kin?'))->options([1 => 'Yes', 0 => 'No'])->rules('required')
                 ->when(0, function (Form $form) {
                     $form->text('address', __('Address'));
@@ -322,6 +370,91 @@ class PersonController extends AdminController
                 //Add submit button
                 $form->html('<button type="submit" class="btn btn-primary float-right">Submit</button>');
         });
+        $form->hidden('district_id');
+        $form->hidden('opd_id');
+        $form->hidden('is_approved');
+
+        // Check if district union is doing the registration and send credentials else do not send
+        if(auth("admin")->user()->inRoles(['district-union', 'pdo'])){
+
+            $form->saving(function ($form) {
+                // save the admin in users and map to this du
+                if ($form->isCreating()) {
+                    //generate random password for user and send it to the user's email
+                    $alpha_list = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz1234567890';
+                    $password = substr(str_shuffle($alpha_list), 0, 8);
+    
+                    //TODO: check if email was given, if not consider next_of_kin else no account
+                    if($form->email != null) {
+
+                        $pwd_email = $form->email;
+
+                        $new_password = $password;
+                        $password = Hash::make($password);
+                        //check if user exists
+                        $admin = User::where('email', $pwd_email)->first();
+            
+                        if($admin == null) {
+                            $admin = User::create([
+                                'username' => $pwd_email,
+                                'email' => $form->pwd_email,
+                                'password' => $password,
+                                'first_name' => $form->other_names,
+                                'last_name' => $form->name,
+                                'gender' => $form->sex,
+                                'profile_photo' => $form->photo
+                            ]);
+        
+                            $admin->assignRole('pwd');
+                        }                    
+                
+                        session(['password' => $new_password]);
+
+                    } else {
+                        //TODO: Send user has no email
+                    }
+
+                    $form->is_approved = 1; //Approve if registered by an organisation
+
+                    $current_user = auth("admin")->user();
+                    $organisation = Organisation::where('user_id', $current_user->id)->first();
+                    error_log("Organisation: ". $organisation->name);
+
+                    if($organisation == null) {
+                        //return error
+                        return back()->with('error', 'You do not have an organisation to register a member under');
+                    }
+                    else if($organisation->relationship_type == 'du') {
+                        $form->district_id = $organisation->district_id;
+                    } else if($organisation->relationship_type == 'opd') {
+                        $form->opd_id = $organisation->id;
+                    }
+                }
+             
+            });
+    
+    
+            $form->saved(function (Form $form) {
+                if ($form->isCreating()) {
+                    $user_password = session('password');
+                    error_log("Password: ". $user_password);
+                    error_log("Email: ". $form->email);
+                    
+                    if($user_password != null) {
+
+                        if($form->email != null) {
+
+                            Mail::to($form->email)->send(new PwdCreated($form->email, $user_password));
+
+                        }else {
+                            // Mail::to($form->pwd_email)->send(new NextOfKin("$form->name $form->other_names", $form->next_of_kin_email, $user_password));
+                        }
+                    } 
+    
+                }
+            });
+        }
+
 
         return $form;
     }

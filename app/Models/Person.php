@@ -42,6 +42,11 @@ class Person extends Model
         return $this->hasMany(EmploymentHistory::class);
     }
 
+    public function next_of_kins()
+    {
+        return $this->hasMany(NextOfKin::class);
+    }
+
     public function getDisabilityTextAttribute()
     {
         $d = Disability::find($this->disability_id);
@@ -50,5 +55,7 @@ class Person extends Model
         }
         return $d->name;
     }
+
+    
 
 }
