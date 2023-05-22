@@ -140,7 +140,7 @@ class OPDController extends AdminController
         });
 
         $form->tab('Bio', function ($form) {
-            $form->text('name', __('Name'))->required();
+            $form->text('name', __('Name'))->rules("required");
             $form->text('registration_number', __('Registration number'));
             $form->date('date_of_registration', __('Date of registration'));
             $form->textarea('mission', __('Mission'));
@@ -161,18 +161,18 @@ class OPDController extends AdminController
         // });
 
         $form->tab('Membership', function ($form) {
-            $form->radio('membership_type', __('Membership type'))->options(['organisation-based' => 'Organisation-based', 'individual-based' => 'Individual-based', 'both' => 'Both'])->required();
+            $form->radio('membership_type', __('Membership type'))->options(['organisation-based' => 'Organisation-based', 'individual-based' => 'Individual-based', 'both' => 'Both'])->rules("required");
         });
 
         $form->tab('Contact', function ($form) {
-            $form->text('physical_address', __('Physical address'))->required();
+            $form->text('physical_address', __('Physical address'))->rules("required");
 
 
             $form->hasMany('contact_persons', 'Contact Persons', function (Form\NestedForm $form) {
-                $form->text('name', __('Name'))->required();
-                $form->text('position', __('Position'))->required();
-                $form->email('email', __('Email'))->required();
-                $form->text('phone1', __('Phone Tel'))->required();
+                $form->text('name', __('Name'))->rules("required");
+                $form->text('position', __('Position'))->rules("required");
+                $form->email('email', __('Email'))->rules("required");
+                $form->text('phone1', __('Phone Tel'))->rules("required");
                 $form->text('phone2', __('Other Tel'));
             });
         });
@@ -201,7 +201,7 @@ class OPDController extends AdminController
             $form->multipleSelect('districtsOfOperation', __('Select Districts'))->options(District::all()->pluck('name', 'id'));
         });
         $form->tab('Administrator', function ($form) {
-            $form->email('admin_email', ('Administrator'))->required()
+            $form->email('admin_email', ('Administrator'))->rules("required")
                 ->help("This will be emailed with the password to log into the system");
 
             $form->divider();

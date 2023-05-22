@@ -28,6 +28,13 @@ class UserController extends AdminController
 
         $grid = new Grid(new $userModel());
 
+        $grid->filter(function ($f) {
+            // Remove the default id filter
+            $f->disableIdFilter();
+        });
+        $grid->quickSearch('username')->placeholder('Search email');
+        $grid->model()->orderBy('id', 'desc');
+
         $grid->column('id', 'ID')->sortable();
         $grid->column('username', trans('admin.username'));
         $grid->column('name', trans('admin.name'));
