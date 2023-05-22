@@ -199,13 +199,15 @@ class DistrictUnionController extends AdminController
         $form->hidden('user_id')->default(0);
 
         $form->saving(function ($form) {
-            $du_exists = Organisation::where('district_id', $form->district_id)->where('relationship_type', 'du')->exists();
-            if ($du_exists) {
-                admin_error('District Union already exists', 'Please check the district and try again');
-                return back();
-            }
             // save the admin in users and map to this du
             if ($form->isCreating()) {
+                //check if du exists
+                $du_exists = Organisation::where('district_id', $form->district_id)->where('relationship_type', 'du')->exists();
+                if ($du_exists) {
+                    admin_error('District Union already exists', 'Please check the district and try again');
+                    return back();
+                }
+
                 //generate random password for user and send it to the user's email
                 $alpha_list = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz1234567890';
                 $password = substr(str_shuffle($alpha_list), 0, 8);
