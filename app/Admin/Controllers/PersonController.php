@@ -89,16 +89,13 @@ class PersonController extends AdminController
 
         $user = auth("admin")->user();
         $organisation = Organisation::where('user_id', $user->id)->first();
+
         if($user->inRoles(['nudipu', 'administrator'])) {
             $grid->model()->orderBy('id', 'desc');
-        }elseif($user->isRole('district-union')) {
-
+        }else if($user->isRole('district-union')) {
             $grid->model()->where('district_id', $organisation->district_id)->orderBy('id', 'desc');
         }else if($user->isRole('opd')) {
             $grid->model()->where('opd_id', $organisation->id)->orderBy('id', 'desc');
-        }else {
-            // dd("ddd");
-            $grid->model()->orderBy('id', 'desc');
         }
 
         $grid->exporter(new PersonsExcelExporter());
@@ -247,8 +244,7 @@ class PersonController extends AdminController
             $form->text('name', __('Surname'))->rules('required');
             $form->text('other_names', __('Other Names'))->rules('required');
             $form->text('id_number', __('ID Number'))
-                    ->help("NIN, Passport Number, Driving Permit Number")
-                    ->rules('required');
+                    ->help("NIN, Passport Number, Driving Permit Number");
             $form->date('dob', __('Date of Birth'))->rules("required");
             $form->radio('sex', __('Gender'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
             $form->radio('marital_status', __('Marital Status'))->options(['Single' => 'Single', 'Married' => 'Married', 'Divorced' => 'Divorced', 'Widowed' => 'Widowed'])->rules('required');
@@ -320,17 +316,17 @@ class PersonController extends AdminController
 
         if(!$user->inRoles(['district-union','pdo'])) {
             $form->tab('Memberships' , function ($form) {
-                $form->radio('is_member', __('Membership'))->options([1 => 'Yes', 0 => 'No'])->rules('required')
+                $form->radio('is_member', __('Membership'))->options([1 => 'Yes', 0 => 'No'])
                 ->when(1 , function (Form $form) {
                     $form->radio('select_opd_or_du', __('Select '))->options(['opd' => 'OPD', 'du' => 'DU'])
                     ->help("Are you a member of an OPD or DU?")
                     ->when('du', function (Form $form) {
-                        $form->select('district_id', __('Select  District'))->options(District::pluck('name','id') )->placeholder('Select District')->rules("required")
+                        $form->select('district_id', __('Select  District'))->options(District::pluck('name','id') )->placeholder('Select District')
                         ->help("Select the District where your DU is located");
                     })
                     ->when('opd', function (Form $form) {
 
-                        $form->select('opd_id', __('Select  OPD'))->options(Organisation::where('membership_type','individual-based')->where('relationship_type','opd')->pluck('name','id') )->placeholder('Select an OPD')->rules("required");
+                        $form->select('opd_id', __('Select  OPD'))->options(Organisation::where('membership_type','individual-based')->where('relationship_type','opd')->pluck('name','id') )->placeholder('Select an OPD');
                     })
                     ->default('opd');
                     // $form->select('organisation_name', __('Select  DU / OPD'))->options(Organisation::where('membership_type','pwd')->pluck('name','id') )->placeholder('Select an Organisation')->rules("required");

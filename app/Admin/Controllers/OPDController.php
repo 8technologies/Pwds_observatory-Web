@@ -36,7 +36,7 @@ class OPDController extends AdminController
 
         $user = auth("admin")->user();
 
-        if($user->inRoles(['district-union','nudipu','organisation'])) {
+        if($user->isRole('opd')) {
             $grid->disableCreateButton();
             $grid->disableActions();
         }
