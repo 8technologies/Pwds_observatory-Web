@@ -74,25 +74,18 @@ class ProductController extends AdminController
         $form = new Form(new Product());
 
         $form->hidden('service_provider_id');
-        $form->text('name', __('Name'))->required();
+        $form->text('name', __('Name'))->rules("required");
         $form->radio('type', __('Type'))->options(['product' => 'Product','service' => 'Service'])
         ->when('product', function() {
 
         })
         ->when('service', function() {
 
-        })->default('product')->required();
-        $form->image('photo', __('Photo'))->required();
-        $form->radio('offer_type', __('Offer type'))->options(['free' => 'Free', 'hire' => 'Hire', 'rent' => 'Free', 'sale' => 'Sale'])
-        ->when('free', function($form) {
-
-        })
+        })->default('product')->rules("required");
+        $form->image('photo', __('Photo'))->rules("required");
+        $form->radio('offer_type', __('Offer type'))->options(['free' => 'Free', 'hire' => 'Hire', 'sale' => 'Sale'])
         ->when('hire', function($form) {
-            $form->text('price', __('Price'))->rules('required|numeric|min:0');
-
-        })
-        ->when('rent', function($form) {
-            $form->text('price', __('Price'))->rules('required|numeric|min:0');
+            $form->text('hire_description', __('Describe the rates'))->rules('required');
 
         })
         ->when('sale', function($form) {
@@ -106,6 +99,7 @@ class ProductController extends AdminController
         $form->saving(function (Form $form) {
             $form->service_provider_id = auth('admin')->user()->service_provider->id;
         });
+
 
 
         return $form;

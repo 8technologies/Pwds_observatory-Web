@@ -9,7 +9,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\Auth;
 use App\Models\District;
-
+use PhpOffice\PhpSpreadsheet\Calculation\Web\Service;
 
 class ServiceProviderController extends AdminController
 {
@@ -29,7 +29,17 @@ class ServiceProviderController extends AdminController
     {
         $grid = new Grid(new ServiceProvider());
 
-        $grid->column('id', __('Id'));
+        $grid->filter(function($filter){
+            $filter->disableIdFilter();
+            $filter->like('name', 'Name');
+            $filter->like('registration_number', 'Registration number');
+            $filter->between('date_of_registration', 'Date of registration')->date();
+            $filter->where(function ($query) {
+                $query->whereHas('districts_of_operation', function ($query) {
+                    $query->where('name', 'like', "%{$this->input}%");
+                });
+            }, 'Districts of operation');
+        });
         $grid->column('name', __('Name'));
         $grid->column('registration_number', __('Registration number'));
         $grid->column('date_of_registration', __('Date of registration'));
@@ -54,23 +64,26 @@ class ServiceProviderController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(ServiceProvider::findOrFail($id));
+        // $show = new Show(ServiceProvider::findOrFail($id));
+        $service_provider = ServiceProvider::findOrFail($id);
 
-        $show->field('id', __('Id'));
-        $show->field('name', __('Name'));
-        $show->field('registration_number', __('Registration number'));
-        $show->field('date_of_registration', __('Date of registration'));
-        $show->field('user_id', __('User id'));
-        $show->field('brief_profile', __('Brief profile'));
-        $show->field('physical_address', __('Physical address'));
-        $show->field('attachments', __('Attachments'));
-        $show->field('logo', __('Logo'));
-        $show->field('license', __('License'));
-        $show->field('certificate_of_registration', __('Certificate of registration'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
+        return view('admin.service-providers.show', compact('service_provider'));
 
-        return $show;
+        // $show->field('id', __('Id'));
+        // $show->field('name', __('Name'));
+        // $show->field('registration_number', __('Registration number'));
+        // $show->field('date_of_registration', __('Date of registration'));
+        // $show->field('user_id', __('User id'));
+        // $show->field('brief_profile', __('Brief profile'));
+        // $show->field('physical_address', __('Physical address'));
+        // $show->field('attachments', __('Attachments'));
+        // $show->field('logo', __('Logo'));
+        // $show->field('license', __('License'));
+        // $show->field('certificate_of_registration', __('Certificate of registration'));
+        // $show->field('created_at', __('Created at'));
+        // $show->field('updated_at', __('Updated at'));
+
+        // return $show;
     }
 
     /**
@@ -108,10 +121,10 @@ class ServiceProviderController extends AdminController
 
             
             $form->hasMany('contact_persons', 'Contact Persons', function (Form\NestedForm $form) {
-                $form->text('name', __('Name'))->required();
-                $form->text('position', __('Position'))->required();
-                $form->email('email', __('Email'))->required();
-                $form->text('phone1', __('Phone Tel'))->required();
+                $form->text('name', __('Name'))->rules("required");
+                $form->text('position', __('Position'))->rules("required");
+                $form->email('email', __('Email'))->rules("required");
+                $form->text('phone1', __('Phone Tel'))->rules("required");
                 $form->text('phone2', __('Other Tel') );
             });
 
@@ -122,11 +135,11 @@ class ServiceProviderController extends AdminController
             $form->file('logo', __('Logo'))
             ->help("Upload image logo in png, jpg, jpeg format (max: 2MB)");
             $form->file('certificate_of_registration', __('Certificate of registration'))
-            ->required()
+            ->rules("required")
             ->help("Upload certificate of registration in pdf format (max: 2MB)");
 
             $form->file('license', __('License'))
-            ->required()
+            ->rules("required")
             ->help("Upload your trade license");
 
             $form->multipleFile('attachments', __('Attachments'))
