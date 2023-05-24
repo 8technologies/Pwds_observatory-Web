@@ -38,4 +38,8 @@ Route::group([
     $router->resource('organisations', OrganisationController::class);
     $router->resource('opds', OPDController::class);
     $router->resource('district-unions', DistrictUnionController::class);
+
+    $router->resource('resources', ResourceController::class);
+    $router->resource('innovations', InnovationController::class);
+    $router->resource('testimonies', TestimonyController::class);
 });
