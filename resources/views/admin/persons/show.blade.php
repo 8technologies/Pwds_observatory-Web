@@ -10,7 +10,7 @@
                     BACK
                     TO ALL LIST</a>
             @endisset
-            <a href="{{ url('people/' . $pwd->id . '/edit') }}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i>
+            <a href="{{ admin_url('people/' . $pwd->id . '/edit') }}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i>
                 EDIT</a>
             <a href="#" onclick="window.print();return false;" class="btn btn-primary btn-sm"><i
                     class="fa fa-print"></i> PRINT</a>
@@ -20,7 +20,6 @@
     <div class="row">
         <div class="col-3 col-md-2">
             <div class="border border-1 rounded bg-">
-                {{-- {{ dd($pwd->photo) }} --}}
                 <img class="img-fluid" src="{{ asset('storage/' . $pwd->photo) }}" width="250" height="500">
             </div>
         </div>

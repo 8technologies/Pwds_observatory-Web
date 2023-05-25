@@ -56,6 +56,8 @@ class PersonController extends AdminController
                 });
             
             }, 'Filter by Disability');
+
+            $f->equal('district_id', 'Filter by district')->select(District::pluck('name', 'id'));
             
             
 
