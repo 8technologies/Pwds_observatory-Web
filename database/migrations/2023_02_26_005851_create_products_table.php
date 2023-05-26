@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
             $table->string('photo')->nullable();
             $table->text('details')->nullable();
             $table->double('price')->nullable();
+            $table->string('hire_description')->nullable();
             $table->enum('offer_type',['rent','free','sale'])->default('sale');
             $table->timestamps();
 

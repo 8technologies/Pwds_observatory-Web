@@ -34,7 +34,7 @@ class DistrictUnionController extends AdminController
         $grid->disableFilter();
         $grid->disableBatchActions();
         $grid->quickSearch('name')->placeholder('Search by Name');
-        if(!auth('admin')->user()->isRole('nudipu')) {
+        if (!auth('admin')->user()->isRole('nudipu')) {
             $grid->disableCreateButton();
             $grid->disableActions();
         }
@@ -59,58 +59,58 @@ class DistrictUnionController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(Organisation::findOrFail($id));
+        // $show = new Show(Organisation::findOrFail($id));
         $model = Organisation::findOrFail($id);
 
         return view('admin.organisations.show', [
             'organisation' => $model
         ]);
 
-        session(['organisation_id' => $model->id]); //set a global organisation id
+        // session(['organisation_id' => $model->id]); //set a global organisation id
 
-        //Add new button to the top
-        $show->panel()
-            ->tools(function ($tools) use ($model) {
-                $tools->disableList();
-                $tools->disableDelete();
-                if ($model->membership_type == 'member') {
-                    $tools->append('<a class="btn btn-sm btn-primary mx-3" href="' . url('admin/opds/create') . '">Add OPD</a>');
-                } else if ($model->membership_type == 'all') {
-                    $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/people/create') . '">Add Person With Disability</a>');
-                    $tools->append('<a class="btn btn-sm btn-primary mx-3" href="' . url('admin/opds/create') . '">Add OPD</a>');
-                } else {
-                    $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/people/create') . '">Add Person With Disability</a>');
-                }
-            });
-        $obj = Organisation::find($id);
+        // //Add new button to the top
+        // $show->panel()
+        //     ->tools(function ($tools) use ($model) {
+        //         $tools->disableList();
+        //         $tools->disableDelete();
+        //         if ($model->membership_type == 'member') {
+        //             $tools->append('<a class="btn btn-sm btn-primary mx-3" href="' . url('admin/opds/create') . '">Add OPD</a>');
+        //         } else if ($model->membership_type == 'all') {
+        //             $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/people/create') . '">Add Person With Disability</a>');
+        //             $tools->append('<a class="btn btn-sm btn-primary mx-3" href="' . url('admin/opds/create') . '">Add OPD</a>');
+        //         } else {
+        //             $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/people/create') . '">Add Person With Disability</a>');
+        //         }
+        //     });
+        // $obj = Organisation::find($id);
 
-        $show->field('name', __('Name'));
-        $show->field('registration_number', __('Registration number'));
-        $show->field('date_of_registration', __('Date of registration'));
-        $show->field('mission', __('Mission'));
-        $show->field('vision', __('Vision'));
-        $show->field('core_values', __('Core values'));
-        $show->field('brief_profile', __('Brief profile'));
-        $show->field('membership_type', __('Membership type'));
-        $show->field('physical_address', __('Physical address'));
-        $show->divider();
-        $show->field('contact_persons', __('Contact persons'))->as(function ($contact_persons) {
-            return $contact_persons->map(function ($contact_person) {
-                return $contact_person->name . ' (' . $contact_person->position . ')' . ' - ' . $contact_person->phone1 . ' / ' . $contact_person->phone2;
-            })->implode('<br>');
-        });
-        $show->divider();
+        // $show->field('name', __('Name'));
+        // $show->field('registration_number', __('Registration number'));
+        // $show->field('date_of_registration', __('Date of registration'));
+        // $show->field('mission', __('Mission'));
+        // $show->field('vision', __('Vision'));
+        // $show->field('core_values', __('Core values'));
+        // $show->field('brief_profile', __('Brief profile'));
+        // $show->field('membership_type', __('Membership type'));
+        // $show->field('physical_address', __('Physical address'));
+        // $show->divider();
+        // $show->field('contact_persons', __('Contact persons'))->as(function ($contact_persons) {
+        //     return $contact_persons->map(function ($contact_person) {
+        //         return $contact_person->name . ' (' . $contact_person->position . ')' . ' - ' . $contact_person->phone1 . ' / ' . $contact_person->phone2;
+        //     })->implode('<br>');
+        // });
+        // $show->divider();
 
-        //     foreach($obj->attachments as $attachment){
-        //         $show->field('attachments', __('Attachments'))->unescape()->as(function ($attachments) {
-        //             return Arr::map($attachments,function ($attachment) {
-        //                 return '<a href="'.$attachment->downloadable().'" target="_blank">'.$attachment->name.'</a>';
-        //             })->implode('<br>');
-        //         });
-        //     }
-        // //    $show->multipleFile($obj->attachments->downloadable();
+        // //     foreach($obj->attachments as $attachment){
+        // //         $show->field('attachments', __('Attachments'))->unescape()->as(function ($attachments) {
+        // //             return Arr::map($attachments,function ($attachment) {
+        // //                 return '<a href="'.$attachment->downloadable().'" target="_blank">'.$attachment->name.'</a>';
+        // //             })->implode('<br>');
+        // //         });
+        // //     }
+        // // //    $show->multipleFile($obj->attachments->downloadable();
 
-        return $show;
+        // return $show;
     }
 
     /**
@@ -139,6 +139,11 @@ class DistrictUnionController extends AdminController
             $form->textarea('vision', __('Vision'));
             $form->textarea('core_values', __('Core values'));
             $form->quill('brief_profile', __('Brief profile'));
+            $form->divider();
+
+            $form->html('
+            <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+        ');
         });
 
         // $form->tab('Leadership', function ($form) {
@@ -154,6 +159,12 @@ class DistrictUnionController extends AdminController
 
         $form->tab('Membership', function ($form) {
             $form->radio('membership_type', __('Membership type'))->options(['organisation-based' => 'Organisation-based', 'individual-based' => 'Individual-based', 'both' => 'Both'])->rules("required");
+            $form->divider();
+
+            $form->html('
+            <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+            <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+        ');
         });
 
         $form->tab('Contact', function ($form) {
@@ -163,10 +174,16 @@ class DistrictUnionController extends AdminController
             $form->hasMany('contact_persons', 'Contact Persons', function (Form\NestedForm $form) {
                 $form->text('name', __('Name'))->rules("required");
                 $form->text('position', __('Position'))->rules("required");
-                $form->email('email', __('Email'))->rules("required");
-                $form->text('phone1', __('Phone Tel'))->rules("required");
+                $form->email('email', __('Email'))->rules("required| email");
+                $form->text('phone1', __('Phone Tel'))->rules("required|");
                 $form->text('phone2', __('Other Tel'));
             });
+            $form->divider();
+
+            $form->html('
+            <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+            <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+        ');
         });
 
         $form->tab('Attachments', function ($form) {
@@ -177,6 +194,12 @@ class DistrictUnionController extends AdminController
 
             $form->multipleFile('attachments', __('Other Attachments'))->removable()->rules('mimes:pdf,png,jpg,jpeg')
                 ->help("Upload files such as certificate (pdf), logo (png, jpg, jpeg), constitution, etc (max: 2MB)");
+            $form->divider();
+
+            $form->html('
+                <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+                <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+            ');
         });
         $form->tab('Membership Duration', function ($form) {
             $form->date('valid_from', __('Valid From'))->default(date('Y-m-d'));
@@ -186,15 +209,20 @@ class DistrictUnionController extends AdminController
 
             $form->divider();
 
-            // $form->html('<button type="submit" class="btn btn-primary float-right">Submit</button>');
+            $form->html('
+                <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+                <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+            ');
         });
         $form->tab('Administrator', function ($form) {
-            $form->email('admin_email', ('Administrator'))->rules("required")
+            $form->email('admin_email', ('Administrator'))->rules("required| email")
                 ->help("This will be emailed with the password to log into the system");
 
             $form->divider();
 
-            $form->html('<button type="submit" class="btn btn-primary float-right">Submit</button>');
+            $form->html('
+            <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+            <button type="submit" class="btn btn-primary float-right">Submit</button>        ');
         });
         $form->hidden('user_id')->default(0);
 
@@ -217,8 +245,8 @@ class DistrictUnionController extends AdminController
                 $password = Hash::make($password);
                 //check if user exists
                 $admin = User::where('email', $admin_email)->first();
-    
-                if($admin == null) {
+
+                if ($admin == null) {
                     $admin = User::create([
                         'username' => $admin_email,
                         'email' => $form->admin_email,
@@ -230,9 +258,9 @@ class DistrictUnionController extends AdminController
                     $admin->assignRole('district-union');
                 }
                 $form->user_id = $admin->id;
-                
+
                 $form->parent_organisation_id = session('organisation_id');
-        
+
                 session(['password' => $new_password]);
             }
         });
@@ -240,12 +268,24 @@ class DistrictUnionController extends AdminController
 
         $form->saved(function (Form $form) {
             if ($form->isCreating()) {
-                $admin_password = session('password');        
+                $admin_password = session('password');
 
                 Mail::to($form->admin_email)->send(new CreatedDistrictUnionMail($form->name, $form->admin_email, $admin_password));
             }
         });
 
+        Admin::script(
+            <<<EOT
+            $(document).ready(function() {
+                $('.btn-next').click(function() {
+                    $('.nav-tabs > .active').next('li').find('a').trigger('click');
+                });
+                $('.btn-prev').click(function() {
+                    $('.nav-tabs > .active').prev('li').find('a').trigger('click');
+                });
+            });
+            EOT
+        );
 
         return $form;
     }

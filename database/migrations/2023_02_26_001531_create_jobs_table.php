@@ -17,23 +17,18 @@ class CreateJobsTable extends Migration
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignIdFor(Administrator::class);
-            $table->text('title')->nullable();
-            $table->text('short_description')->nullable();
-            $table->text('details')->nullable();
-            $table->text('nature_of_job')->nullable();
-            $table->text('minimum_academic_qualification')->nullable();
-            $table->text('required_expirience')->nullable();
-            $table->text('expirience_period')->nullable();
-            $table->text('category')->nullable();
-            $table->text('photo')->nullable();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('title');
+            $table->string('location')->nullable();
+            $table->text('description')->nullable();
+            $table->enum('type', ['fulltime', 'parttime', 'contract', 'internship', 'volunteer','remote'])->nullable();
+            $table->string('minimum_academic_qualification')->nullable();
+            $table->string('required_experience')->nullable();
+            $table->string('photo')->nullable();
             $table->text('how_to_apply')->nullable();
-            $table->text('whatsapp')->nullable();
-            $table->text('subcounty_id')->nullable();
-            $table->foreignId('district_id')->constrained('districts')->onDelete('cascade');
+            $table->string('hiring_firm')->nullable();
             $table->string('deadline')->nullable();
-            $table->integer('slots')->nullable();
-
+            // $table->foreignId('district_id')->constrained('districts')->onDelete('cascade');
         });
     }
 
@@ -44,6 +39,8 @@ class CreateJobsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints(); // disable foreign key constraints
         Schema::dropIfExists('jobs');
+        Schema::enableForeignKeyConstraints(); // enable foreign key constraints
     }
 }
