@@ -9,7 +9,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\Auth;
 use App\Models\District;
-use PhpOffice\PhpSpreadsheet\Calculation\Web\Service;
+use Encore\Admin\Facades\Admin;
 
 class ServiceProviderController extends AdminController
 {
@@ -44,7 +44,6 @@ class ServiceProviderController extends AdminController
         $grid->column('registration_number', __('Registration number'));
         $grid->column('date_of_registration', __('Date of registration'));
         $grid->column('user_id', __('User id'));
-        $grid->column('brief_profile', __('Brief profile'));
         $grid->column('physical_address', __('Physical address'));
         $grid->column('attachments', __('Attachments'));
         $grid->column('logo', __('Logo'));
@@ -114,6 +113,10 @@ class ServiceProviderController extends AdminController
             
             $form->quill('brief_profile', __('Brief profile'));
 
+            $form->html('
+            <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+            ');
+
         });
 
         $form->tab('Address & Contacts', function ($form) {
@@ -128,7 +131,10 @@ class ServiceProviderController extends AdminController
                 $form->text('phone2', __('Other Tel') );
             });
 
-
+            $form->html('
+            <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+            <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+            ');
         });
 
         $form->tab('Attachmments',  function($form) {
@@ -147,7 +153,11 @@ class ServiceProviderController extends AdminController
 
             $form->divider();
 
-            $form->html('<button type="submit" class="btn btn-primary float-right">Submit</button>');
+            $form->html('
+            <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+            <button type="submit" class="btn btn-primary float-right">Submit</button> 
+           ');
+
         });
 
         $form->hidden('user_id')->default(Auth::guard('admin')->user()->id);
@@ -155,9 +165,22 @@ class ServiceProviderController extends AdminController
         $form->saving(function (Form $form) {
             $form->user_id = Auth::guard('admin')->user()->id;
         });
-        $form->saved(function (Form $form) {
+        $form->saved(function (Form $form) {`
             return redirect()->route('admin.service-providers.show', $form->model()->id);
         });
+
+        Admin::script(
+            <<<EOT
+            $(document).ready(function() {
+                $('.btn-next').click(function() {
+                    $('.nav-tabs > .active').next('li').find('a').trigger('click');
+                });
+                $('.btn-prev').click(function() {
+                    $('.nav-tabs > .active').prev('li').find('a').trigger('click');
+                });
+            });
+            EOT
+        );
 
         return $form;
     }

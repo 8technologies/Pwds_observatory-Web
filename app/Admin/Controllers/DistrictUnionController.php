@@ -139,6 +139,10 @@ class DistrictUnionController extends AdminController
             $form->textarea('vision', __('Vision'));
             $form->textarea('core_values', __('Core values'));
             $form->quill('brief_profile', __('Brief profile'));
+
+            $form->html('
+            <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+        ');
         });
 
         // $form->tab('Leadership', function ($form) {
@@ -154,6 +158,12 @@ class DistrictUnionController extends AdminController
 
         $form->tab('Membership', function ($form) {
             $form->radio('membership_type', __('Membership type'))->options(['organisation-based' => 'Organisation-based', 'individual-based' => 'Individual-based', 'both' => 'Both'])->rules("required");
+
+            $form->html('
+            <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+            <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+        ');
+
         });
 
         $form->tab('Contact', function ($form) {
@@ -167,6 +177,11 @@ class DistrictUnionController extends AdminController
                 $form->text('phone1', __('Phone Tel'))->rules("required|");
                 $form->text('phone2', __('Other Tel'));
             });
+
+            $form->html('
+            <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+            <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+        ');
         });
 
         $form->tab('Attachments', function ($form) {
@@ -177,6 +192,11 @@ class DistrictUnionController extends AdminController
 
             $form->multipleFile('attachments', __('Other Attachments'))->removable()->rules('mimes:pdf,png,jpg,jpeg')
                 ->help("Upload files such as certificate (pdf), logo (png, jpg, jpeg), constitution, etc (max: 2MB)");
+            
+            $form->html('
+                <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+                <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+            ');
         });
         $form->tab('Membership Duration', function ($form) {
             $form->date('valid_from', __('Valid From'))->default(date('Y-m-d'));
@@ -186,7 +206,10 @@ class DistrictUnionController extends AdminController
 
             $form->divider();
 
-            // $form->html('<button type="submit" class="btn btn-primary float-right">Submit</button>');
+            $form->html('
+                <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+                <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+            ');
         });
         $form->tab('Administrator', function ($form) {
             $form->email('admin_email', ('Administrator'))->rules("required| email")
@@ -194,7 +217,10 @@ class DistrictUnionController extends AdminController
 
             $form->divider();
 
-            $form->html('<button type="submit" class="btn btn-primary float-right">Submit</button>');
+            $form->html('
+            <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+            <button type="submit" class="btn btn-primary float-right">Submit</button>        ');
+
         });
         $form->hidden('user_id')->default(0);
 
@@ -247,6 +273,18 @@ class DistrictUnionController extends AdminController
             }
         });
 
+        Admin::script(
+            <<<EOT
+            $(document).ready(function() {
+                $('.btn-next').click(function() {
+                    $('.nav-tabs > .active').next('li').find('a').trigger('click');
+                });
+                $('.btn-prev').click(function() {
+                    $('.nav-tabs > .active').prev('li').find('a').trigger('click');
+                });
+            });
+            EOT
+        );
 
         return $form;
     }

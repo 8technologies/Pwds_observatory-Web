@@ -25,9 +25,11 @@ class Person extends Model
         return $this->belongsToMany(Disability::class);
     }
 
-    // public function district(){
-    //     return $this->belongsTo(Location::class,'district_id');
-    // }
+    public function district()
+    {
+        return $this->belongsTo(District::class,'district_id');
+    }
+
     public function districtOfOrigin()
     {
         return $this->belongsTo(District::class, 'district_of_origin');
