@@ -38,17 +38,17 @@ class OPDController extends AdminController
 
         $user = auth("admin")->user();
 
-        if($user->inRoles(['district-union','nudipu','organisation'])) {
+        if ($user->inRoles(['district-union', 'nudipu', 'organisation'])) {
             $grid->disableCreateButton();
             $grid->disableActions();
         }
 
-        if($user->isRole('district-union')) {
+        if ($user->isRole('district-union')) {
             //get the district union manager by the current user
             $district_union = Organisation::where('admin_email', $user->email)->first();
 
             $grid->model()->where('parent_organisation_id', $district_union->id)->where('relationship_type', 'opd')->orderBy('updated_at', 'desc');
-        }else {
+        } else {
             $grid->model()->where('relationship_type', 'opd')->orderBy('updated_at', 'desc');
         }
 
@@ -56,7 +56,7 @@ class OPDController extends AdminController
         $grid->column('name', __('Name'));
         $grid->column('registration_number', __('Registration number'));
         $grid->column('date_of_registration', __('Date of registration'));
-        
+
         $grid->column('membership_type', __('Membership type'));
         $grid->column('physical_address', __('Physical address'));
         // $grid->column('contact_persons', __('Contact persons'));
@@ -81,20 +81,20 @@ class OPDController extends AdminController
 
         //Add new button to the top
         $show->panel()
-        ->tools(function ($tools) use ($model) {
-            $tools->disableList();
-            $tools->disableDelete();
-            if($model->membership_type == 'member') {
-                $tools->append('<a class="btn btn-sm btn-primary mx-3" href="' . url('admin/opds/create') . '">Add OPD</a>');
-                $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/district-unions/create') . '">Add District Union</a>');
-            }else if($model->membership_type == 'all') {
-                $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/people/create') . '">Add Person With Disability</a>');
-                $tools->append('<a class="btn btn-sm btn-primary mx-3" href="' . url('admin/opds/create') . '">Add OPD</a>');
-                $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/district-unions/create') . '">Add District Union</a>');
-            }else{
-                $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/people/create') . '">Add Person With Disability</a>');
-            }
-        });  
+            ->tools(function ($tools) use ($model) {
+                $tools->disableList();
+                $tools->disableDelete();
+                if ($model->membership_type == 'member') {
+                    $tools->append('<a class="btn btn-sm btn-primary mx-3" href="' . url('admin/opds/create') . '">Add OPD</a>');
+                    $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/district-unions/create') . '">Add District Union</a>');
+                } else if ($model->membership_type == 'all') {
+                    $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/people/create') . '">Add Person With Disability</a>');
+                    $tools->append('<a class="btn btn-sm btn-primary mx-3" href="' . url('admin/opds/create') . '">Add OPD</a>');
+                    $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/district-unions/create') . '">Add District Union</a>');
+                } else {
+                    $tools->append('<a class="btn btn-sm btn-info mx-3" href="' . url('admin/people/create') . '">Add Person With Disability</a>');
+                }
+            });
         $show->field('name', __('Name'));
         $show->field('registration_number', __('Registration number'));
         $show->field('date_of_registration', __('Date of registration'));
@@ -107,19 +107,19 @@ class OPDController extends AdminController
         $show->divider();
         $show->field('contact_persons', __('Contact persons'))->as(function ($contact_persons) {
             return $contact_persons->map(function ($contact_person) {
-                return $contact_person->name. ' ('.$contact_person->position.')'. ' - '.$contact_person->phone1. ' / '.$contact_person->phone2;
+                return $contact_person->name . ' (' . $contact_person->position . ')' . ' - ' . $contact_person->phone1 . ' / ' . $contact_person->phone2;
             })->implode('<br>');
         });
         $show->divider();
 
-    //     foreach($obj->attachments as $attachment){
-    //         $show->field('attachments', __('Attachments'))->unescape()->as(function ($attachments) {
-    //             return Arr::map($attachments,function ($attachment) {
-    //                 return '<a href="'.$attachment->downloadable().'" target="_blank">'.$attachment->name.'</a>';
-    //             })->implode('<br>');
-    //         });
-    //     }
-    // //    $show->multipleFile($obj->attachments->downloadable();
+        //     foreach($obj->attachments as $attachment){
+        //         $show->field('attachments', __('Attachments'))->unescape()->as(function ($attachments) {
+        //             return Arr::map($attachments,function ($attachment) {
+        //                 return '<a href="'.$attachment->downloadable().'" target="_blank">'.$attachment->name.'</a>';
+        //             })->implode('<br>');
+        //         });
+        //     }
+        // //    $show->multipleFile($obj->attachments->downloadable();
 
         return $show;
     }
@@ -131,7 +131,7 @@ class OPDController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Organisation());    
+        $form = new Form(new Organisation());
 
         $form->footer(function ($footer) {
             $footer->disableReset();
@@ -149,6 +149,7 @@ class OPDController extends AdminController
             $form->textarea('vision', __('Vision'));
             $form->textarea('core_values', __('Core values'));
             $form->quill('brief_profile', __('Brief profile'));
+            $form->divider();
 
             $form->html('
             <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
@@ -168,6 +169,7 @@ class OPDController extends AdminController
 
         $form->tab('Membership', function ($form) {
             $form->radio('membership_type', __('Membership type'))->options(['organisation-based' => 'Organisation-based', 'individual-based' => 'Individual-based', 'both' => 'Both'])->rules("required");
+            $form->divider();
 
             $form->html('
             <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
@@ -186,6 +188,7 @@ class OPDController extends AdminController
                 $form->text('phone1', __('Phone Tel'))->rules("required");
                 $form->text('phone2', __('Other Tel'));
             });
+            $form->divider();
 
             $form->html('
             <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
@@ -201,7 +204,8 @@ class OPDController extends AdminController
 
             $form->multipleFile('attachments', __('Other Attachments'))->removable()->rules('mimes:pdf,png,jpg,jpeg')
                 ->help("Upload files such as certificate (pdf), logo (png, jpg, jpeg), constitution, etc (max: 2MB)");
-            
+            $form->divider();
+
             $form->html('
             <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
             <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
@@ -223,6 +227,7 @@ class OPDController extends AdminController
 
         $form->tab('Districts of Operation', function ($form) {
             $form->multipleSelect('districtsOfOperation', __('Select Districts'))->options(District::all()->pluck('name', 'id'));
+            $form->divider();
 
             $form->html('
             <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
@@ -258,7 +263,7 @@ class OPDController extends AdminController
                 //check if user exists
                 $admin = User::where('email', $admin_email)->first();
 
-                if($admin == null) {
+                if ($admin == null) {
                     $admin = User::create([
                         'username' => $admin_email,
                         'email' => $form->admin_email,
@@ -278,7 +283,7 @@ class OPDController extends AdminController
 
                 $form->parent_organisation_id = $organisation ? $organisation->id : null;
                 $form->relationship_type = 'opd';
-        
+
                 session(['password' => $new_password]);
             }
         });
@@ -286,7 +291,7 @@ class OPDController extends AdminController
 
         $form->saved(function (Form $form) {
             if ($form->isCreating()) {
-                $admin_password = session('password');      
+                $admin_password = session('password');
                 Mail::to($form->admin_email)->send(new CreatedOPDMail($form->name, $form->admin_email, $admin_password));
             }
         });

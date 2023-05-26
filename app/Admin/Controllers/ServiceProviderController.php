@@ -113,6 +113,7 @@ class ServiceProviderController extends AdminController
             
             $form->quill('brief_profile', __('Brief profile'));
 
+            $form->divider();
             $form->html('
             <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
             ');
@@ -130,7 +131,7 @@ class ServiceProviderController extends AdminController
                 $form->text('phone1', __('Phone Tel'))->rules("required");
                 $form->text('phone2', __('Other Tel') );
             });
-
+            $form->divider();
             $form->html('
             <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
             <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
@@ -152,7 +153,6 @@ class ServiceProviderController extends AdminController
             ->help("Upload files such as certificate (pdf), logo (png, jpg, jpeg)");
 
             $form->divider();
-
             $form->html('
             <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
             <button type="submit" class="btn btn-primary float-right">Submit</button> 

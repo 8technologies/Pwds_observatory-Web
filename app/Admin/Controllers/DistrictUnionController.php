@@ -34,7 +34,7 @@ class DistrictUnionController extends AdminController
         $grid->disableFilter();
         $grid->disableBatchActions();
         $grid->quickSearch('name')->placeholder('Search by Name');
-        if(!auth('admin')->user()->isRole('nudipu')) {
+        if (!auth('admin')->user()->isRole('nudipu')) {
             $grid->disableCreateButton();
             $grid->disableActions();
         }
@@ -139,6 +139,7 @@ class DistrictUnionController extends AdminController
             $form->textarea('vision', __('Vision'));
             $form->textarea('core_values', __('Core values'));
             $form->quill('brief_profile', __('Brief profile'));
+            $form->divider();
 
             $form->html('
             <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
@@ -158,12 +159,12 @@ class DistrictUnionController extends AdminController
 
         $form->tab('Membership', function ($form) {
             $form->radio('membership_type', __('Membership type'))->options(['organisation-based' => 'Organisation-based', 'individual-based' => 'Individual-based', 'both' => 'Both'])->rules("required");
+            $form->divider();
 
             $form->html('
             <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
             <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
         ');
-
         });
 
         $form->tab('Contact', function ($form) {
@@ -177,6 +178,7 @@ class DistrictUnionController extends AdminController
                 $form->text('phone1', __('Phone Tel'))->rules("required|");
                 $form->text('phone2', __('Other Tel'));
             });
+            $form->divider();
 
             $form->html('
             <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
@@ -192,7 +194,8 @@ class DistrictUnionController extends AdminController
 
             $form->multipleFile('attachments', __('Other Attachments'))->removable()->rules('mimes:pdf,png,jpg,jpeg')
                 ->help("Upload files such as certificate (pdf), logo (png, jpg, jpeg), constitution, etc (max: 2MB)");
-            
+            $form->divider();
+
             $form->html('
                 <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
                 <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
@@ -220,7 +223,6 @@ class DistrictUnionController extends AdminController
             $form->html('
             <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
             <button type="submit" class="btn btn-primary float-right">Submit</button>        ');
-
         });
         $form->hidden('user_id')->default(0);
 
@@ -244,8 +246,8 @@ class DistrictUnionController extends AdminController
                 $password = Hash::make($password);
                 //check if user exists
                 $admin = User::where('email', $admin_email)->first();
-    
-                if($admin == null) {
+
+                if ($admin == null) {
                     $admin = User::create([
                         'username' => $admin_email,
                         'email' => $form->admin_email,
@@ -257,9 +259,9 @@ class DistrictUnionController extends AdminController
                     $admin->assignRole('district-union');
                 }
                 $form->user_id = $admin->id;
-                
+
                 $form->parent_organisation_id = session('organisation_id');
-        
+
                 session(['password' => $new_password]);
             }
         });
@@ -267,7 +269,7 @@ class DistrictUnionController extends AdminController
 
         $form->saved(function (Form $form) {
             if ($form->isCreating()) {
-                $admin_password = session('password');        
+                $admin_password = session('password');
 
                 Mail::to($form->admin_email)->send(new CreatedDistrictUnionMail($form->name, $form->admin_email, $admin_password));
             }

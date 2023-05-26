@@ -280,10 +280,11 @@ class PersonController extends AdminController
             $form->multipleSelect('disabilities', __('Select disabilities'))
                 ->rules('required')
                 ->options(Disability::orderBy('name', 'asc')->get()->pluck('name', 'id'));
+            $form->divider();
 
             $form->html('
                 <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
- ');
+            ');
         });
 
         $form->tab('Academics', function ($form) {
@@ -295,6 +296,8 @@ class PersonController extends AdminController
                         $form->text('year_of_completion', __('Year Of Completion'));
                     })->default(0);
                 });
+            $form->divider();
+
             $form->html(' <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
                 <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
  ');
@@ -302,6 +305,7 @@ class PersonController extends AdminController
 
         $form->tab('Skills', function ($form) {
             $form->textarea('skills', __('Skills'))->rows(10)->placeholder("Enter skills forexample: knitting, dancing, teamwork, etc")->rules("required");
+            $form->divider();
 
             $form->html(' <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
                 <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
@@ -328,7 +332,7 @@ class PersonController extends AdminController
                         });
                 })
                 ->help("Are you currently employed? or have you ever been employed?");
-
+            $form->divider();
             $form->html(' <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
                 <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
  ');
@@ -358,6 +362,7 @@ class PersonController extends AdminController
 
                     })
                     ->help("Are you currently a member of any association? or have you ever been a member of any association?");
+                $form->divider();
                 $form->html('
                     <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
                     <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
@@ -377,7 +382,7 @@ class PersonController extends AdminController
                 $form->text('next_of_kin_relationship', __('Relationship'))->rules('required');
                 $form->text('next_of_kin_address', __('Address'))->rules('required');
             });
-
+            $form->divider();
             $form->html('
             <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
                 <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
@@ -385,7 +390,7 @@ class PersonController extends AdminController
         });
         $form->tab('Aspirations', function ($form) {
             $form->quill('aspirations', __('Aspirations'));
-
+            $form->divider();
             $form->html('
                 <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
                 <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
@@ -403,9 +408,6 @@ class PersonController extends AdminController
                 })->default(0);
 
             $form->divider();
-            //     <a href="#tab-form-2" data-toggle="tab" aria-expanded="false">
-            //     Academics <i class="fa fa-exclamation-circle text-red hide"></i>
-            // </a>
             //Add submit button
             $form->html('
             <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
@@ -491,6 +493,19 @@ class PersonController extends AdminController
                 }
             });
         }
+
+        Admin::script(
+            <<<EOT
+            $(document).ready(function() {
+                $('.btn-next').click(function() {
+                    $('.nav-tabs > .active').next('li').find('a').trigger('click');
+                });
+                $('.btn-prev').click(function() {
+                    $('.nav-tabs > .active').prev('li').find('a').trigger('click');
+                });
+            });
+            EOT
+        );
 
         return $form;
     }
