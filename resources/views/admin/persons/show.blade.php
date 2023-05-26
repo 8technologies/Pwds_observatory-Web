@@ -20,7 +20,11 @@
     <div class="row">
         <div class="col-3 col-md-2">
             <div class="border border-1 rounded bg-">
+                @if($pwd->photo == null)
+                    <img class="img-fluid" src="{{ asset('assets/img/user-1.png') }}" width="250" height="500">
+                @else
                 <img class="img-fluid" src="{{ asset('storage/' . $pwd->photo) }}" width="250" height="500">
+                @endif
             </div>
         </div>
         <div class="col-9 col-md-5">
