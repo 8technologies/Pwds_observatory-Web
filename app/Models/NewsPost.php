@@ -15,8 +15,13 @@ class NewsPost extends Model
     }
 
     public function created_by()
-    {
-        return $this->belongsTo(Administrator::class, 'administrator_id');
+    { 
+        $u = Administrator::find($this->user_id);
+        if($u == null){
+            $this->user_id = 1;
+            $this->save();
+        }
+        return $this->belongsTo(Administrator::class, 'user_id');
     }
 
     public function getPostCategoryTextAttribute()

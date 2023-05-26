@@ -93,7 +93,6 @@ class PersonController extends AdminController
         if ($user->inRoles(['nudipu', 'administrator'])) {
             $grid->model()->orderBy('id', 'desc');
         } elseif ($user->isRole('district-union')) {
-
             $grid->model()->where('district_id', $organisation->district_id)->orderBy('id', 'desc');
         } else if ($user->isRole('opd')) {
             $grid->model()->where('opd_id', $organisation->id)->orderBy('id', 'desc');
@@ -258,8 +257,7 @@ class PersonController extends AdminController
             $form->text('name', __('Surname'))->rules('required');
             $form->text('other_names', __('Other Names'))->rules('required');
             $form->text('id_number', __('ID Number'))
-                ->help("NIN, Passport Number, Driving Permit Number")
-                ->rules('required');
+                    ->help("NIN, Passport Number, Driving Permit Number");
             $form->date('dob', __('Date of Birth'))->rules("required");
             $form->radio('sex', __('Gender'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
             $form->radio('marital_status', __('Marital Status'))->options(['Single' => 'Single', 'Married' => 'Married', 'Divorced' => 'Divorced', 'Widowed' => 'Widowed'])->rules('required');

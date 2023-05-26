@@ -62,7 +62,7 @@ class NewsPostController extends AdminController
         $show->field('updated_at', __('Updated at'));
         $show->field('title', __('Title'));
         $show->field('details', __('Details'));
-        $show->field('administrator_id', __('Administrator id'));
+        $show->field('user_id', __('Administrator id'));
         $show->field('post_category_id', __('Post category id'));
         $show->field('views', __('Views'));
 
@@ -87,7 +87,7 @@ class NewsPostController extends AdminController
         $form->text('title', __('Title'))->rules('required');
         $form->textarea('description', __('Post description'))->rules('required');
         $form->quill('details', __('Post Details'))->rules('required');
-        $form->hidden('administrator_id', __('Administrator id'))
+        $form->hidden('user_id', __('Administrator id'))
             ->default(Auth::user()->id);
 
 

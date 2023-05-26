@@ -27,7 +27,6 @@ class UserController extends AdminController
         $userModel = config('admin.database.users_model');
 
         $grid = new Grid(new $userModel());
-
         $grid->filter(function ($f) {
             // Remove the default id filter
             $f->disableIdFilter();
