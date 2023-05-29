@@ -271,6 +271,7 @@ class OPDController extends AdminController
                         'password' => $password,
                         'name' => $form->name,
                         'profile_photo' => $form->logo,
+                        'avatar' => $form->logo,
 
                     ]);
 

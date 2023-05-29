@@ -43,7 +43,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function managedOrganisation()
     {
-        return Organisation::where('user_id', $this->id)->first();
+        return $this->hasOne(Organisation::class, 'user_id');
     }
 
 
