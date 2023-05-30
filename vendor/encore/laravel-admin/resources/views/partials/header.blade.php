@@ -1,5 +1,6 @@
 <?php
 use App\Models\Utils;
+use App\Models\User;
 
 ?>
 <!-- Main Header -->
@@ -50,9 +51,27 @@ use App\Models\Utils;
                         </li>
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="{{ admin_url('auth/setting') }}"
-                                    class="btn btn-default btn-flat">{{ trans('admin.setting') }}</a>
+                                @php
+                                    $user = User::find(Auth::user()->id);
+                                    
+                                @endphp
+
+                                @if (Auth::user()->isRole('district-union'))
+                                    <a href="{{ admin_url('district-unions/' . $user->managedOrganisation->id . '/edit') }}"
+                                        class="btn btn-default btn-flat">Profile</a>
+                                @elseif(Auth::user()->isRole('opd'))
+                                    <a href="{{ admin_url('opds/' . $user->managedOrganisation->id . '/edit') }}"
+                                        class="btn btn-default btn-flat">Profile</a>
+                                @elseif(Auth::user()->isRole('service-provider'))
+                                    <a href="{{ admin_url('service-providers/' . $user->service_provider . '/edit') }}"
+                                        class="btn btn-default btn-flat">Profile</a>
+                                @else
+                                    <a href="{{ admin_url('auth/setting') }}"
+                                        class="btn btn-default btn-flat">Profile</a>
+                                @endif
                             </div>
+
+
                             <div class="pull-right">
                                 <a href="{{ admin_url('auth/logout') }}"
                                     class="btn btn-default btn-flat">{{ trans('admin.logout') }}</a>

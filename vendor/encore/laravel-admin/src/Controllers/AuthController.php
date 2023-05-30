@@ -270,8 +270,10 @@ class AuthController extends Controller
         //     ])
         //     ->rules('required');
 
-        $form->text('first_name', 'First name');
-        $form->text('last_name', 'Last name');
+        // $form->text('first_name', 'First name');
+        // $form->text('last_name', 'Last name');
+        $form->text('first_name', 'Organisation Name');
+        $form->hidden('last_name');
         // $form->radio('gender', 'Gender')->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
         // $form->date('dob', 'Date of birth');
 
@@ -287,10 +289,10 @@ class AuthController extends Controller
 
         // $form->text('occupation', 'Occupation');
 
-        $form->quill('about', 'About you')->help('Write something about yourself.');
+        // $form->quill('about', 'About you')->help('Write something about yourself.');
 
 
-        $form->image('avatar', 'Porfile photo');
+        $form->image('avatar', 'Profile photo');
         // $form->file('cv', 'CV File')->rules('mimes:doc,docx,pdf');
 
 
@@ -325,25 +327,25 @@ class AuthController extends Controller
 
 
 
-        $form->divider('Contact information');
-        $form->text('address', 'Current Address')->help('Leave this field empty if you don\'t want it to appear on your profile.');
-        $form->mobile('phone_number', 'Phone number')->options(['mask' => '+999 9999 99999'])->help('Leave this field empty if you don\'t want it to appear on your profile.');
+        // $form->divider('Contact information');
+        // $form->text('address', 'Current Address')->help('Leave this field empty if you don\'t want it to appear on your profile.');
+        // $form->mobile('phone_number', 'Phone number')->options(['mask' => '+999 9999 99999'])->help('Leave this field empty if you don\'t want it to appear on your profile.');
 
 
-        // $form->select('language', 'Fluent Language')
-        //     ->options([
-        //         'English' => 'English',
-        //         'Arabic' => 'Arabic',
-        //         'Swahili' => 'Swahili',
-        //         'French' => 'French',
-        //         'Other' => 'Other',
-        //     ]);
+        // // $form->select('language', 'Fluent Language')
+        // //     ->options([
+        // //         'English' => 'English',
+        // //         'Arabic' => 'Arabic',
+        // //         'Swahili' => 'Swahili',
+        // //         'French' => 'French',
+        // //         'Other' => 'Other',
+        // //     ]);
 
-        $form->url('website', 'Personal website');
-        $form->text('twitter', 'Twitter hundle (Username)');
-        $form->text('facebook', 'Facebook username');
-        $form->text('linkedin', 'Linkedin username');
-        $form->mobile('whatsapp', 'Whatsapp number')->options(['mask' => '+999 9999 99999']);
+        // $form->url('website', 'Personal website');
+        // $form->text('twitter', 'Twitter hundle (Username)');
+        // $form->text('facebook', 'Facebook username');
+        // $form->text('linkedin', 'Linkedin username');
+        // $form->mobile('whatsapp', 'Whatsapp number')->options(['mask' => '+999 9999 99999']);
 
 
 
@@ -376,6 +378,7 @@ class AuthController extends Controller
         $form->ignore(['change_password']);
 
         $form->saving(function (Form $form) {
+            $form->last_name = '';
             if ($form->password && $form->model()->password != $form->password) {
                 $form->password = Hash::make($form->password);
             }

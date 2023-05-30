@@ -251,7 +251,6 @@ class PersonController extends AdminController
             $footer->disableCreatingCheck();
             $footer->disableSubmit();
         });
-        $form->ignore('is_formal_education', 'is_employed', 'is_member', 'is_same_address', 'is_formerly_employed'); //Ignore these fields when saving
         $form->tab('Bio', function ($form) {
             $form->image('photo', __('Photo'))->uniqueName();
             $form->text('name', __('Surname'))->rules('required');
@@ -302,7 +301,7 @@ class PersonController extends AdminController
         });
 
         $form->tab('Skills', function ($form) {
-            $form->textarea('skills', __('Skills'))->rows(10)->placeholder("Enter skills forexample: knitting, dancing, teamwork, etc")->rules("required");
+            $form->textarea('skills', __('Skills'))->rows(10)->placeholder("Enter skills forexample: knitting, dancing, teamwork, etc");
             $form->divider();
 
             $form->html(' <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
@@ -444,7 +443,7 @@ class PersonController extends AdminController
                                 'first_name' => $form->other_names,
                                 'last_name' => $form->name,
                                 'gender' => $form->sex,
-                                'profile_photo' => $form->photo
+                                'avatar' => $form->photo
                             ]);
 
                             $admin->assignRole('pwd');

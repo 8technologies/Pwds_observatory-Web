@@ -165,7 +165,7 @@ class ServiceProviderController extends AdminController
         $form->saving(function (Form $form) {
             $form->user_id = Auth::guard('admin')->user()->id;
         });
-        $form->saved(function (Form $form) {`
+        $form->saved(function (Form $form) {
             return redirect()->route('admin.service-providers.show', $form->model()->id);
         });
 
