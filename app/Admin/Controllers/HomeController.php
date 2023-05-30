@@ -276,10 +276,25 @@ deleted_at
             });
         });
 
+        $content->row(function (Row $row) {
 
+            $row->column(12, function (Column $column) {
+                //groups persons with disabilities by districts
+                $districts = DB::table('people')
+                    ->join('districts', 'people.district_id', '=', 'districts.id')
+                    ->select('districts.name', DB::raw('COUNT(*) as count'))
+                    ->groupBy('districts.name')
+                    ->get();
+                $column->append(view('widgets.by-districts', [
+                    'title' => 'Persons with Disabilities by Districts',
+                    'data' => $districts->pluck('count')->toArray(),
+                    'labels' =>  $districts->pluck('count', 'name')->map(function ($count, $name) {
+                                        return "$name - $count";
+                                    })->values()->toArray()
 
-
-
+                ]));
+            });
+        });
         $content->row(function (Row $row) {
             $row->column(6, function (Column $column) {
                 //group pesons with disabilities by categories
@@ -298,22 +313,6 @@ deleted_at
                     'labels' =>  $persons->pluck('count', 'name')->map(function ($count, $name) {
                                         return "$name - $count";
                                     })->values()->toArray()
-                ]));
-            });
-            $row->column(6, function (Column $column) {
-                //groups persons with disabilities by districts
-                $districts = DB::table('people')
-                    ->join('districts', 'people.district_id', '=', 'districts.id')
-                    ->select('districts.name', DB::raw('COUNT(*) as count'))
-                    ->groupBy('districts.name')
-                    ->get();
-                $column->append(view('widgets.by-districts', [
-                    'title' => 'Persons with Disabilities by Districts',
-                    'data' => $districts->pluck('count')->toArray(),
-                    'labels' =>  $districts->pluck('count', 'name')->map(function ($count, $name) {
-                                        return "$name - $count";
-                                    })->values()->toArray()
-
                 ]));
             });
         });
