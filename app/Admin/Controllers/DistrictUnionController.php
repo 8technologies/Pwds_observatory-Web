@@ -218,6 +218,14 @@ class DistrictUnionController extends AdminController
             $form->email('admin_email', ('Administrator'))->rules("required| email")
                 ->help("This will be emailed with the password to log into the system");
 
+            // if($form->isEditing()) {
+            //     $form->divider('Change Password');
+            //     $form->password('password', __('Old Password'))
+            //     ->help('Previous password');
+            //     $form->password('new_password', __('New Password'));
+            //     $form->password('confirm_new_password', __('Confirm Password'))->rules('same:new_password');
+            // }
+
             $form->divider();
 
             $form->html('
@@ -227,7 +235,7 @@ class DistrictUnionController extends AdminController
         $form->hidden('user_id')->default(0);
 
         $form->saving(function ($form) {
-  
+            
             // save the admin in users and map to this du
             if ($form->isCreating()) {
                           $du_exists = Organisation::where('district_id', $form->district_id)->where('relationship_type', 'du')->exists();
@@ -252,7 +260,7 @@ class DistrictUnionController extends AdminController
                         'email' => $form->admin_email,
                         'password' => $password,
                         'name' => $form->name,
-                        'profile_photo' => $form->logo,
+                        'avatar' => $form->logo,
                     ]);
 
                     $admin->assignRole('district-union');
@@ -263,6 +271,27 @@ class DistrictUnionController extends AdminController
 
                 session(['password' => $new_password]);
             }
+            // if($form->isEditing()) {
+            
+            //     // Check is passord is not empty
+            //     if($form->password != null && $form->new_password != null) {
+            //         $administrator = $form->model()->administrator;
+            //         error_log($administrator->password);
+            //         error_log("Password: ". json_encode($form->model()->attributesToArray()));
+          
+            //         // check if old password is correct
+            //         if(Hash::check($form->password, $administrator->password, [
+            //             'rounds' => 12
+            //         ])) {
+            //             $administrator->password = Hash::make($form->new_password);
+            //             $administrator->save();
+            //         } else {  
+            //             admin_error('Old password is incorrect', 'Please check the old password and try again');
+            //             return back();
+            //         }
+            //     }
+            // }
+
         });
 
 

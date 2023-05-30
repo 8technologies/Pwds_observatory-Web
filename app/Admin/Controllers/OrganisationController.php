@@ -12,6 +12,10 @@ use App\Admin\Extensions\OrganisationsExcelExporter;
 
 class OrganisationController extends AdminController
 {
+
+    //ignore the following on save by making them public
+    public $password, $new_password, $confirm_new_password;
+
     /**
      * Title for current resource.
      *

@@ -239,6 +239,13 @@ class OPDController extends AdminController
             $form->email('admin_email', ('Administrator'))->rules("required")
                 ->help("This will be emailed with the password to log into the system");
 
+            // if($form->isEditing()) {
+            //     $form->divider('Change Password');
+            //     $form->password('password', __('Old Password'))
+            //     ->help('Previous password');
+            //     $form->password('new_password', __('New Password'));
+            //     $form->password('confirm_new_password', __('Confirm Password'))->rules('same:new_password');
+            // }
             $form->divider();
 
             $form->html('
@@ -271,6 +278,7 @@ class OPDController extends AdminController
                         'password' => $password,
                         'name' => $form->name,
                         'profile_photo' => $form->logo,
+                        'avatar' => $form->logo,
 
                     ]);
 
@@ -287,6 +295,21 @@ class OPDController extends AdminController
 
                 session(['password' => $new_password]);
             }
+
+            // if($form->isEditing()) {
+            //     // Check is passord is not empty
+            //     if($form->password != null && $form->new_password != null) {
+            //         $administrator = $form->model()->administrator;
+            //         // check if old password is correct
+            //         if(Hash::check($form->password, $administrator->password)) {
+            //             $administrator->password = Hash::make($form->new_password);
+            //             $administrator->save();
+            //         } else {
+            //             admin_error('Old password is incorrect', 'Please check the old password and try again');
+            //             return back();
+            //         }
+            //     }
+            // }
         });
 
 
