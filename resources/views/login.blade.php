@@ -16,7 +16,7 @@
                 <!-- Sign in form -->
                 <div class="container d-flex flex-wrap justify-content-center justify-content-xl-start h-100 pt-5">
                     <div class="w-100 align-self-end pt-1 pt-md-4 pb-4" style="max-width: 526px;">
-                        <h1 class="text-center text-xl-start">Welcome Back
+                        <h1 class="text-center text-xl-start">Hello, Welcome!
                         </h1>
                         <p class="text-center text-xl-start pb-3 mb-3">Don’t have an account yet? <a href="register"> Register
                                 here.</a></p>
