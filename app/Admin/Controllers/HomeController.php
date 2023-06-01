@@ -25,9 +25,7 @@ class HomeController extends Controller
 {
     public function index(Content $content)
     {
-
-
-
+        // error_log("Remove role: ". removeRole(Admin::user(), 'opd'));
 
         /*         
         Utils::importPwdsProfiles(Utils::docs_root().'/people-2.csv');  
@@ -223,17 +221,17 @@ deleted_at
 
         $u = Admin::user();
 
-        if ($u->gender == null  && !$u->inRoles(['nudipu', 'district-union', 'odp', 'administrator'])) {
-            $content->row(function (Row $row) {
-                $row->column(12, function (Column $column) {
-                    $column->append(view('widgets.alert', [
-                        'color' => false,
-                        'msg' => 'You have not completed your profile information. ',
-                        'link' => admin_url('auth/setting'),
-                    ]));
-                });
-            });
-        }
+        // if ($u->gender == null  && !$u->inRoles(['nudipu', 'district-union', 'odp', 'administrator'])) {
+        //     $content->row(function (Row $row) {
+        //         $row->column(12, function (Column $column) {
+        //             $column->append(view('widgets.alert', [
+        //                 'color' => false,
+        //                 'msg' => 'You have not completed your profile information. ',
+        //                 'link' => admin_url('auth/setting'),
+        //             ]));
+        //         });
+        //     });
+        // }
 
 
         $content->row(function (Row $row) {

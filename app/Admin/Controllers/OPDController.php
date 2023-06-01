@@ -49,7 +49,10 @@ class OPDController extends AdminController
             $district_union = Organisation::where('admin_email', $user->email)->first();
 
             $grid->model()->where('parent_organisation_id', $district_union->id)->where('relationship_type', 'opd')->orderBy('updated_at', 'desc');
-        } else {
+        } elseif ($user->isRole('opd')) {
+            $grid->model()->where('admin_email', $user->email)->orderBy('updated_at', 'desc');
+        }
+         else {
             $grid->model()->where('relationship_type', 'opd')->orderBy('updated_at', 'desc');
         }
 
@@ -150,6 +153,8 @@ class OPDController extends AdminController
             $form->textarea('vision', __('Vision'));
             $form->textarea('core_values', __('Core values'));
             $form->quill('brief_profile', __('Brief profile'));
+            $form->hidden('user_id')->default(Admin::user()->id);
+            
             $form->divider();
 
             $form->html('
@@ -212,58 +217,73 @@ class OPDController extends AdminController
             <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
             ');
         });
-        $form->tab('Membership Duration', function ($form) {
-            $form->date('valid_from', __('Valid From'))->default(date('Y-m-d'));
-            $form->date('valid_to', __('Valid To'))->default(date('Y-m-d'))->rules('after:start_date');
-            $form->hidden('relationship_type')->default('opd');
-            $form->hidden('parent_organisation_id');
-
-            $form->divider();
-
-            $form->html('
-            <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
-            <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
-            ');
-        });
+        if(!Admin::user()->isRole('basic')) {
+            $form->tab('Membership Duration', function ($form) {
+                $form->date('valid_from', __('Valid From'))->default(date('Y-m-d'));
+                $form->date('valid_to', __('Valid To'))->default(date('Y-m-d'))->rules('after:start_date');    
+                $form->divider();
+    
+                $form->html('
+                <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+                <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+                ');
+            });
+        }
 
         $form->tab('Districts of Operation', function ($form) {
             $form->multipleSelect('districtsOfOperation', __('Select Districts'))->options(District::all()->pluck('name', 'id'));
             $form->divider();
 
-            $form->html('
-            <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
-            <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
-            ');
+            if(Admin::user()->isRole('basic') ) {
+                $form->html('
+                <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+                <button type="submit" class="btn btn-primary float-right">Submit</button>
+                ');
+            }else {
+                $form->html('
+                <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+                <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+                ');
+            }
+
+       
         });
-        $form->tab('Administrator', function ($form) {
-            $form->email('admin_email', ('Administrator'))->rules("required")
-                ->help("This will be emailed with the password to log into the system");
 
-            // if($form->isEditing()) {
-            //     $form->divider('Change Password');
-            //     $form->password('password', __('Old Password'))
-            //     ->help('Previous password');
-            //     $form->password('new_password', __('New Password'));
-            //     $form->password('confirm_new_password', __('Confirm Password'))->rules('same:new_password');
-            // }
-            $form->divider();
+        if(!Admin::user()->isRole('basic')) {
+            $form->tab('Administrator', function ($form) {
+                $form->email('admin_email', ('Administrator'))->rules("required")
+                    ->help("This will be emailed with the password to log into the system");
 
-            $form->html('
-            <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
-            <button type="submit" class="btn btn-primary float-right">Submit</button>
-            ');
-        });
-        $form->hidden('user_id')->default(0);
-
-
+                // if($form->isEditing()) {
+                //     $form->divider('Change Password');
+                //     $form->password('password', __('Old Password'))
+                //     ->help('Previous password');
+                //     $form->password('new_password', __('New Password'));
+                //     $form->password('confirm_new_password', __('Confirm Password'))->rules('same:new_password');
+                // }
+                $form->divider();
+    
+                $form->html('
+                <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+                <button type="submit" class="btn btn-primary float-right">Submit</button>
+                ');
+            });
+        }else {
+            $form->hidden('admin_email')->default(Admin::user()->email);
+            $form->hidden('relationship_type')->default('opd');
+            $form->hidden('parent_organisation_id')->default(0);
+        }
+     
         $form->saving(function ($form) {
+
             // save the admin in users and map to this du
             if ($form->isCreating()) {
+
+                $admin_email = Admin::user()->isRole('basic') ? Admin::user()->email : $form->admin_email;
+
                 //generate random password for user and send it to the user's email
                 $alpha_list = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz1234567890';
                 $password = substr(str_shuffle($alpha_list), 0, 8);
-
-                $admin_email = $form->admin_email;
 
                 $new_password = $password;
                 $password = Hash::make($password);
@@ -275,25 +295,20 @@ class OPDController extends AdminController
                     $admin = User::create([
                         'username' => $admin_email,
                         'email' => $form->admin_email,
-                        'password' => $password,
-                        'name' => $form->name,
-                        'profile_photo' => $form->logo,
-                        'avatar' => $form->logo,
-
+                        'password' => $password
                     ]);
+                    session(['password' => $new_password]);
 
-
-                    $admin->assignRole('opd');
                 }
-                $form->user_id = $admin->id;
 
-                $current_user = auth("admin")->user();
-                $organisation = Organisation::where('user_id', $current_user->id)->first();
-
-                $form->parent_organisation_id = $organisation ? $organisation->id : null;
+                $form->user_id =  $admin->id;
                 $form->relationship_type = 'opd';
+                $form->admin_email = $admin_email;
 
-                session(['password' => $new_password]);
+                $organisation = Organisation::where('user_id', Admin::user()->id)->first();
+                $form->parent_organisation_id = $organisation ? $organisation->id : null;
+
+                assignRole($admin, 'opd'); // re-assign role to opd
             }
 
             // if($form->isEditing()) {
@@ -315,8 +330,19 @@ class OPDController extends AdminController
 
         $form->saved(function (Form $form) {
             if ($form->isCreating()) {
-                $admin_password = session('password');
-                Mail::to($form->admin_email)->send(new CreatedOPDMail($form->name, $form->admin_email, $admin_password));
+                if(session('password') == null) {
+                    admin_info('Organisation Created', 'You are now the Administrator of this Organisation');
+                }else {
+                    $admin_password = session('password');
+                    Mail::to($form->admin_email)->send(new CreatedOPDMail($form->name, $form->admin_email, $admin_password));
+                }
+                // update the admin avatar and name
+                $admin = $form->model()->administrator;
+                $admin->avatar = $form->model()->logo;
+                $admin->profile_photo = $form->model()->logo;
+                $admin->name = $form->model()->name;
+                $admin->save();
+
             }
         });
 
