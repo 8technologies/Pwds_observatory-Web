@@ -109,9 +109,9 @@ if (!isset($header_style)) {
                     }
                 </style>
 
-                {{-- <li class="nav-item">
-                    <a href="{{ admin_url() }}" title="Create an account" class="nav-link blink">Register Now</a>
-                </li> --}}
+                <li class="nav-item">
+                    <a href="https://shorturl.at/fxEQ6" title="Take part in hackathon" class="nav-link blink" target="_blank">Hackathon 2023</a>
+                </li>
 
 
 
