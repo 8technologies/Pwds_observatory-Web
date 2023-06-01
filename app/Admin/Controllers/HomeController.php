@@ -25,7 +25,6 @@ class HomeController extends Controller
 {
     public function index(Content $content)
     {
-        // error_log("Remove role: ". removeRole(Admin::user(), 'opd'));
 
         /*         
         Utils::importPwdsProfiles(Utils::docs_root().'/people-2.csv');  
@@ -309,6 +308,24 @@ deleted_at
                     'title' => 'Persons with Disabilities by Categories',
                     'data' => $persons->pluck('count')->toArray(),
                     'labels' =>  $persons->pluck('count', 'name')->map(function ($count, $name) {
+                                        return "$name - $count";
+                                    })->values()->toArray()
+                ]));
+            });
+            $row->column(6, function (Column $column) {
+                //group pesons with disabilities by categories
+                $persons = DB::table('people')
+                    ->select('place_of_birth', DB::raw('COUNT(*) as count'))
+                    ->groupBy('place_of_birth')
+                    ->get();
+
+                // dd($persons);
+                
+
+                $column->append(view('widgets.by-place-of-birth', [
+                    'title' => 'Persons with Disabilities by Place Of Birth',
+                    'data' => $persons->pluck('count')->toArray(),
+                    'labels' =>  $persons->pluck('count', 'place_of_birth')->map(function ($count, $name) {
                                         return "$name - $count";
                                     })->values()->toArray()
                 ]));
