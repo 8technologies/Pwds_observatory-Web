@@ -52,9 +52,11 @@
                 't' => 'date of registration',
                 's' => $organisation->date_of_registration
             ])
+
+            
             @include('components.detail-item', [
                 't' => 'Type of Organisation',
-                's' => $organisation->type,
+                's' => $organisation->relationship_type == 'opd' ? 'OPD' : 'District Union',
             ])
 
             @include('components.detail-item', [

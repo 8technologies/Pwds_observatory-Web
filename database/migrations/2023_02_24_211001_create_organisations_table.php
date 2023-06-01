@@ -23,7 +23,6 @@ class CreateOrganisationsTable extends Migration
             $table->text("vision")->nullable();
             $table->text("core_values")->nullable();
             $table->text("brief_profile")->nullable();
-            // $table->string("type"); // (association, group, cooperative, company, etc
             $table->enum("membership_type", ["organisation-based", "individual-based", "both"])->default("individual-based");
             $table->foreignId('district_id')->nullable()->constrained('districts')->onDelete('cascade');
 

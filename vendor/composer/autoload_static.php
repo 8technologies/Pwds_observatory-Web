@@ -38,6 +38,7 @@ class ComposerStaticInitda89eef54c810448a827ed04bb3da82f
         'ed962a97bd972bc82007176b647d4e36' => __DIR__ . '/..' . '/facade/ignition/src/helpers.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
+        'b4e3f29b106af37a2bb239f73cdf68c7' => __DIR__ . '/../..' . '/app/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -638,6 +639,7 @@ class ComposerStaticInitda89eef54c810448a827ed04bb3da82f
         'App\\Admin\\Controllers\\ExampleController' => __DIR__ . '/../..' . '/app/Admin/Controllers/ExampleController.php',
         'App\\Admin\\Controllers\\GroupController' => __DIR__ . '/../..' . '/app/Admin/Controllers/GroupController.php',
         'App\\Admin\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Admin/Controllers/HomeController.php',
+        'App\\Admin\\Controllers\\InnovationController' => __DIR__ . '/../..' . '/app/Admin/Controllers/InnovationController.php',
         'App\\Admin\\Controllers\\InstitutionController' => __DIR__ . '/../..' . '/app/Admin/Controllers/InstitutionController.php',
         'App\\Admin\\Controllers\\JobApplicationController' => __DIR__ . '/../..' . '/app/Admin/Controllers/JobApplicationController.php',
         'App\\Admin\\Controllers\\JobController' => __DIR__ . '/../..' . '/app/Admin/Controllers/JobController.php',
@@ -650,7 +652,9 @@ class ComposerStaticInitda89eef54c810448a827ed04bb3da82f
         'App\\Admin\\Controllers\\PostCategoryController' => __DIR__ . '/../..' . '/app/Admin/Controllers/PostCategoryController.php',
         'App\\Admin\\Controllers\\ProductController' => __DIR__ . '/../..' . '/app/Admin/Controllers/ProductController.php',
         'App\\Admin\\Controllers\\ProductOrderController' => __DIR__ . '/../..' . '/app/Admin/Controllers/ProductOrderController.php',
+        'App\\Admin\\Controllers\\ResourceController' => __DIR__ . '/../..' . '/app/Admin/Controllers/ResourceController.php',
         'App\\Admin\\Controllers\\ServiceProviderController' => __DIR__ . '/../..' . '/app/Admin/Controllers/ServiceProviderController.php',
+        'App\\Admin\\Controllers\\TestimonyController' => __DIR__ . '/../..' . '/app/Admin/Controllers/TestimonyController.php',
         'App\\Admin\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Admin/Controllers/UserController.php',
         'App\\Admin\\Extensions\\Column\\FloatBar' => __DIR__ . '/../..' . '/app/Admin/Extensions/Column/FloatBar.php',
         'App\\Admin\\Extensions\\Column\\OpenMap' => __DIR__ . '/../..' . '/app/Admin/Extensions/Column/OpenMap.php',
@@ -748,6 +752,7 @@ class ComposerStaticInitda89eef54c810448a827ed04bb3da82f
         'App\\Models\\Resource' => __DIR__ . '/../..' . '/app/Models/Resource.php',
         'App\\Models\\ServiceProvider' => __DIR__ . '/../..' . '/app/Models/ServiceProvider.php',
         'App\\Models\\ServiceProviderContactPerson' => __DIR__ . '/../..' . '/app/Models/ServiceProviderContactPerson.php',
+        'App\\Models\\Testimony' => __DIR__ . '/../..' . '/app/Models/Testimony.php',
         'App\\Models\\TrafficRecord' => __DIR__ . '/../..' . '/app/Models/TrafficRecord.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Models\\UserHasProgram' => __DIR__ . '/../..' . '/app/Models/UserHasProgram.php',

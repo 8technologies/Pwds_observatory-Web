@@ -18,7 +18,6 @@ class CreateDistrictOrganisationTable extends Migration
             $table->id();
             $table->foreignId('district_id')->constrained('districts')->onDelete('cascade');
             $table->foreignId('organisation_id')->constrained('organisations')->onDelete('cascade');
-            $table->text('description');
             $table->timestamps();
         });
     }
