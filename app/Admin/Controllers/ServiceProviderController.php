@@ -134,14 +134,15 @@ class ServiceProviderController extends AdminController
         });
 
         $form->tab('Bio', function ($form) {
-            $form->text('name', __('Name'));
+            $form->text('name', __('Name'))->rules('required');
             $form->text('registration_number', __('Registration number'));
-            $form->date('date_of_registration', __('Date of registration'))->rules('required');
+            $form->date('date_of_registration', __('Date of registration'));
 
-            $form->multipleSelect('districts_of_operation', __('Select districts'))
-            ->rules('required')
-            ->options(District::orderBy('name', 'asc')->get()->pluck('name', 'id'));
+            // $form->multipleSelect('districts_of_operation', __('Select districts'))
+            // ->options(District::orderBy('name', 'asc')->get()->pluck('name', 'id'));
             
+            $form->textarea('mission', __('Mission'));
+
             $form->quill('brief_profile', __('Brief profile'));
 
             $form->divider();
@@ -155,13 +156,44 @@ class ServiceProviderController extends AdminController
             $form->text('physical_address', __('Physical address'));
 
             
-            $form->hasMany('contact_persons', 'Contact Persons', function (Form\NestedForm $form) {
-                $form->text('name', __('Name'))->rules("required");
-                $form->text('position', __('Position'))->rules("required");
-                $form->email('email', __('Email'))->rules("required");
-                $form->text('phone1', __('Phone Tel'))->rules("required");
-                $form->text('phone2', __('Other Tel') );
-            });
+            // $form->hasMany('contact_persons', 'Contact Persons', function (Form\NestedForm $form) {
+            //     $form->text('name', __('Name'))->rules("required");
+            //     $form->text('position', __('Position'))->rules("required");
+            //     $form->email('email', __('Email'))->rules("required");
+            //     $form->text('phone1', __('Phone Tel'))->rules("required");
+            //     $form->text('phone2', __('Other Tel') );
+            // });
+
+            $form->text('email', __('Email'))->rules("required");
+            $form->text('telephone', __('Telephone'))->rules("required");
+            $form->text('postal_address', __('Postal address'));
+
+            $form->divider();
+            $form->html('
+            <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+            <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+            ');
+        });
+
+        $form->tab('Region & Operations', function ($form) {
+            $form->textarea('target_group', __('Target group'))->rules("required")
+                ->help("Which group of people do you serve?");
+
+            $form->textarea('disability_category', __('Disability category'))->rules("required")
+                ->help("Which disability category do you serve?");
+
+            $form->textarea('level_of_operation', __('Level of operation'))->rules("required")
+                ->help("What is the level of your operation i.e Reginal, National, International?");
+
+            $form->textarea('districts_of_operation', __('Districts of operation'))->rules("required")
+            ->placeholder("Region or Districts of operation e.g Makindye Division, Kampala District")
+                ->help("Which districts or regions do you operate in?");
+
+            $form->textarea('services_offered', __('Services offered'))->rules("required")
+                ->help("Give a brief summary about services you offer?");
+
+            $form->textarea('affiliated_organizations', __('Affiliated organizations'))
+                ->help("Which organisations do you have partnerships with?");
             $form->divider();
             $form->html('
             <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
@@ -173,11 +205,9 @@ class ServiceProviderController extends AdminController
             $form->file('logo', __('Logo'))
             ->help("Upload image logo in png, jpg, jpeg format (max: 2MB)");
             $form->file('certificate_of_registration', __('Certificate of registration'))
-            ->rules("required")
             ->help("Upload certificate of registration in pdf format (max: 2MB)");
 
             $form->file('license', __('License'))
-            ->rules("required")
             ->help("Upload your trade license");
 
             $form->multipleFile('attachments', __('Attachments'))
