@@ -162,11 +162,11 @@
                 <hr>
                 <div class="d-flex justify-content-center justify-content-md-between pt-4 pt-lg-5">
                     <div class="mx-3 mx-md-0">
-                        <div class="display-3 text-dark mb-1">23%</div>
+                        <div class="display-3 text-dark mb-1">{{ $female_percentage }}%</div>
                         <span>Females - with disabilities</span>
                     </div>
                     <div class="mx-3 mx-md-0">
-                        <div class="display-3 text-dark mb-1">77%</div>
+                        <div class="display-3 text-dark mb-1">{{ $male_percentage }}%</div>
                         <span>Males - with disabilities</span>
                     </div>
                 </div>
@@ -345,7 +345,7 @@
                 </div>
                 <div class="step-body">
                     <h3 class="h4 mb-3">Enjoy!</h3>
-                    <p class="mb-0">Once we aprove your profile, you will then be able to access all system features!</p>
+                    <p cl ass="mb-0">Once we aprove your profile, you will then be able to access all system features!</p>
                 </div>
             </div>
         </div>
@@ -376,7 +376,15 @@
                         Disabilities.</p>
                     <hr>
                     <div class="row  pt-4 pt-lg-5">
+                        
+                        @foreach($districts_count as $district)
                         <div class="col mx-3 mx-md-0">
+                            <div class="display-3 text-dark mb-1">{{round($district->total / $districts_count->sum('total'))}}%</div>
+                            <span>{{$district->district}}</span>
+                        </div>
+                        @endforeach
+
+                        {{-- <div class="col mx-3 mx-md-0">
                             <div class="display-3 text-dark mb-1">70%</div>
                             <span>Kampala</span>
                         </div>
@@ -395,7 +403,7 @@
                         <div class="col mx-3 mx-md-0">
                             <div class="display-3 text-dark mb-1">3%</div>
                             <span>Arua</span>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -437,18 +445,12 @@
     <script>
         const ctx = document.getElementById('myChart');
         const data = {
-            labels: [
-                'Vision Impairment - 370',
-                'Deaf or hard of hearing - 57',
-                'Mental health conditions - 101',
-                'Intellectual disability - 210',
-                'Acquired brain injury - 259',
-                'Physical disability - 712',
-                'Autism spectrum disorder - 100'
-            ],
+            labels: @json($persons_by_disability->pluck('count', 'name')->map(function ($count, $name) {
+                                        return "$name - $count";
+                                    })->values()),
             datasets: [{
                 label: 'My First Dataset',
-                data: [370, 57, 101, 210, 259, 712, 100],
+                data: @json($persons_by_disability->pluck('count')),
                 backgroundColor: [
                     '#8EFCDF',
                     '#F43DE3',
@@ -486,16 +488,10 @@
         new Chart(document.getElementById('topDistricts'), {
             type: 'pie',
             data: {
-                labels: [
-                    'Jinja',
-                    'Mbarara',
-                    'Kampala',
-                    'Arua',
-                    'Kasese',
-                ],
+                labels: @json($districts_count->pluck('district')),
                 datasets: [{
                     label: 'My First Dataset',
-                    data: [300, 882, 100, 150, 200],
+                    data: @json($districts_count->pluck('total')),
                     backgroundColor: [
                         '#23A2E9',
                         '#F43DE3',
