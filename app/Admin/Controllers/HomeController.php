@@ -9,6 +9,7 @@ use App\Models\Location;
 use App\Models\Person;
 use App\Models\Product;
 use App\Models\Job;
+use App\Models\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use App\Models\Utils;
 use Carbon\Carbon;
@@ -246,6 +247,16 @@ deleted_at
             $row->column(3, function (Column $column) {
                 $column->append(view('widgets.box-5', [
                     'is_dark' => false,
+                    'title' => 'Service providers',
+                    'sub_title' => 'All time.',
+                    'number' => ServiceProvider::count(),
+                    'link' => admin_url('service-providers'),
+                ]));
+            });
+
+            $row->column(3, function (Column $column) {
+                $column->append(view('widgets.box-5', [
+                    'is_dark' => false,
                     'title' => 'Products & Services',
                     'sub_title' => 'All time.',
                     'number' => Product::count(),
@@ -262,15 +273,15 @@ deleted_at
                     'link' => admin_url('jobs'),
                 ]));
             });
-            $row->column(3, function (Column $column) {
-                $column->append(view('widgets.box-5', [
-                    'is_dark' => true,
-                    'title' => 'System traffic',
-                    'sub_title' => rand(100, 400) . ' mobile app, ' . rand(100, 300) . ' web browser.',
-                    'number' => number_format(rand(100, 6000)),
-                    'link' => 'javascript:;'
-                ]));
-            });
+            // $row->column(3, function (Column $column) {
+            //     $column->append(view('widgets.box-5', [
+            //        'is_dark' => true,
+            //         'title' => 'System traffic',
+            //         'sub_title' => rand(100, 400) . ' mobile app, ' . rand(100, 300) . ' web browser.',
+            //         'number' => number_format(rand(100, 6000)),
+            //         'link' => 'javascript:;'
+            //     ]));
+            // }); 
         });
 
         $content->row(function (Row $row) {

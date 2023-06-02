@@ -10,6 +10,8 @@ use Encore\Admin\Show;
 use Illuminate\Support\Facades\Auth;
 use App\Models\District;
 use Encore\Admin\Facades\Admin;
+use App\Admin\Extensions\ServiceProvidersExcelExporter;
+
 
 class ServiceProviderController extends AdminController
 {
@@ -32,25 +34,54 @@ class ServiceProviderController extends AdminController
         $grid->filter(function($filter){
             $filter->disableIdFilter();
             $filter->like('name', 'Name');
-            $filter->like('registration_number', 'Registration number');
-            $filter->between('date_of_registration', 'Date of registration')->date();
+            // $filter->like('registration_number', 'Registration number');
+            // $filter->between('date_of_registration', 'Date of registration')->date();
+            // $filter->where(function ($query) {
+            //     $query->whereHas('districts_of_operation', function ($query) {
+            //         $query->where('name', 'like', "%{$this->input}%");
+            //     });
+            // }, 'Districts of operation');
             $filter->where(function ($query) {
-                $query->whereHas('districts_of_operation', function ($query) {
-                    $query->where('name', 'like', "%{$this->input}%");
-                });
-            }, 'Districts of operation');
+                $query->where('target_group', 'like', "%{$this->input}%")->orWhere('target_group', 'like', "%all%");
+            }, 'Target Group');
+            $filter->where(function ($query) {
+                $query->where('disability_category', 'like', "%{$this->input}%")->orWhere('disability_category', 'like', "%all%");
+            }, 'Disability Category');
+
+            $filter->where(function ($query) {
+                $query->where('districts_of_operation', 'like', "%{$this->input}%")->orWhere('districts_of_operation', 'like', "%uganda%");
+            }, 'Districts / Regions of operation');
         });
+        if(!Admin::user()->inRoles(['administrator', 'nudipu'])) {
+            $grid->disableCreateButton();
+            $grid->actions(function ($actions) {
+                $actions->disableDelete();
+                $actions->disableEdit();
+            });
+        }
+        $grid->model()->orderBy('created_at', 'desc');
+        $grid->exporter(new ServiceProvidersExcelExporter());
+
         $grid->column('name', __('Name'));
-        $grid->column('registration_number', __('Registration number'));
-        $grid->column('date_of_registration', __('Date of registration'));
-        $grid->column('user_id', __('User id'));
+        // $grid->column('registration_number', __('Registration number'));
+        // $grid->column('date_of_registration', __('Date of registration'));
+        // $grid->column('user_id', __('User id'));
         $grid->column('physical_address', __('Physical address'));
-        $grid->column('attachments', __('Attachments'));
-        $grid->column('logo', __('Logo'));
-        $grid->column('license', __('License'));
-        $grid->column('certificate_of_registration', __('Certificate of registration'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        // $grid->column('attachments', __('Attachments'));
+        // $grid->column('logo', __('Logo'));
+        // $grid->column('license', __('License'));
+        // $grid->column('certificate_of_registration', __('Certificate of registration'));
+
+        $grid->column('email', __('Email'));
+        $grid->column('telephone', __('Telephone'));
+        $grid->column('target_group', __('Target group'));
+        $grid->column('disability_category', __('Disability category'));
+        $grid->column('level_of_operation', __('Level of operation'));
+        $grid->column('districts_of_operation', __('Districts of operation'));
+        $grid->column('services_offered', __('Services offered'));
+        $grid->column('is_verified', __('Verified'))->display(function ($is_verified) {
+            return $is_verified ? 'Yes' : 'No';
+        });
 
         return $grid;
     }
