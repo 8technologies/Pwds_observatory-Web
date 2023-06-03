@@ -19,10 +19,10 @@ class ServiceProvider extends Model
         return json_decode($value);
     }
 
-    public function districts_of_operation()
-    {
-        return $this->belongsToMany(District::class);
-    }
+    // public function districts_of_operation()
+    // {
+    //     return $this->belongsToMany(District::class);
+    // }
 
     public function contact_persons()
     {

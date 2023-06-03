@@ -32,7 +32,11 @@
     <div class="row">
         <div class="col-3 col-md-2">
             <div class="border border-1 rounded bg-">
-                <img class="img-fluid" src="{{ asset('storage/' . $service_provider->logo) }}" width="250" height="400">
+                @if($service_provider->logo == null)
+                    <img class="img-fluid" src="{{ asset('assets/img/service_provider_placeholder.jpeg') }}" width="250" height="500">
+                @else
+                    <img class="img-fluid" src="{{ asset('storage/' . $service_provider->logo) }}" width="250" height="400">
+                @endif
             </div>
         </div>
         <div class="col-9 col-md-5">
@@ -44,19 +48,45 @@
                 's' => $service_provider->name
             ])
 
-            @include('components.detail-item', [
-                't' => 'registration number',
-                's' => $service_provider->registration_number,
-            ])
-            @include('components.detail-item', [
-                't' => 'date of registration',
-                's' => $service_provider->date_of_registration
-            ])
+            @if($service_provider->registration_number)
+                @include('components.detail-item', [
+                    't' => 'registration number',
+                    's' => $service_provider->registration_number,
+                ])
+            @endif
+
+            @if($service_provider->date_of_registration)
+                @include('components.detail-item', [
+                    't' => 'date of registration',
+                    's' => $service_provider->date_of_registration
+                ])
+            @endif
 
             @include('components.detail-item', [
                 't' => 'physical address',
                 's' => $service_provider->physical_address,
             ])
+            @if($service_provider->postal_address)
+                @include('components.detail-item', [
+                    't' => 'postal address',
+                    's' => $service_provider->postal_address,
+                ])
+            @endif
+
+            @if($service_provider->email)
+                @include('components.detail-item', [
+                    't' => 'email',
+                    's' => $service_provider->email,
+                ])
+            @endif
+
+            @if($service_provider->telephone)
+                @include('components.detail-item', [
+                    't' => 'Telephone',
+                    's' => $service_provider->telephone,
+                ])
+            @endif
+
 
             @include('components.detail-item', [
             't' => 'verified',
@@ -69,7 +99,7 @@
 
     </div>
 
-    <hr class="mt-4 mb-2 border-primary pb-0 mt-md-5 mb-md-5">
+    {{-- <hr class="mt-4 mb-2 border-primary pb-0 mt-md-5 mb-md-5">
     <h3 class="text-uppercase h4 p-0 m-0 text-center"><b>Contact Persons</b></h3>
     <hr class="m-0 pt-0 mb-3">
     <table class="table table-bordered table-striped table-hover">
@@ -95,12 +125,40 @@
     <h3 class="text-uppercase h4 p-0 m-0 text-center"><b>Profile</b></h3>
     <hr class="m-0 pt-0 mb-3">
 
-    <p class="text-justify">{!! $service_provider->brief_profile !!}</p>
+    <p class="text-justify">{!! $service_provider->brief_profile !!}</p> --}}
+
+    @if($service_provider->mission != 'NULL')
+        <hr class="mt-4 mb-2 border-primary pb-0 mt-md-5 mb-md-5">
+        <h3 class="text-uppercase h4 p-0 m-0 text-center"><b>Mission</b></h3>
+        <hr class="m-0 pt-0 mb-3">
+        <p class="text-justify">{!! $service_provider->mission !!}</p>
+    @endif
+
+    <hr class="mt-4 mb-2 border-primary pb-0 mt-md-5 mb-md-5">
+    <h3 class="text-uppercase h4 p-0 m-0 text-center"><b>Services Offered</b></h3>
+    <hr class="m-0 pt-0 mb-3">
+    <p class="text-justify">{!! $service_provider->services_offered !!}</p>
+
+    <hr class="mt-4 mb-2 border-primary pb-0 mt-md-5 mb-md-5">
+    <h3 class="text-uppercase h4 p-0 m-0 text-center"><b>Target & Disabilities</b></h3>
+    <hr class="m-0 pt-0 mb-3">
+    <p class="text-justify">{{ $service_provider->target_group}}</p>
+    <p class="text-justify">{{ $service_provider->disability_category}}</p>
 
 
+    <hr class="mt-4 mb-2 border-primary pb-0 mt-md-5 mb-md-5">
+    <h3 class="text-uppercase h4 p-0 m-0 text-center"><b>Regions Of Operation</b></h3>
+    <hr class="m-0 pt-0 mb-3">
+    <p class="text-justify">{{ $service_provider->level_of_operation }}</p>
 
+    <p class="text-justify">{{ $service_provider->districts_of_operation }}</p>
 
-
+    @if($service_provider->affiliated_organizations != 'NULL')
+        <hr class="mt-4 mb-2 border-primary pb-0 mt-md-5 mb-md-5">
+        <h3 class="text-uppercase h4 p-0 m-0 text-center"><b>Affilitated Organisations</b></h3>
+        <hr class="m-0 pt-0 mb-3">
+        <p class="text-justify">{{ $service_provider->affiliated_organizations }}</p>
+    @endif
 
 </div>
 <style>

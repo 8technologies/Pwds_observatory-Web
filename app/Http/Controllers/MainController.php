@@ -12,6 +12,9 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Routing\Controller as BaseController;
+use App\Models\Person;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
 
 class MainController extends BaseController
 {
@@ -22,40 +25,73 @@ class MainController extends BaseController
   {
 
     /*     die("<h1>Something really cool is coming soon! 🥰</h1>"); */
-    $members = Administrator::where([])->orderBy('updated_at', 'desc')->limit(8)->get();
-    $profiles = [];
-    $_profiles = [];
-    foreach (Administrator::where([])->orderBy('updated_at', 'desc')->limit(15)->get() as $key => $v) {
-      $profiles[] = $v;
-    }
+    // $members = Administrator::where([])->orderBy('updated_at', 'desc')->limit(8)->get();
+    // $profiles = [];
+    // $_profiles = [];
+    // foreach (Administrator::where([])->orderBy('updated_at', 'desc')->limit(15)->get() as $key => $v) {
+    //   $profiles[] = $v;
+    // }
 
-    foreach ($profiles as $key => $pro) {
-      if ($pro->intro == null || strlen($pro->intro) < 3) {
-        $pro->intro = "Hi there, I'm $pro->name . I call upon you to join the team!";
-      }
-      $_profiles[] = $pro;
-    }
+    // foreach ($profiles as $key => $pro) {
+    //   if ($pro->intro == null || strlen($pro->intro) < 3) {
+    //     $pro->intro = "Hi there, I'm $pro->name . I call upon you to join the team!";
+    //   }
+    //   $_profiles[] = $pro;
+    // }
 
-    $posts = [];
-    foreach (NewsPost::all() as $key => $v) {
-      $posts[] = $v;
-    }
-    shuffle($posts);
-    $_posts = [];
-    $i = 0;
-    foreach ($posts as $key => $v) {
-      $_posts[] = $v;
-      $i++;
-      if ($i > 2) {
-        break;
-      }
-    }
+    // $posts = [];
+    // foreach (NewsPost::all() as $key => $v) {
+    //   $posts[] = $v;
+    // }
+    // shuffle($posts);
+    // $_posts = [];
+    // $i = 0;
+    // foreach ($posts as $key => $v) {
+    //   $_posts[] = $v;
+    //   $i++;
+    //   if ($i > 2) {
+    //     break;
+    //   }
+    // }
 
-    return view('index', [
-      'members' => $members,
-      'profiles' => $_profiles,
-      'posts' => $_posts,
-    ]);
+    // return view('index', [
+    //   'members' => $members,
+    //   'profiles' => $_profiles,
+    //   'posts' => $_posts,
+    // ]);
+
+    //HIX CODE STARTS HERE
+    
+    //get percentage of persons by gender
+    $female_pwd = Person::where('sex', 'Female')->count();
+    $male_pwd = Person::where('sex', 'Male')->count();
+    $total = $female_pwd + $male_pwd;
+
+    $female_percentage = round($female_pwd / $total * 100);
+    $male_percentage = round($male_pwd / $total * 100);
+
+    //get top 5 districts with persons with disabilities
+    $districts_count = DB::table('people')
+      ->join('districts', 'people.district_id', '=', 'districts.id')
+      ->select('districts.name as district', DB::raw('COUNT(*) as total'))
+      ->groupBy('district')
+      ->orderByRaw('total DESC')
+      ->limit(5)
+      ->get(); 
+
+
+    //get persons by disability type
+    $persons_by_disability = DB::table('people')
+    ->join('disability_person', 'people.id', '=', 'disability_person.person_id')
+    ->join('disabilities', 'disability_person.disability_id', '=', 'disabilities.id')
+    ->select('disabilities.name', DB::raw('COUNT(*) as count'))
+    ->groupBy('disabilities.name')
+    ->get();
+
+
+    //END OF HIX CODE
+
+    return view('index', compact('female_percentage','male_percentage', 'total','districts_count','persons_by_disability'));
   }
   public function about_us()
   {
