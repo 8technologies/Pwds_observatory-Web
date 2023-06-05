@@ -38,7 +38,7 @@ class PersonController extends AdminController
     {
         $grid = new Grid(new Person());
 
-        //TODO: fix filters, and also display users from the pdo, and district unions
+        //TODO: fix filters, and also display users from the opd, and district unions
 
 
         $grid->filter(function ($f) {
@@ -341,7 +341,7 @@ class PersonController extends AdminController
 
         $user = auth("admin")->user();
 
-        if (!$user->inRoles(['district-union', 'pdo'])) {
+        if (!$user->inRoles(['district-union', 'opd'])) {
             $form->tab('Memberships', function ($form) {
                 $form->radio('is_member', __('Membership'))->options([1 => 'Yes', 0 => 'No'])->rules('required')
                     ->when(1, function (Form $form) {
@@ -417,7 +417,7 @@ class PersonController extends AdminController
         $form->hidden('is_approved');
 
         // Check if district union is doing the registration and send credentials else do not send
-        if (auth("admin")->user()->inRoles(['district-union', 'pdo'])) {
+        if (auth("admin")->user()->inRoles(['district-union', 'opd'])) {
 
             $form->saving(function ($form) {
                 // save the admin in users and map to this du
