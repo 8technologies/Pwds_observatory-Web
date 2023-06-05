@@ -96,10 +96,11 @@ class PersonController extends AdminController
             $grid->model()->where('district_id', $organisation->district_id)->orderBy('id', 'desc');
         } else if ($user->isRole('opd')) {
             $grid->model()->where('opd_id', $organisation->id)->orderBy('id', 'desc');
-        } else {
-            // dd("ddd");
-            $grid->model()->orderBy('id', 'desc');
         }
+        //  else {
+        //     // dd("ddd");
+        //     $grid->model()->orderBy('id', 'desc');
+        // }
 
         $grid->exporter(new PersonsExcelExporter());
         $grid->disableBatchActions();
