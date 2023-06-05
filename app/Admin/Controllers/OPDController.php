@@ -52,7 +52,7 @@ class OPDController extends AdminController
         } elseif ($user->isRole('opd')) {
             $grid->model()->where('admin_email', $user->email)->orderBy('updated_at', 'desc');
         }
-         else {
+         elseif($user->inRoles(['nudipu','administrator'])) {
             $grid->model()->where('relationship_type', 'opd')->orderBy('updated_at', 'desc');
         }
 
