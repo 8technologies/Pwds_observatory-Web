@@ -42,4 +42,6 @@ Route::group([
     $router->resource('resources', ResourceController::class);
     $router->resource('innovations', InnovationController::class);
     $router->resource('testimonies', TestimonyController::class);
+
+    $router->resource('gens', GenController::class); 
 });
