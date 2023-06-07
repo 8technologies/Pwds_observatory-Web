@@ -14,6 +14,8 @@ class PersonsExcelExporter extends ExcelExporter
         'id_number' => 'ID Number',
         'sex' => 'Gender',
         'dob' => 'Date ',
+        'district_of_origin' => 'District of Origin',
+        'profiler' => 'Profiler',
     ];
     
 }
