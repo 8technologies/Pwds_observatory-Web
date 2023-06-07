@@ -49,7 +49,6 @@ class PersonController extends AdminController
             //     Disability::where([])->orderBy('name', 'asc')->get()->pluck('name', 'id')
             // );
             $f->where(function ($query) {
-
                 $query->whereHas('disabilities', function ($query) {
                     $query->where('name', 'like', "%{$this->input}%");
                 });
@@ -139,7 +138,7 @@ class PersonController extends AdminController
                     //disabilities in badges
                     if ($this->disabilities()->count() > 0) {
                         $disabilities = $this->disabilities->map(function ($item) {
-                            return "<span class='badge badge-info'>" . $item->name . "</span>";
+                            return "<span class='badge badge-success'>" . $item->name . "</span>";
                         })->toArray();
                         return join(' ', $disabilities);
                     }
@@ -261,10 +260,15 @@ class PersonController extends AdminController
             $form->text('name', __('Surname'))->rules('required');
             $form->text('other_names', __('Other Names'))->rules('required');
             $form->text('id_number', __('ID Number'))
-                    ->help("NIN, Passport Number, Driving Permit Number");
+                ->help("NIN, Passport Number, Driving Permit Number");
             $form->date('dob', __('Date of Birth'))->rules("required");
             $form->radio('sex', __('Gender'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
-            $form->radio('marital_status', __('Marital Status'))->options(['Single' => 'Single', 'Married' => 'Married', 'Divorced' => 'Divorced', 'Widowed' => 'Widowed'])->rules('required');
+            $form->radio('marital_status', __('Marital Status'))->options([
+                'Single' => 'Single',
+                'Married' => 'Married',
+                'Divorced' => 'Divorced',
+                'Widowed' => 'Widowed'
+            ])->rules('required');
             $form->text('ethnicity', __('Ethnicity'))->rules('required')
                 ->help('Your Tribe');
             $form->text('religion', __('Religion'))->rules('required');
@@ -408,26 +412,25 @@ class PersonController extends AdminController
                     $form->mobile('phone_number_2', __('Other Phone Number'));
                     $form->text('email', __('Email'));
                 })->default(0);
-                $form->divider();
-                $form->html('
+            $form->divider();
+            $form->html('
                     <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
                     <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
                 ');
-
         });
-        if(Admin::user()->inRoles(['district-union', 'opd'])) {
+        if (Admin::user()->inRoles(['district-union', 'opd'])) {
             $form->tab('Profiler Name', function ($form) {
                 $form->text('profiler', __('Profiler'))
-                ->placeholder('Enter your name as a profiler')
-                ->help('Enter your name as a profiler')
-                ->rules('required');
+                    ->placeholder('Enter your name as a profiler')
+                    ->help('Enter your name as a profiler')
+                    ->rules('required');
 
-                if(Admin::user()->isRole('opd')) {
+                if (Admin::user()->isRole('opd')) {
                     $current_user = auth("admin")->user();
                     $organisation = Organisation::where('user_id', $current_user->id)->first();
-                    $form->select('district_id', __('Select Profiled District'))->options($organisation->districtsOfOperation->pluck('name','id'))->placeholder('Select Profiled District')->rules("required");
+                    $form->select('district_id', __('Select Profiled District'))->options($organisation->districtsOfOperation->pluck('name', 'id'))->placeholder('Select Profiled District')->rules("required");
                 }
-             
+
                 $form->divider();
                 //Add submit button
                 $form->html('
