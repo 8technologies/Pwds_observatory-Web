@@ -45,7 +45,8 @@ class CreatePeopleTable extends Migration
             $table->foreignId('opd_id')->nullable()->constrainted('organisations');
 
             $table->text('aspirations')->nullable();
-            $table->text('skills')->nullable();            
+            $table->text('skills')->nullable();
+            $table->text('profiler')->nullable();         
 
             $table->boolean('is_formal_education')->default(false);
             $table->boolean('is_employed')->default(false);

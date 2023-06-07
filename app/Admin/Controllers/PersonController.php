@@ -15,10 +15,8 @@ use App\Models\District;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\NextOfKin;
 use App\Mail\PwdCreated;
 use Encore\Admin\Facades\Admin;
-use Error;
 
 class PersonController extends AdminController
 {
@@ -38,7 +36,7 @@ class PersonController extends AdminController
     {
         $grid = new Grid(new Person());
 
-        //TODO: fix filters, and also display users from the pdo, and district unions
+        //TODO: fix filters, and also display users from the opd, and district unions
 
 
         $grid->filter(function ($f) {
@@ -84,6 +82,10 @@ class PersonController extends AdminController
 
 
             $f->between('dob', 'Filter by date of birth range')->date();
+
+            $f->equal('profiler', 'Filter by profiler Name')->select(
+                Person::whereNotNull('profiler')->orderBy('profiler', 'asc')->pluck('profiler', 'profiler')
+            );
         });
 
         $grid->quickSearch('name')->placeholder('Search by name');
@@ -96,10 +98,11 @@ class PersonController extends AdminController
             $grid->model()->where('district_id', $organisation->district_id)->orderBy('id', 'desc');
         } else if ($user->isRole('opd')) {
             $grid->model()->where('opd_id', $organisation->id)->orderBy('id', 'desc');
-        } else {
-            // dd("ddd");
-            $grid->model()->orderBy('id', 'desc');
         }
+        //  else {
+        //     // dd("ddd");
+        //     $grid->model()->orderBy('id', 'desc');
+        // }
 
         $grid->exporter(new PersonsExcelExporter());
         $grid->disableBatchActions();
@@ -119,7 +122,7 @@ class PersonController extends AdminController
             }
         )->sortable();
 
-        $grid->column('district_id', __('Atteached District'))->display(
+        $grid->column('district_id', __('Attached District'))->display(
             function ($x) {
                 if ($this->district == null) {
                     return '-';
@@ -127,6 +130,8 @@ class PersonController extends AdminController
                 return $this->district->name;
             }
         )->sortable();
+
+        $grid->column('profiler', __('Profiler'));
 
         $grid->column('disabilities', __('Disabilities'))
             ->display(
@@ -340,7 +345,7 @@ class PersonController extends AdminController
 
         $user = auth("admin")->user();
 
-        if (!$user->inRoles(['district-union', 'pdo'])) {
+        if (!$user->inRoles(['district-union', 'opd'])) {
             $form->tab('Memberships', function ($form) {
                 $form->radio('is_member', __('Membership'))->options([1 => 'Yes', 0 => 'No'])->rules('required')
                     ->when(1, function (Form $form) {
@@ -403,20 +408,40 @@ class PersonController extends AdminController
                     $form->mobile('phone_number_2', __('Other Phone Number'));
                     $form->text('email', __('Email'));
                 })->default(0);
+                $form->divider();
+                $form->html('
+                    <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+                    <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+                ');
 
-            $form->divider();
-            //Add submit button
-            $form->html('
-            <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
-
-            <button type="submit" class="btn btn-primary float-right">Submit</button>');
         });
+        if(Admin::user()->inRoles(['district-union', 'opd'])) {
+            $form->tab('Profiler Name', function ($form) {
+                $form->text('profiler', __('Profiler'))
+                ->placeholder('Enter your name as a profiler')
+                ->help('Enter your name as a profiler')
+                ->rules('required');
+
+                if(Admin::user()->isRole('opd')) {
+                    $current_user = auth("admin")->user();
+                    $organisation = Organisation::where('user_id', $current_user->id)->first();
+                    $form->select('district_id', __('Select Profiled District'))->options($organisation->districtsOfOperation->pluck('name','id'))->placeholder('Select Profiled District')->rules("required");
+                }
+             
+                $form->divider();
+                //Add submit button
+                $form->html('
+                <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+    
+                <button type="submit" class="btn btn-primary float-right">Submit</button>');
+            });
+        }
         $form->hidden('district_id');
         $form->hidden('opd_id');
         $form->hidden('is_approved');
 
         // Check if district union is doing the registration and send credentials else do not send
-        if (auth("admin")->user()->inRoles(['district-union', 'pdo'])) {
+        if (auth("admin")->user()->inRoles(['district-union', 'opd'])) {
 
             $form->saving(function ($form) {
                 // save the admin in users and map to this du

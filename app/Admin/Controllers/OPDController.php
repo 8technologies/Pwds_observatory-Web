@@ -52,7 +52,7 @@ class OPDController extends AdminController
         } elseif ($user->isRole('opd')) {
             $grid->model()->where('admin_email', $user->email)->orderBy('updated_at', 'desc');
         }
-         else {
+         elseif($user->inRoles(['nudipu','administrator'])) {
             $grid->model()->where('relationship_type', 'opd')->orderBy('updated_at', 'desc');
         }
 
@@ -308,7 +308,7 @@ class OPDController extends AdminController
                 $organisation = Organisation::where('user_id', Admin::user()->id)->first();
                 $form->parent_organisation_id = $organisation ? $organisation->id : null;
 
-                assignRole($admin, 'opd'); // re-assign role to opd
+                assignRole($admin, 'opd', true); // re-assign role to opd
             }
 
             // if($form->isEditing()) {
