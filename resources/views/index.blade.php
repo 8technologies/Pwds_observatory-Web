@@ -121,7 +121,7 @@
     <!-- Hackathon section -->
     <section class="container pb-5 mb-md-2 mb-lg-4 mb-xl-5 py-5">
         <div class="text-center">
-            <h2 class="h1 pb-2 pb-lg-3">INNOVATE FOR ABILITY HACKATHON 2023</h2>
+            <h2 class="h1 pb-2 pb-lg-3">INNOVATE FOR DISABILITY HACKATHON 2023</h2>
         </div>
         <div class="row align-items-center pt-2 pb-3">
             <!-- Text -->
@@ -132,7 +132,7 @@
             <!-- Parallax gfx -->
             <div class="col-md-6 offset-xl-1">
                 <h3 class="pb-2 mb-4 mb-lg-5">
-                    The Innovate for Ability Hackathon is a 4-day event happening at Makerere University Kampala, that will bring together developers, designers,
+                    The Innovate For Disability Hackathon is a 5-day event happening at Makerere University Kampala, that will bring together developers, designers,
                     innovators, entrepreneurs, and persons with disabilities to create solutions that address the
                     challenges faced by persons with disabilities in Uganda.
                 </h3>
