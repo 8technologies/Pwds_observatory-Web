@@ -25,15 +25,17 @@ class InnovationController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Innovation());
-
-        $grid->column('id', __('Id'));
-        $grid->column('title', __('Title'));
+        $grid->column('title', __('Name'));
         $grid->column('innovation_type', __('Innovation type'));
-        $grid->column('photo', __('Photo'));
-        $grid->column('innovators', __('Innovators'));
+        // $grid->column('photo', __('Photo'));
+        $grid->column('innovators', __('Innovators'))->display(function ($innovators) {
+            return collect($innovators)->map(function ($innovator) {
+                return collect($innovator)->only(['name', 'email', 'url']);
+            });
+        })->implode('name', ', ');
         $grid->column('innovation_status', __('Innovation status'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        // $grid->column('created_at', __('Created at'));
+        // $grid->column('updated_at', __('Updated at'));
 
         return $grid;
     }
@@ -52,7 +54,11 @@ class InnovationController extends AdminController
         $show->field('title', __('Title'));
         $show->field('innovation_type', __('Innovation type'));
         $show->field('photo', __('Photo'));
-        $show->field('innovators', __('Innovators'));
+        // $show->innovators()->as(function ($innovators) {
+        //     return collect($innovators)->map(function ($innovator) {
+        //         return $innovator['name'] . ' (' . $innovator["email"] . ')'. ' (' . $innovator["url"] . ')<br>';
+        //     });
+        // })->unescape();
         $show->field('innovation_status', __('Innovation status'));
         $show->field('description', __('Description'));
         $show->field('created_at', __('Created at'));
@@ -72,6 +78,7 @@ class InnovationController extends AdminController
 
         $form->text('title', __('Title'));
         $form->text('innovation_type', __('Innovation type'));
+        $form->multipleSelect('disabilities', __('Select Targeted Disabilities'))->options(\App\Models\Disability::all()->pluck('name', 'id'));
         $form->image('photo', __('Photo'));
 
         $form->divider('Innovators');
@@ -81,7 +88,6 @@ class InnovationController extends AdminController
             $table->text('url');
         });
 
-        $form->section('Innovation Status');
         $form->text('innovation_status', __('Innovation status'));
         $form->quill('description', __('Description'));
 

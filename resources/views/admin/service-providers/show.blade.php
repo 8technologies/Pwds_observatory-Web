@@ -4,8 +4,8 @@
             {{-- <h2 class="m-0 p-0 text-dark h3 text-uppercase"><b>Suspect {{ ' - ' . $service_provider->uwa_suspect_number  '-' }}</b> --}}
             </h2>
         </div>
-        {{-- <div class="mt-3 mt-md-0 float-left">
-            @if($service_provider->membership_type == 'member') 
+        <div class="mt-3 mt-md-0 float-left">
+            {{-- @if($service_provider->membership_type == 'member') 
                 <a class="btn btn-sm btn-primary mx-3" href="{{url('admin/opds/create') }}">Add OPD</a>
                 <a class="btn btn-sm btn-info mx-3" href="{{url('admin/district-unions/create') }}">Add District Union</a>
             @elseif($service_provider->membership_type == 'both') 
@@ -14,8 +14,12 @@
                 <a class="btn btn-sm btn-info mx-3" href="{{url('admin/district-unions/create') }}">Add District Union</a>
             @else
                 <a class="btn btn-sm btn-info mx-3" href="{{url('admin/people/create') }}">Add Person With Disability</a>
-            @endif
-        </div> --}}
+            @endif --}}
+            @if(!$service_provider->is_verified)
+                <a href="{{ admin_url(request()->segment(2) .'/'. $service_provider->id . '/verify') }}" class="btn btn-success btn-sm"><i class="fa fa-check"></i>
+                    VERIFY</a>
+            @endif 
+        </div>
         <div class="mt-3 mt-md-0">
             @isset($_SERVER['HTTP_REFERER'])
                 <a href="{{ $_SERVER['HTTP_REFERER'] }}" class="btn btn-secondary btn-sm"><i class="fa fa-chevron-left"></i>

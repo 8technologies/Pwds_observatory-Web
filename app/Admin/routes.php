@@ -43,5 +43,6 @@ Route::group([
     $router->resource('innovations', InnovationController::class);
     $router->resource('testimonies', TestimonyController::class);
 
+    $router->get('service-providers/{id}/verify', 'ServiceProviderController@verify')->name('service-providers.verify');
     $router->resource('gens', GenController::class); 
 });
