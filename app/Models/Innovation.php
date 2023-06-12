@@ -18,4 +18,9 @@ class Innovation extends Model
     {
         $this->attributes['innovators'] = json_encode(array_values($value));
     }
+
+    public function disabilities()
+    {
+        return $this->belongsToMany(Disability::class);
+    }
 }

@@ -13,6 +13,7 @@ use Encore\Admin\Facades\Admin;
 use App\Admin\Extensions\ServiceProvidersExcelExporter;
 
 
+
 class ServiceProviderController extends AdminController
 {
     /**
@@ -244,5 +245,19 @@ class ServiceProviderController extends AdminController
         );
 
         return $form;
+    }
+
+    public function verify($id)
+    {
+        $serviceProvider = ServiceProvider::find($id);
+        if ($serviceProvider == null) {
+            admin_error('Error', 'Service provider not found');
+            return back();
+        }
+        $serviceProvider->is_verified = 1;
+        $serviceProvider->save();
+        admin_success('Success', 'Service provider verified successfully');
+
+        return redirect()->route('admin.service-providers.index');
     }
 }

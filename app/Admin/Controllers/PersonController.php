@@ -134,7 +134,7 @@ class PersonController extends AdminController
         $grid->column('profiler', __('Profiler'));
 
         $grid->column('disabilities', __('Disabilities'))
-            ->display(
+            ->display( 
                 function ($x) {
                     //disabilities in badges
                     if ($this->disabilities()->count() > 0) {
@@ -142,13 +142,11 @@ class PersonController extends AdminController
                             return "<span class='badge badge-info'>" . $item->name . "</span>";
                         })->toArray();
                         return join(' ', $disabilities);
+                    }else {
+                        return '-';  
                     }
-                    // if ($this->disability == null) {
-                    //     return '-';
-                    // }
-                    // return $this->disability->name;
                 }
-            )->sortable();
+            );
 
         return $grid;
     }
@@ -335,14 +333,11 @@ class PersonController extends AdminController
                 })
                 ->help("Are you currently employed? or have you ever been employed?");
             $form->divider();
-            $form->html(' <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+            $form->html('
+                <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
                 <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
- ');
+            ');
         });
-
-        //TODO: Check if individual is a member or an organisation
-        //TODO: If individual, select a district then an organisation under that district
-
         $user = auth("admin")->user();
 
         if (!$user->inRoles(['district-union', 'opd'])) {
