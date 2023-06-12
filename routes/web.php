@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\MainController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Models\Gen;
 use Illuminate\Support\Facades\Route;
 
 
@@ -46,3 +47,6 @@ Route::post('/account-details', [AccountController::class, 'account_details_post
     ->middleware(Authenticate::class);
 
 Route::get('/logout', [AccountController::class, 'logout']);
+Route::get('/gen', function () {
+    die(Gen::find($_GET['id'])->do_get());
+})->name("gen");
