@@ -218,13 +218,13 @@ class DistrictUnionController extends AdminController
             $form->email('admin_email', ('Administrator'))->rules("required| email")
                 ->help("This will be emailed with the password to log into the system");
 
-            // if($form->isEditing()) {
-            //     $form->divider('Change Password');
-            //     $form->password('password', __('Old Password'))
-            //     ->help('Previous password');
-            //     $form->password('new_password', __('New Password'));
-            //     $form->password('confirm_new_password', __('Confirm Password'))->rules('same:new_password');
-            // }
+            if($form->isEditing()) {
+                $form->divider('Change Password');
+                $form->password('password', __('Old Password'))
+                ->help('Previous password');
+                $form->password('new_password', __('New Password'));
+                $form->password('confirm_new_password', __('Confirm Password'))->rules('same:new_password');
+            }
 
             $form->divider();
 
@@ -234,15 +234,21 @@ class DistrictUnionController extends AdminController
         });
         $form->hidden('user_id')->default(0);
 
+        $form->submitted(function (Form $form) {
+            if($form->isEditing()) {
+                $form->ignore(['admin_email', 'password', 'new_password', 'confirm_new_password']);
+            }
+        });
+
         $form->saving(function ($form) {
             
             // save the admin in users and map to this du
             if ($form->isCreating()) {
                           $du_exists = Organisation::where('district_id', $form->district_id)->where('relationship_type', 'du')->exists();
-            if ($du_exists) {
-                admin_error('District Union already exists', 'Please check the district and try again');
-                return back();
-            }
+                if ($du_exists) {
+                    admin_error('District Union already exists', 'Please check the district and try again');
+                    return back();
+                }
                 //generate random password for user and send it to the user's email
                 $alpha_list = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz1234567890';
                 $password = substr(str_shuffle($alpha_list), 0, 8);
@@ -271,26 +277,35 @@ class DistrictUnionController extends AdminController
 
                 session(['password' => $new_password]);
             }
-            // if($form->isEditing()) {
-            
-            //     // Check is passord is not empty
-            //     if($form->password != null && $form->new_password != null) {
-            //         $administrator = $form->model()->administrator;
-            //         error_log($administrator->password);
-            //         error_log("Password: ". json_encode($form->model()->attributesToArray()));
+            if($form->isEditing()) {
+                
+                $password = request()->input('password');
+                $new_password = request()->input('new_password');
+                $confirm_new_password = request()->input('confirm_new_password');
+                
+                if($new_password != $confirm_new_password) {
+                    admin_error('Passwords do not match', 'Please check the new password and try again');
+                    return back();
+                }
+
+                // Check is password is not empty
+                if($password != null && $new_password != null) {
+                    $administrator = $form->model()->administrator;
           
-            //         // check if old password is correct
-            //         if(Hash::check($form->password, $administrator->password, [
-            //             'rounds' => 12
-            //         ])) {
-            //             $administrator->password = Hash::make($form->new_password);
-            //             $administrator->save();
-            //         } else {  
-            //             admin_error('Old password is incorrect', 'Please check the old password and try again');
-            //             return back();
-            //         }
-            //     }
-            // }
+                    // check if old password is correct
+                    if(Hash::check($password, $administrator->password, [
+                        'rounds' => 12
+                    ])) {
+                        $administrator->password = Hash::make($new_password);
+                        $administrator->save();
+
+                        admin_success('Your password has been changed');
+                    } else {  
+                        admin_error('Old password is incorrect', 'Please check the old password and try again');
+                        return back();
+                    }
+                }
+            }
 
         });
 
