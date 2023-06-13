@@ -34,7 +34,7 @@ class AuthController extends Controller
             return redirect($this->redirectPath());
         }
 
-        return redirect('register');
+        return redirect('login');
         return view($this->loginView);
     }
 
@@ -59,6 +59,7 @@ class AuthController extends Controller
 
 
         if (isset($_POST['password_1'])) {
+            // REGISTER
 
             if (Validator::make($_POST, [
                 'name' => 'required|string|min:4'
@@ -123,45 +124,38 @@ class AuthController extends Controller
                         ->withInput();
                 }
             }
+        }else {
+            // LOGIN
+            $u = Administrator::where([
+                'email' => $_POST['email']
+            ])->orwhere([
+                'username' => $_POST['email']
+            ])->first();
+    
+    
+            if ($u == null) {
+                return back()
+                    ->withErrors(['email' => 'Account with provided email address was not found.'])
+                    ->withInput();
+            }
         }
 
-
-        $u = Administrator::where([
-            'email' => $_POST['email']
-        ])->orwhere([
-            'username' => $_POST['email']
-        ])->first();
-
-
-        if ($u == null) {
-            return back()
-                ->withErrors(['email' => 'Account with provided email address was not found.'])
-                ->withInput();
-        }
+        // if (Auth::attempt([
+        //     'email' => $r->email,
+        //     'password' => $r->password,
+        // ], true)) {
+        // }
 
 
-        $u->username = $r->email;
-        $u->email = $r->email;
-        $u->password = password_hash($r->password, PASSWORD_DEFAULT);
-        $u->save();
+        // $credentials = $request->only(['email', 'password']);
 
-
-        if (Auth::attempt([
-            'email' => $r->email,
-            'password' => $r->password,
-        ], true)) {
-        }
-
-
-        $credentials = $request->only(['email', 'password']);
-        $remember = true;
-
-        if ($this->guard()->attempt($credentials, $remember)) {
-            return $this->sendLoginResponse($request);
-        }
+        // if ($this->guard()->attempt($credentials, $remember)) {
+        //     return $this->sendLoginResponse($request);
+        // }
 
         $credentials['username'] = $request->email;
         $credentials['password'] = $request->password;
+        $remember = true;
 
         if ($this->guard()->attempt($credentials, $remember)) {
             return $this->sendLoginResponse($request);
@@ -169,7 +163,7 @@ class AuthController extends Controller
 
 
         return back()
-            ->withErrors(['email' => 'Failed to log you in. Try again.'])
+            ->withErrors(['email' => 'Wrong Credentials. Try again.'])
             ->withInput();
     }
 
