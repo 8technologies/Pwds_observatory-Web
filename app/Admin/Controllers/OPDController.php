@@ -254,13 +254,13 @@ class OPDController extends AdminController
                 $form->email('admin_email', ('Administrator'))->rules("required")
                     ->help("This will be emailed with the password to log into the system");
 
-                // if($form->isEditing()) {
-                //     $form->divider('Change Password');
-                //     $form->password('password', __('Old Password'))
-                //     ->help('Previous password');
-                //     $form->password('new_password', __('New Password'));
-                //     $form->password('confirm_new_password', __('Confirm Password'))->rules('same:new_password');
-                // }
+                if($form->isEditing()) {
+                    $form->divider('Change Password');
+                    $form->password('password', __('Old Password'))
+                    ->help('Previous password');
+                    $form->password('new_password', __('New Password'));
+                    $form->password('confirm_new_password', __('Confirm Password'))->rules('same:new_password');
+                }
                 $form->divider();
     
                 $form->html('
@@ -273,6 +273,12 @@ class OPDController extends AdminController
             $form->hidden('relationship_type')->default('opd');
             $form->hidden('parent_organisation_id')->default(0);
         }
+
+        $form->submitted(function (Form $form) {
+            if($form->isEditing()) {
+                $form->ignore(['admin_email', 'password', 'new_password', 'confirm_new_password']);
+            }
+        });
      
         $form->saving(function ($form) {
 
@@ -311,20 +317,35 @@ class OPDController extends AdminController
                 assignRole($admin, 'opd', true); // re-assign role to opd
             }
 
-            // if($form->isEditing()) {
-            //     // Check is passord is not empty
-            //     if($form->password != null && $form->new_password != null) {
-            //         $administrator = $form->model()->administrator;
-            //         // check if old password is correct
-            //         if(Hash::check($form->password, $administrator->password)) {
-            //             $administrator->password = Hash::make($form->new_password);
-            //             $administrator->save();
-            //         } else {
-            //             admin_error('Old password is incorrect', 'Please check the old password and try again');
-            //             return back();
-            //         }
-            //     }
-            // }
+            if($form->isEditing()) {
+                
+                $password = request()->input('password');
+                $new_password = request()->input('new_password');
+                $confirm_new_password = request()->input('confirm_new_password');
+                
+                if($new_password != $confirm_new_password) {
+                    admin_error('Passwords do not match', 'Please check the new password and try again');
+                    return back();
+                }
+
+                // Check is password is not empty
+                if($password != null && $new_password != null) {
+                    $administrator = $form->model()->administrator;
+          
+                    // check if old password is correct
+                    if(Hash::check($password, $administrator->password, [
+                        'rounds' => 12
+                    ])) {
+                        $administrator->password = Hash::make($new_password);
+                        $administrator->save();
+
+                        admin_success('Your password has been changed');
+                    } else {  
+                        admin_error('Old password is incorrect', 'Please check the old password and try again');
+                        return back();
+                    }
+                }
+            }
         });
 
 
