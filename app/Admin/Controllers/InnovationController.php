@@ -25,6 +25,23 @@ class InnovationController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Innovation());
+        $grid->model()->latest();
+        $grid->quickSearch('title')->placeholder('Search by name');
+        $grid->filter(function ($f) {
+            $f->disableIdFilter();
+            $f->where( function ($query) {
+                $query->where('title', 'like', "%{$this->input}%");
+            }, 'Filter by Name');
+            $f->where( function ($query) {
+                $query->where('innovation_type', 'like', "%{$this->input}%");
+            }, 'Filter by Innovation type');
+            $f->where( function ($query) {
+                $query->where('innovation_status', 'like', "%{$this->input}%");
+            }, 'Filter by Innovation status');
+            $f->where( function ($query) {
+                $query->where('innovators', 'like', "%{$this->input}%");
+            }, 'Filter by Innovators');
+        });
         $grid->column('title', __('Name'));
         $grid->column('innovation_type', __('Innovation type'));
         // $grid->column('photo', __('Photo'));
