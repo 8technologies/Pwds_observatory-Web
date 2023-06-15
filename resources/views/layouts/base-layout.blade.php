@@ -67,10 +67,48 @@
         }
 
         .result-list-container {
-            max-height: 500px;
+            max-height: 400px;
             /* Adjust the maximum height as needed */
             overflow-y: auto;
         }
+        .result-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.result-item {
+    margin-bottom: 10px;
+}
+
+.list-item-content {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.item-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.item-text {
+    flex: 1;
+}
+
+.item-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.item-description {
+    margin: 5px 0 0;
+}
+
     </style>
     <!-- Page loading styles -->
     <style>
