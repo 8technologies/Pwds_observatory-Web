@@ -19,7 +19,7 @@
         <div class="container position-relative zindex-2 py-lg-4">
             <div class="row">
                 <div class="col-lg-5 d-flex flex-column pt-lg-4 pt-xl-5">
-                    <h5 class="my-2">Welcome!</h5>
+                    <h5 class="h4 my-2">Welcome!</h5>
                     <h1 class="display-3 mb-4"> <span class="text-primary">ICT</span> for Persons With Disabilities</h1>
                     
                     
@@ -27,7 +27,7 @@
                         join hands together to  put in place for you this System that will help you, Enhance your Knowledge Management, ICT Adoption, Digital
                         Skills, And Access To E-Services For Persons With Disabilities.!</p>  
 
-                    <!-- Desktop form -->
+                    {{-- <!-- Desktop form -->
                     <form class="d-none d-sm-flex mb-5">
                         <div class="input-group d-block d-sm-flex input-group-lg me-3">
                             <input type="text" class="form-control w-50" placeholder="Search...">
@@ -63,7 +63,7 @@
                         <button type="submit" class="btn btn-icon btn-primary btn-lg w-100 d-sm-none">
                             <i class="bx bx-search"></i>
                         </button>
-                    </form>
+                    </form> --}}
                     <div class="d-flex align-items-center mt-auto mb-3 mb-lg-0 pb-4 pb-lg-0 pb-xl-5">
                         <div class="d-flex me-3">
                             <div class="d-flex align-items-center justify-content-center bg-light rounded-circle ms-n3"
@@ -131,7 +131,7 @@
 
             <!-- Parallax gfx -->
             <div class="col-md-6 offset-xl-1">
-                <h3 class="pb-2 mb-4 mb-lg-5">
+                <h3 class="h3 pb-2 mb-4 mb-lg-5">
                     The Innovate For Disability Hackathon is a 5-day event happening at Makerere University Kampala, that will bring together developers, designers,
                     innovators, entrepreneurs, and persons with disabilities to create solutions that address the
                     challenges faced by persons with disabilities in Uganda.

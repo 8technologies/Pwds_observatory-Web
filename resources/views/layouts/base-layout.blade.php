@@ -34,7 +34,44 @@
 
     <!-- Main Theme Styles + Bootstrap -->
     <link rel="stylesheet" media="screen" href="{{ url('') }}/assets/css/theme.min.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" />
+    <style>
+        .modal {
+            transition: opacity 0.25s ease;
+        }
 
+        body.modal-active {
+            overflow-x: hidden;
+            overflow-y: visible !important;
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-size: 16px;
+        }
+
+        .search-btn i {
+            color: #333;
+        }
+
+        .result-list-container {
+            max-height: 500px;
+            /* Adjust the maximum height as needed */
+            overflow-y: auto;
+        }
+    </style>
     <!-- Page loading styles -->
     <style>
         .page-loading {
@@ -123,7 +160,7 @@
             }
         }
     </style>
-
+    @livewireStyles
     <!-- Theme mode -->
     <script>
         let mode = window.localStorage.getItem('mode'),
@@ -162,16 +199,57 @@
     <div class="bg-light">
 
 
-    @yield('base-content')
+        @yield('base-content')
 
 
-</div>
+    </div>
     @yield('footer')
     @yield('footer-2')
 
+    @livewire('search-component')
+
+    <script>
+        // script to open the modal
+        var openmodal = document.querySelectorAll('.modal-open')
+        for (var i = 0; i < openmodal.length; i++) {
+            openmodal[i].addEventListener('click', function(event) {
+                event.preventDefault()
+                toggleModal()
+            })
+        }
+
+        const overlay = document.querySelector('.modal-overlay')
+        overlay.addEventListener('click', toggleModal)
+
+        var closemodal = document.querySelectorAll('.modal-close')
+        for (var i = 0; i < closemodal.length; i++) {
+            closemodal[i].addEventListener('click', toggleModal)
+        }
+
+        document.onkeydown = function(evt) {
+            evt = evt || window.event
+            var isEscape = false
+            if ("key" in evt) {
+                isEscape = (evt.key === "Escape" || evt.key === "Esc")
+            } else {
+                isEscape = (evt.keyCode === 27)
+            }
+            if (isEscape && document.body.classList.contains('modal-active')) {
+                toggleModal()
+            }
+        };
 
 
+        function toggleModal() {
+            const body = document.querySelector('body')
+            const modal = document.querySelector('.modal')
+            modal.classList.toggle('opacity-0')
+            modal.classList.toggle('pointer-events-none')
+            body.classList.toggle('modal-active')
+        }
+    </script>
     <!-- Vendor Scripts -->
+    @livewireScripts
     <script src="{{ url('') }}/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url('') }}/assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
     <script src="{{ url('') }}/assets/vendor/parallax-js/dist/parallax.min.js"></script>
@@ -181,13 +259,15 @@
     <script src="{{ url('') }}/assets/vendor/lightgallery/plugins/video/lg-video.min.js"></script>
     <script src="{{ url('') }}/assets/vendor/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
     <script src="{{ url('') }}/assets/vendor/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous">
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <!-- Main Theme Script -->
     <script src="{{ url('') }}/assets/js/theme.min.js"></script>
 
     @yield('bellow-footer')
-
+    @stack('scripts')
 
 </body>
 

@@ -75,10 +75,9 @@ if (!isset($header_style)) {
                     <a href="{{ url('news') }}" class="nav-link">News</a>
                 </li>
 
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ url('news') }}" class="nav-link">Events</a>
-                </li>
-
+                </li> --}}
 
                 <style>
                     .blink {
@@ -156,6 +155,11 @@ if (!isset($header_style)) {
         <label class="form-check-label d-none d-sm-block" for="theme-mode">Light</label>
         <label class="form-check-label d-none d-sm-block" for="theme-mode">Dark</label>
     </div>
+    </div>
+    <div>
+        <a href="#" class="modal-open nav-link">
+            <i class='bx bx-search-alt bx-lg' ></i>
+        </a>
     </div>
 </div>
 </header>
