@@ -46,12 +46,14 @@ if (!isset($header_style)) {
                         <li>
                             <a href="{{ url('constitution') }}" class="dropdown-item">Partnerships</a>
                         </li>
-                        <li>
+
+                        {{-- Commented due to lack of information here --}}
+                        {{-- <li>
                             <a href="{{ url('our-team') }}" class="dropdown-item">Message from the program lead </a>
                         </li>
                         <li>
                             <a href="?" class="dropdown-item">Who can use the system</a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
 
@@ -64,9 +66,8 @@ if (!isset($header_style)) {
                         </li>
                         <li><a href="#" class="dropdown-item">Guidance and counseling </a></li>
                         <li><a href="#" class="dropdown-item">Jobs and opportunities </a></li>
-                        <li><a href="#" class="dropdown-item">Shop</a></li>
-                        <li><a href="#" class="dropdown-item">Institutions</a></li>
-                        <li><a href="#" class="dropdown-item">Innovations</a></li>
+                        <li><a href="#" class="dropdown-item">Training and capacity building </a></li>
+                        <li><a href="#" class="dropdown-item">Research and innovation </a></li>
                         <li><a href="#" class="dropdown-item">Testimonials</a></li>
                     </ul>
                 </li>

@@ -21,6 +21,7 @@ class CreateResourcesTable extends Migration
             $table->date('date_of_publication')->nullable();
             $table->text('description')->nullable();
             $table->string('author')->nullable(); // Could be the system user or other
+            $table->string('cover_photo')->nullable();
             $table->json('attachments')->nullable();
             $table->timestamps();
         });
