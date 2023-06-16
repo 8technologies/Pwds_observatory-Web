@@ -37,7 +37,7 @@
                                         </li>
                                     @endonce
                                     <li>
-                                        <a href="#">
+                                        <a href="{{url('news/'.$result->id)}}">
                                             <div class="list-item-content">
                                                 <img src="{{ asset('storage/' . $result->photo) }}" alt=""
                                                     class="item-photo">
@@ -61,7 +61,7 @@
                                         </li>
                                     @endonce
                                     <li>
-                                        <a href="#">
+                                        <a href="{{url('resources/'.$result->id)}}">
                                             <div class="list-item-content">
                                                 <img src="{{ asset('storage/' . $result->cover_photo) }}" alt=""
                                                     class="item-photo">
@@ -84,7 +84,7 @@
                                         </li>
                                     @endonce
                                     <li>
-                                        <a href="#">
+                                        <a href="{{ url('events/'.$result->id)}}">
                                             <div class="list-item-content">
                                                 <img src="{{ asset('storage/' . $result->photo) }}" alt=""
                                                     class="item-photo">
@@ -107,7 +107,7 @@
                                         </li>
                                     @endonce
                                     <li>
-                                        <a href="#">
+                                        <a href="{{url('service-providers/'.$result->id)}}">
                                             <div class="list-item-content">
                                                 <img src="{{ asset('storage/' . $result->photo) }}" alt=""
                                                     class="item-photo">
@@ -130,7 +130,7 @@
                                         </li>
                                     @endonce
                                     <li>
-                                        <a href="#">
+                                        <a href="{{url('innovations/'.$result->id)}}">
                                             <div class="list-item-content">
                                                 <img src="{{ asset('storage/' . $result->photo) }}" alt=""
                                                     class="item-photo">
@@ -153,7 +153,7 @@
                                         </li>
                                     @endonce
                                     <li>
-                                        <a href="#">
+                                        <a href="{{url('disabilities/'. $result->id)}}">
                                             <div class="list-item-content">
                                                 <img src="{{ asset('storage/' . $result->photo) }}" alt=""
                                                     class="item-photo">
@@ -168,10 +168,6 @@
                             @endif
 
                         @endif
-
-                        {{-- @foreach ($results as $result)
-                            <li class="result-item">Result 1</li>
-                        @endforeach --}}
                     </ul>
                 </div>
             </div>

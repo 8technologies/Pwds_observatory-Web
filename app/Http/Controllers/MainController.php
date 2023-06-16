@@ -145,6 +145,133 @@ class MainController extends BaseController
       'posts' => $_posts,
     ]);
   }
+
+  /**
+   * Fetch lastest resources paginated
+   */
+  public function resources(Request $r)
+  {
+    $resources = \App\Models\Resource::orderBy('id', 'desc')->paginate(12);
+    return view('resources', [
+      'resources' => $resources
+    ]);
+  }
+
+  /**
+   * Fetch a resource
+   */
+  public function resource(Request $r)
+  {
+    $resource = \App\Models\Resource::find($r->id);
+    if ($resource == null) {
+      die("Resource not found.");
+    }
+    return view('resource', [
+      'resource' => $resource
+    ]);
+  }
+
+  /**
+   * Fetch service-providers sorted by name
+   */
+  public function service_providers(Request $r)
+  {
+    $service_providers = \App\Models\ServiceProvider::orderBy('name', 'asc')->paginate(12);
+    return view('service-providers.index', [
+      'service_providers' => $service_providers
+    ]);
+  }
+
+  /**
+   * Fetch a service-provider
+   */
+  public function service_provider(Request $r)
+  {
+    $service_provider = \App\Models\ServiceProvider::find($r->id);
+    if ($service_provider == null) {
+      die("Service provider not found.");
+    }
+    return view('service-providers.show', [
+      'service_provider' => $service_provider
+    ]);
+  }
+
+  /**
+   * Fetch jobs paginated
+   */
+  public function jobs(Request $r)
+  {
+    $jobs = \App\Models\Job::orderBy('id', 'desc')->paginate(12);
+    return view('jobs', [
+      'jobs' => $jobs
+    ]);
+  }
+
+  /**
+   * Fetch a job
+   */
+  public function job(Request $r)
+  {
+    $job = \App\Models\Job::find($r->id);
+    if ($job == null) {
+      die("Job not found.");
+    }
+    return view('job', [
+      'job' => $job
+    ]);
+  }
+
+  /**
+   * Fetch disabilities
+   */
+  public function disabilities(Request $r)
+  {
+    $disabilities = \App\Models\Disability::paginate(12);
+    return view('disabilities.index', [
+      'disabilities' => $disabilities
+    ]);
+  }
+
+  /**
+   * Fetch a disability
+   */
+  public function disability(Request $r)
+  {
+    $disability = \App\Models\Disability::find($r->id);
+    if ($disability == null) {
+      die("Disability not found.");
+    }
+    return view('disabilities.show', [
+      'disability' => $disability
+    ]);
+  }
+
+  /**
+   * Fetch innovations
+   */
+  public function innovations(Request $r)
+  {
+    $innovations = \App\Models\Innovation::orderBy('id', 'desc')->paginate(12);
+    return view('innovations', [
+      'innovations' => $innovations
+    ]);
+  }
+
+  /**
+   * Fetch an innovation
+   */
+  public function innovation(Request $r)
+  {
+    $innovation = \App\Models\Innovation::find($r->id);
+    if ($innovation == null) {
+      die("Innovation not found.");
+    }
+    return view('innovation', [
+      'innovation' => $innovation
+    ]);
+  }
+
+
   public function members()
   {
     $members = Administrator::where([])->orderBy('id', 'desc')->limit(12)->get();
