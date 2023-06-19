@@ -118,34 +118,6 @@
             </div>
         </div>
     </section>
-    <!-- Hackathon section -->
-    <section class="container pb-5 mb-md-2 mb-lg-4 mb-xl-5 py-5">
-        <div class="text-center">
-            <h2 class="h1 pb-2 pb-lg-3">INNOVATE FOR DISABILITY HACKATHON 2023</h2>
-        </div>
-        <div class="row align-items-center pt-2 pb-3">
-            <!-- Text -->
-            <div class="col-md-6 col-xl-5 text-center text-md-start mb-5 mb-md-0">
-                <img src="{{ asset('assets/img/hackathon_muk_pwd.jpeg')}}" />
-            </div>
-
-            <!-- Parallax gfx -->
-            <div class="col-md-6 offset-xl-1">
-                <h3 class="h3 pb-2 mb-4 mb-lg-5">
-                    The Innovate For Disability Hackathon is a 5-day event happening at Makerere University Kampala, that will bring together developers, designers,
-                    innovators, entrepreneurs, and persons with disabilities to create solutions that address the
-                    challenges faced by persons with disabilities in Uganda.
-                </h3>
-
-                <div class="mx-auto">
-                    <a class="btn btn-primary btn-lg" href="https://shorturl.at/fxEQ6" target="_blank">Register Here</a>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-
 
     <!-- Feature section (App) -->
     <section class="container pb-5 mb-md-2 mb-lg-4 mb-xl-5 py-5">
