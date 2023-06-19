@@ -109,10 +109,6 @@ if (!isset($header_style)) {
                     }
                 </style>
 
-                <li class="nav-item">
-                    <a href="https://shorturl.at/fxEQ6" title="Take part in hackathon" class="nav-link blink" target="_blank">Hackathon 2023</a>
-                </li>
-
 
 
             </ul>
