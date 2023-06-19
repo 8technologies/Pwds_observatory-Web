@@ -4,13 +4,12 @@
 <head>
     <meta charset="utf-8">
     <title>ICT for persons with disabilites</title>
-    {{-- <base href="{{ url('') }}/"> --}}
+    <base href="{{ url('') }}">
 
 
     <!-- SEO Meta Tags -->
     <meta name="description" content="ICT for persons with disabilites">
     <meta name="keywords" content="ICT for persons with disabilites">
-    <meta name="author" content="Muhindo Mubaraka - Mubahood">
 
     <!-- Viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -72,42 +71,42 @@
             overflow-y: auto;
         }
         .result-list {
-    list-style-type: none;
-    padding: 0;
-}
+            list-style-type: none;
+            padding: 0;
+        }
 
-.result-item {
-    margin-bottom: 10px;
-}
+        .result-item {
+            margin-bottom: 10px;
+        }
 
-.list-item-content {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-}
+        .list-item-content {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+        }
 
-.item-photo {
-    width: 80px;
-    height: 80px;
-    border-radius: 4px;
-    margin-right: 10px;
-}
+        .item-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
 
-.item-text {
-    flex: 1;
-}
+        .item-text {
+            flex: 1;
+        }
 
-.item-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0;
-}
+        .item-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+        }
 
-.item-description {
-    margin: 5px 0 0;
-}
+        .item-description {
+            margin: 5px 0 0;
+        }
 
     </style>
     <!-- Page loading styles -->
@@ -198,7 +197,6 @@
             }
         }
     </style>
-    @livewireStyles
     <!-- Theme mode -->
     <script>
         let mode = window.localStorage.getItem('mode'),
@@ -222,7 +220,7 @@
             };
         })();
     </script>
-
+    @livewireStyles
 </head>
 
 
@@ -251,29 +249,29 @@
         var openmodal = document.querySelectorAll('.modal-open')
         for (var i = 0; i < openmodal.length; i++) {
             openmodal[i].addEventListener('click', function(event) {
-                event.preventDefault()
-                toggleModal()
+                event.preventDefault();
+                toggleModal();
             })
         }
 
-        const overlay = document.querySelector('.modal-overlay')
-        overlay.addEventListener('click', toggleModal)
+        const overlay = document.querySelector('.modal-overlay');
+        overlay.addEventListener('click', toggleModal);
 
         var closemodal = document.querySelectorAll('.modal-close')
         for (var i = 0; i < closemodal.length; i++) {
-            closemodal[i].addEventListener('click', toggleModal)
+            closemodal[i].addEventListener('click', toggleModal);
         }
 
         document.onkeydown = function(evt) {
-            evt = evt || window.event
-            var isEscape = false
+            evt = evt || window.event;
+            var isEscape = false;
             if ("key" in evt) {
-                isEscape = (evt.key === "Escape" || evt.key === "Esc")
+                isEscape = (evt.key === "Escape" || evt.key === "Esc");
             } else {
-                isEscape = (evt.keyCode === 27)
+                isEscape = (evt.keyCode === 27);
             }
             if (isEscape && document.body.classList.contains('modal-active')) {
-                toggleModal()
+                toggleModal();
             }
         };
 
