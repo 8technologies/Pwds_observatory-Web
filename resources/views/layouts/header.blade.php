@@ -75,46 +75,6 @@ if (!isset($header_style)) {
                     <a href="{{ url('news') }}" class="nav-link">News</a>
                 </li>
 
-                {{-- <li class="nav-item">
-                    <a href="{{ url('news') }}" class="nav-link">Events</a>
-                </li> --}}
-
-                <style>
-                    .blink {
-                        animation: blinking 1s linear infinite;
-                        color: white;
-                        border-radius: 2rem;
-                        box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-                        border: 3px dashed rgb(225, 225, 4);
-                        padding: 3px;
-                        font-weight: 800;
-                    }
-
-                    @keyframes blinking {
-
-                        from,
-                        49.9% {
-                            background-color: rgb(178, 3, 3);
-                        }
-
-                        50%,
-                        to {
-                            background-color: #3f88f4;
-                        }
-                    }
-
-                    .blink:hover {
-                        background-color: #3f88f4;
-                        color: white !important;
-                    }
-                </style>
-
-                <li class="nav-item">
-                    <a href="https://shorturl.at/fxEQ6" title="Take part in hackathon" class="nav-link blink" target="_blank">Hackathon 2023</a>
-                </li>
-
-
-
             </ul>
         </div>
         <div class="offcanvas-header border-top">
@@ -147,18 +107,18 @@ if (!isset($header_style)) {
     @endauth
     <div class="mx-4">
         <button type="button" class="navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="form-check form-switch mode-switch pe-lg-1 ms-auto me-4" data-bs-toggle="mode">
-        <input type="checkbox" class="form-check-input" id="theme-mode">
-        <label class="form-check-label d-none d-sm-block" for="theme-mode">Light</label>
-        <label class="form-check-label d-none d-sm-block" for="theme-mode">Dark</label>
-    </div>
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="form-check form-switch mode-switch pe-lg-1 ms-auto me-4" data-bs-toggle="mode">
+            <input type="checkbox" class="form-check-input" id="theme-mode">
+            <label class="form-check-label d-none d-sm-block" for="theme-mode">Light</label>
+            <label class="form-check-label d-none d-sm-block" for="theme-mode">Dark</label>
+        </div>
     </div>
     <div>
         <a href="#" class="modal-open nav-link">
-            <i class='bx bx-search-alt bx-lg' ></i>
+            <i class='bx bx-search-alt bx-lg'></i>
         </a>
     </div>
 </div>
