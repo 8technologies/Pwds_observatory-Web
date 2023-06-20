@@ -171,7 +171,7 @@ class PersonController extends AdminController
         $show->field('id_number', __('Id number'));
         $show->field('dob', __('Dob'));
         $show->field('sex', __('Gender'));
-        $show->field('ethnicity', __('Ethnicity'));
+        $show->field('ethnicity', __('Tribe'));
         $show->field('religion', __('Religion'));
         $show->field('marital_status', __('Marital status'));
         $show->field('place_of_birth', __('Place of birth'));
@@ -267,8 +267,8 @@ class PersonController extends AdminController
                 'Divorced' => 'Divorced',
                 'Widowed' => 'Widowed'
             ])->rules('required');
-            $form->text('ethnicity', __('Ethnicity'))->rules('required')
-                ->help('Your Tribe');
+            $form->text('ethnicity', __('Tribe'))->rules('required')
+                ->help('Enter Your Tribe');
             $form->text('religion', __('Religion'))->rules('required');
             $form->select('district_of_origin', __('District Origin'))->options(District::pluck('name', 'id'))->rules("required");
             $form->radio('place_of_birth', __('Place Of Birth'))->options(['Hospital' => 'Hospital', 'Other' => 'Other'])
@@ -371,9 +371,9 @@ class PersonController extends AdminController
             });
         }
 
-        $form->tab('Next of Kin', function ($form) {
+        $form->tab('Immediate Contact Persons', function ($form) {
 
-            $form->hasMany('next_of_kins', ' Add New Next of Kin', function (Form\NestedForm $form) {
+            $form->hasMany('next_of_kins', ' Add New Contact Person', function (Form\NestedForm $form) {
                 $form->text('next_of_kin_last_name', __('Surname'))->rules('required');
                 $form->text('next_of_kin_other_names', __('Other Names'))->rules('required');
                 $form->radio('next_of_kin_gender', __('Gender'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
