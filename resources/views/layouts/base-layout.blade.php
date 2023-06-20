@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>ICT for persons with disabilites</title>
-    <base href="{{ url('') }}">
+    <base href="{{ url('') }}/">
 
 
     <!-- SEO Meta Tags -->
@@ -15,25 +15,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Favicon and Touch Icons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ url('assets/favicon/apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url('assets/favicon/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url('assets/favicon/favicon-16x16.png') }}">
-    <link rel="manifest" href="{{ url('assets/favicon/site.webmanifest') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url('/assets/favicon/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url('/assets/favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url('/assets/favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url('/assets/favicon/site.webmanifest') }}">
     <link rel="mask-icon" href="{{ url('/assets/img/logo.png') }}" color="#6366f1">
     <link rel="shortcut icon" href="{{ url('/assets/img/logo.png') }}">
     <meta name="msapplication-TileColor" content="#080032">
-    {{-- <meta name="msapplication-config" content="{{ url('') }}/assets/favicon/browserconfig.xml"> --}}
+    <meta name="msapplication-config" content="{{ url('') }}/assets/favicon/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
 
-    <!-- Vendor Styles -->
-    <link rel="stylesheet" media="screen" href="{{ url('/assets/vendor/boxicons/css/boxicons.min.css') }}" />
-    <link rel="stylesheet" media="screen" href="{{ url('/assets/vendor/swiper/swiper-bundle.min.css') }}" />
+      <!-- Vendor Styles -->
+    <link rel="stylesheet" media="screen" href="{{ url('') }}/assets/vendor/boxicons/css/boxicons.min.css" />
+    <link rel="stylesheet" media="screen" href="{{ url('') }}/assets/vendor/swiper/swiper-bundle.min.css" />
     <link rel="stylesheet" media="screen"
-        href="{{ url('/assets/vendor/lightgallery/css/lightgallery-bundle.min.css') }}" />
+        href="{{ url('') }}/assets/vendor/lightgallery/css/lightgallery-bundle.min.css" />
 
     <!-- Main Theme Styles + Bootstrap -->
-    <link rel="stylesheet" media="screen" href="{{ url('/assets/css/theme.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" />
+    <link rel="stylesheet" media="screen" href="{{ url('') }}/assets/css/theme.min.css">
+    
     <style>
         .modal {
             transition: opacity 0.25s ease;
@@ -107,10 +107,6 @@
         .item-description {
             margin: 5px 0 0;
         }
-
-    </style>
-    <!-- Page loading styles -->
-    <style>
         .page-loading {
             position: fixed;
             top: 0;
@@ -220,6 +216,7 @@
             };
         })();
     </script>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" />
     @livewireStyles
 </head>
 
@@ -286,21 +283,20 @@
     </script>
     <!-- Vendor Scripts -->
     @livewireScripts
-    <script src="{{ url('/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ url('/assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js') }}"></script>
-    <script src="{{ url('/assets/vendor/parallax-js/dist/parallax.min.js') }}"></script>
-    <script src="{{ url('/assets/vendor/rellax/rellax.min.js') }}"></script>
-    <script src="{{ url('/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
-    <script src="{{ url('/assets/vendor/lightgallery/lightgallery.min.js') }}"></script>
-    <script src="{{ url('/assets/vendor/lightgallery/plugins/video/lg-video.min.js') }}"></script>
-    <script src="{{ url('/assets/vendor/lightgallery/plugins/zoom/lg-zoom.min.js') }}"></script>
-    <script src="{{ url('/assets/vendor/lightgallery/plugins/fullscreen/lg-fullscreen.min.js') }}"></script>
+    <script src="{{ url('') }}/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url('') }}/assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+    <script src="{{ url('') }}/assets/vendor/parallax-js/dist/parallax.min.js"></script>
+    <script src="{{ url('') }}/assets/vendor/rellax/rellax.min.js"></script>
+    <script src="{{ url('') }}/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="{{ url('') }}/assets/vendor/lightgallery/lightgallery.min.js"></script>
+    <script src="{{ url('') }}/assets/vendor/lightgallery/plugins/video/lg-video.min.js"></script>
+    <script src="{{ url('') }}/assets/vendor/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
+    <script src="{{ url('') }}/assets/vendor/lightgallery/plugins/fullscreen/lg-fullscreen.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous">
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Main Theme Script -->
-    <script src="{{ url('/assets/js/theme.min.js') }}"></script>
+    <script src="{{ url('') }}/assets/js/theme.min.js"></script>
 
     @yield('bellow-footer')
     @stack('scripts')
