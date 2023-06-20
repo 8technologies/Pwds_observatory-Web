@@ -27,10 +27,10 @@ class DisabilityController extends AdminController
         $grid = new Grid(new Disability());
 
         $grid->disableBatchActions();
-        $grid->column('id', __('ID'))->sortable();
+        $grid->disableFilter();
         $grid->column('name', __('Name'))->sortable();
         $grid->column('count', __('Count'))->display(function(){
-            return count($this->people);
+            return $this->people()->count();
         });
 /*         $grid->photo('photo', __('Photo')); */
         $grid->column('description', __('Description'))->hide();
