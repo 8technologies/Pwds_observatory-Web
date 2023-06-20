@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>ICT for persons with disabilites</title>
-    {{-- <base href="{{ url('') }}"> --}}
+    <base href="{{ url('') }}">
 
 
     <!-- SEO Meta Tags -->
