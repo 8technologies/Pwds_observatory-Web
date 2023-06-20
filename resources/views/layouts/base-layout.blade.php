@@ -135,7 +135,7 @@
         }
     </script>
 
-    <!-- Page loading scripts -->
+    {{-- <!-- Page loading scripts -->
     <script>
         (function() {
             window.onload = function() {
@@ -146,18 +146,18 @@
                 }, 1000);
             };
         })();
-    </script>
+    </script> --}}
 
 </head>
 
 
 <body>
 
-    <div class="page-loading active">
+    {{-- <div class="page-loading active">
         <div class="page-loading-inner">
             <div class="page-spinner"></div><span>Loading...</span>
         </div>
-    </div>
+    </div> --}}
 
     <div class="bg-light">
 
