@@ -52,7 +52,7 @@ class PersonController extends AdminController
                 $query->whereHas('disabilities', function ($query) {
                     $query->where('name', 'like', "%{$this->input}%");
                 });
-            }, 'Filter by Disability');
+            }, 'Filter by Disability')->select(Disability::pluck('name','name'));
 
             $f->equal('district_id', 'Filter by district')->select(District::pluck('name', 'id'));
 
