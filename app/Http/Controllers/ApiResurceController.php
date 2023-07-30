@@ -57,8 +57,7 @@ class ApiResurceController extends Controller
          
         if (
             $r->name == null ||
-            $r->sex == null ||
-            $r->subcounty_id == null
+            $r->sex == null  
         ) {
             return $this->error('Some Information is still missing. Fill the missing information and try again.');
         }
