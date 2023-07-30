@@ -211,7 +211,7 @@ class ApiResurceController extends Controller
 
     public function delete(Request $r, $model)
     {
-        $administrator_id = Utils::get_user_id($r);
+        $administrator_id = Utils::get_user_id($r); 
         $u = Administrator::find($administrator_id);
 
 
