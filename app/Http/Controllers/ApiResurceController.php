@@ -33,7 +33,7 @@ class ApiResurceController extends Controller
         }
 
         return $this->success(
-            Person::where(['administrator_id' => $u->id])
+            Person::where([])
                 ->limit(100)
                 ->orderBy('id', 'desc')
                 ->get(),
