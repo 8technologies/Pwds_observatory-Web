@@ -52,6 +52,14 @@ administrator_id
 [] => District
 */
 
+    public static function user()
+    {
+        $u = null;
+        if (isset($_SERVER['HTTP_USER_AGENT'])) {
+            $u = $_SERVER['HTTP_USER_AGENT'];
+        }
+        return $u;
+    }
 
     public static function importPwdsProfiles($path)
     {

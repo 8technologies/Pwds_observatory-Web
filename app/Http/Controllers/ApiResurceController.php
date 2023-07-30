@@ -15,6 +15,7 @@ use App\Models\ServiceProvider;
 use App\Models\Utils;
 use App\Traits\ApiResponser;
 use Carbon\Carbon;
+use Dflydev\DotAccessData\Util;
 use Encore\Admin\Auth\Database\Administrator;
 use Exception;
 use Illuminate\Http\Request;
@@ -27,13 +28,13 @@ class ApiResurceController extends Controller
 
     public function people(Request $r)
     {
-        $u = auth('api')->user();
+        $u = Utils::user($r);
         if ($u == null) {
             return $this->error('User not found.');
         }
 
         return $this->success(
-            Person::where(['administrator_id' => $u->id])
+            Person::where([])
                 ->limit(100)
                 ->orderBy('id', 'desc')
                 ->get(),
