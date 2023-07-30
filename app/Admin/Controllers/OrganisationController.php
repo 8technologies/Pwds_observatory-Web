@@ -21,7 +21,7 @@ class OrganisationController extends AdminController
      *
      * @var string
      */
-    protected $title = 'Organisation';
+    protected $title = 'Organisations';
 
     /**
      * Make a grid builder.

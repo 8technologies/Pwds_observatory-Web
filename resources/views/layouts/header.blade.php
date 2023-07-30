@@ -46,12 +46,14 @@ if (!isset($header_style)) {
                         <li>
                             <a href="{{ url('constitution') }}" class="dropdown-item">Partnerships</a>
                         </li>
-                        <li>
+
+                        {{-- Commented due to lack of information here --}}
+                        {{-- <li>
                             <a href="{{ url('our-team') }}" class="dropdown-item">Message from the program lead </a>
                         </li>
                         <li>
                             <a href="?" class="dropdown-item">Who can use the system</a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </li>
 
@@ -64,52 +66,14 @@ if (!isset($header_style)) {
                         </li>
                         <li><a href="#" class="dropdown-item">Guidance and counseling </a></li>
                         <li><a href="#" class="dropdown-item">Jobs and opportunities </a></li>
-                        <li><a href="#" class="dropdown-item">Shop</a></li>
-                        <li><a href="#" class="dropdown-item">Institutions</a></li>
-                        <li><a href="#" class="dropdown-item">Innovations</a></li>
+                        <li><a href="#" class="dropdown-item">Training and capacity building </a></li>
+                        <li><a href="#" class="dropdown-item">Research and innovation </a></li>
                         <li><a href="#" class="dropdown-item">Testimonials</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
                     <a href="{{ url('news') }}" class="nav-link">News</a>
                 </li>
-
-                <li class="nav-item">
-                    <a href="{{ url('news') }}" class="nav-link">Events</a>
-                </li>
-
-
-                <style>
-                    .blink {
-                        animation: blinking 1s linear infinite;
-                        color: white;
-                        border-radius: 2rem;
-                        box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-                        border: 3px dashed rgb(225, 225, 4);
-                        padding: 3px;
-                        font-weight: 800;
-                    }
-
-                    @keyframes blinking {
-
-                        from,
-                        49.9% {
-                            background-color: rgb(178, 3, 3);
-                        }
-
-                        50%,
-                        to {
-                            background-color: #3f88f4;
-                        }
-                    }
-
-                    .blink:hover {
-                        background-color: #3f88f4;
-                        color: white !important;
-                    }
-                </style>
-
-
 
             </ul>
         </div>
@@ -143,14 +107,19 @@ if (!isset($header_style)) {
     @endauth
     <div class="mx-4">
         <button type="button" class="navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="form-check form-switch mode-switch pe-lg-1 ms-auto me-4" data-bs-toggle="mode">
-        <input type="checkbox" class="form-check-input" id="theme-mode">
-        <label class="form-check-label d-none d-sm-block" for="theme-mode">Light</label>
-        <label class="form-check-label d-none d-sm-block" for="theme-mode">Dark</label>
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="form-check form-switch mode-switch pe-lg-1 ms-auto me-4" data-bs-toggle="mode">
+            <input type="checkbox" class="form-check-input" id="theme-mode">
+            <label class="form-check-label d-none d-sm-block" for="theme-mode">Light</label>
+            <label class="form-check-label d-none d-sm-block" for="theme-mode">Dark</label>
+        </div>
     </div>
+    <div>
+        <a href="#" class="modal-open nav-link">
+            <i class='bx bx-search-alt bx-lg'></i>
+        </a>
     </div>
 </div>
 </header>

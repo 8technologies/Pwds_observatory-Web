@@ -27,13 +27,15 @@ class ApiResurceController extends Controller
 
     public function people(Request $r)
     {
-        $u = auth('api')->user();
-        if ($u == null) {
-            return $this->error('User not found.');
+        $u = null;
+        if (isset($_SERVER['HTTP_USER_ID'])) {
+            $u = Administrator::find($_SERVER['HTTP_USER_ID']);
         }
 
+        $u = Utils::user();
+
         return $this->success(
-            Person::where(['administrator_id' => $u->id])
+            Person::where([])
                 ->limit(100)
                 ->orderBy('id', 'desc')
                 ->get(),

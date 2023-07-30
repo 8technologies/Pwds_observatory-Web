@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Facades\Admin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -53,6 +54,13 @@ administrator_id
 */
 
 
+    public static function user(){
+        $u = null;
+        if(isset($_SERVER['HTTP_USER_ID'])){
+            $u = Administrator::find($_SERVER['HTTP_USER_ID']);
+        }
+        return $u;
+    }
     public static function importPwdsProfiles($path)
     {
         return;
