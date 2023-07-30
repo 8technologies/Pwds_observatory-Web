@@ -8,7 +8,7 @@ mysql_config = {
     'user': 'root',
     'password': 'toor',
     'host': 'localhost',
-    'database': 'demo2_ict4pwd',
+    'database': 'demo_ict4pwd',
      'auth_plugin': 'mysql_native_password'
 }
 

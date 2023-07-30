@@ -26,20 +26,6 @@ Route::get('/vision-mission', function(){ return view('vision-mission'); });
 Route::get('/constitution', function(){ return view('constitution'); }); 
 Route::get('/register', [AccountController::class, 'register'])->name('register');
 
-
-Route::get('service-providers', [MainController::class, 'service_providers']);
-Route::get('service-providers/{id}', [MainController::class, 'service_provider']);
-Route::get('disabilities', [MainController::class, 'disabilities']);
-Route::get('disabilities/{id}', [MainController::class, 'disability']);
-Route::get('innovations', [MainController::class, 'innovations']);
-Route::get('innovations/{id}', [MainController::class, 'innovation']);
-Route::get('jobs', [MainController::class, 'jobs']);
-Route::get('jobs/{id}', [MainController::class, 'job']);
-Route::get('events', [MainController::class, 'events']);
-Route::get('events/{id}', [MainController::class, 'event']);
-Route::get('resources', [MainController::class, 'resources']);
-Route::get('resources/{id}', [MainController::class, 'resource']);
-
 Route::get('/login', [AccountController::class, 'login'])->name('login')
     ->middleware(RedirectIfAuthenticated::class);
 
