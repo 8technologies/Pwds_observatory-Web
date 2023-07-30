@@ -42,10 +42,6 @@ class ApiResurceController extends Controller
     }
     public function jobs(Request $r)
     {
-        $u = auth('api')->user();
-        if ($u == null) {
-            return $this->error('User not found.');
-        }
 
         return $this->success(
             Job::where([])
@@ -58,10 +54,7 @@ class ApiResurceController extends Controller
 
     public function person_create(Request $r)
     {
-        $u = auth('api')->user();
-        if ($u == null) {
-            return $this->error('User not found.');
-        }
+         
         if (
             $r->name == null ||
             $r->sex == null ||
@@ -82,8 +75,7 @@ class ApiResurceController extends Controller
         $obj = new Person();
         $obj->id = $r->id;
         $obj->created_at = $r->created_at;
-        $obj->association_id = $r->association_id;
-        $obj->administrator_id = $u->id;
+        $obj->association_id = $r->association_id; 
         $obj->group_id = $r->group_id;
         $obj->name = $r->name;
         $obj->address = $r->address;
