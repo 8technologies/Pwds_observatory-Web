@@ -29,9 +29,7 @@ class ApiResurceController extends Controller
     public function people(Request $r)
     {
         $u = Utils::user($r);
-        if ($u == null) {
-            return $this->error('User not found.');
-        }
+
 
         return $this->success(
             Person::where([])
