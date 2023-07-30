@@ -73,8 +73,7 @@ class ApiResurceController extends Controller
 
         $obj = new Person();
         $obj->id = $r->id;
-        $obj->created_at = $r->created_at;
-        $obj->association_id = $r->association_id;
+        $obj->created_at = $r->created_at; 
         $obj->group_id = $r->group_id;
         $obj->name = $r->name;
         $obj->address = $r->address;
