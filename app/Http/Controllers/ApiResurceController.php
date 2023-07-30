@@ -34,7 +34,7 @@ class ApiResurceController extends Controller
         return $this->success(
             Person::where([])
                 ->limit(100)
-                ->orderBy('id', 'desc')
+                ->orderBy('photo', 'desc')
                 ->get(),
             $message = "Sussesfully",
             200
