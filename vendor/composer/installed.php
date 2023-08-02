@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'a8ba57659a014e3c90ea44742e036232c010425f',
+        'reference' => 'dbc2a09e69bfedf5a7e9bda49d364738fb9ee52e',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -496,7 +496,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'a8ba57659a014e3c90ea44742e036232c010425f',
+            'reference' => 'dbc2a09e69bfedf5a7e9bda49d364738fb9ee52e',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1007,6 +1007,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'recca0120/terminal' => array(
+            'pretty_version' => 'v1.11.0',
+            'version' => '1.11.0.0',
+            'reference' => '902f92d214307ae42bfe503e1b9aa4a455c5b014',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../recca0120/terminal',
+            'aliases' => array(),
+            'dev_requirement' => true,
+        ),
         'rhumsaa/uuid' => array(
             'dev_requirement' => false,
             'replaced' => array(
@@ -1494,6 +1503,15 @@
             'install_path' => __DIR__ . '/../webmozart/assert',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'webmozart/glob' => array(
+            'pretty_version' => '4.6.0',
+            'version' => '4.6.0.0',
+            'reference' => '3c17f7dec3d9d0e87b575026011f2e75a56ed655',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../webmozart/glob',
+            'aliases' => array(),
+            'dev_requirement' => true,
         ),
     ),
 );
