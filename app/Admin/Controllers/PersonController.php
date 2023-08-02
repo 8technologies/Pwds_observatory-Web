@@ -124,6 +124,8 @@ class PersonController extends AdminController
             }
         )->hide();
         $grid->column('sex', __('Gender'))->sortable();
+        $grid->column('place_of_birth', __('Place Of Birth'))->hide();
+        $grid->column('marital_status', __('Marital Status'))->hide();
         $grid->column('is_formal_education', __('Formal Education'))->display(
             function ($x) {
                 return $x ? 'Yes' : 'No';
