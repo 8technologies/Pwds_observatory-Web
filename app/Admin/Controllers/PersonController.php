@@ -103,7 +103,7 @@ class PersonController extends AdminController
         //     $grid->model()->orderBy('id', 'desc');
         // }
 
-        $grid->exporter(new PersonsExcelExporter());
+        // $grid->exporter(new PersonsExcelExporter());
         $grid->disableBatchActions();
 
         // $grid->column('id', __('Id'))->sortable();
@@ -114,21 +114,29 @@ class PersonController extends AdminController
         )->sortable();
         $grid->column('name', __('Name'))->sortable();
         $grid->column('other_names', __('Other Names'))->sortable();
+        $grid->column('dob', __('Date of Birth'))->display(
+            function ($x) {
+                try {
+                    return Utils::my_date($x);
+                }catch(\Exception $e){
+                    return $x;
+                }
+            }
+        )->hide();
         $grid->column('sex', __('Gender'))->sortable();
         $grid->column('is_formal_education', __('Formal Education'))->display(
             function ($x) {
                 return $x ? 'Yes' : 'No';
             }
         )->sortable();
-
-        $grid->column('district_id', __('Attached District'))->display(
+        $grid->column('district_of_origin', __('District of Origin'))->display(
             function ($x) {
-                if ($this->district == null) {
+                if ($this->district_of_origin == null) {
                     return '-';
                 }
-                return $this->district->name;
+                return $this->districtOfOrigin->name;
             }
-        )->sortable();
+        )->hide();
 
         $grid->column('profiler', __('Profiler'));
 
@@ -138,15 +146,55 @@ class PersonController extends AdminController
                     //disabilities in badges
                     if ($this->disabilities()->count() > 0) {
                         $disabilities = $this->disabilities->map(function ($item) {
-                            return "<span class='badge badge-success'>" . $item->name . "</span>";
+                            return  $item->name;
                         })->toArray();
-                        return join(' ', $disabilities);
+                        return join(',', $disabilities);
                     }else {
                         return '-';  
                     }
                 }
             );
+        $grid->column('academic_qualifications', __('Academic Qualifications'))->display(
+            function ($x) {
+                if ($this->academic_qualifications()->count() > 0) {
+                    $academic_qualifications = $this->academic_qualifications->map(function ($item) {
+                        return $item->qualification;
+                    })->toArray();
+                    return join(' ', $academic_qualifications);
+                }else {
+                    return '-';  
+                }
+            }
+        )->hide();
 
+        $grid->column('is_member', __('Membership'))->display(
+            function ($x) {
+                return $this->select_opd_or_du != 'NULL' ? 'Yes' : 'No';
+            }
+        )->hide();
+        $grid->column('select_opd_or_du', __('Organisation Type'))->display(
+            function ($x) {
+                return $x == 'opd' ? 'OPD' : 'DU';
+            }
+        )->hide();
+
+        $grid->column('opd_id', __('Attached OPD'))->display(
+            function ($x) {
+                if ($this->opd == null) {
+                    return '-';
+                }
+                return $this->opd->name;
+            }
+        )->hide();
+
+        $grid->column('district_id', __('Attached District'))->display(
+            function ($x) {
+                if ($this->district == null) {
+                    return '-';
+                }
+                return $this->district->name;
+            }
+        )->sortable();
         return $grid;
     }
 
