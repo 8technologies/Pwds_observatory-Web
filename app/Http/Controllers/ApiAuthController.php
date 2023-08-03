@@ -114,20 +114,13 @@ class ApiAuthController extends Controller
             return $this->error('Phone number is required.');
         }
 
-        $phone_number = Utils::prepare_phone_number(trim($r->phone_number));
+        $phone_number = trim($r->phone_number);
 
-
-        if (!Utils::phone_number_is_valid($phone_number)) {
-            return $this->error('Invalid phone number. ' . $phone_number);
+ 
+        if ($r->name == null) {
+            return $this->error('Full name is required.');
         }
-
-        if ($r->first_name == null) {
-            return $this->error('First name is required.');
-        }
-
-        if ($r->last_name == null) {
-            return $this->error('Last name is required.');
-        }
+ 
 
         if ($r->password == null) {
             return $this->error('Password is required.');
@@ -138,13 +131,13 @@ class ApiAuthController extends Controller
         if ($u != null) {
             return $this->error('User with same phone number already exists.');
         }
+        
         $user = new Administrator();
         $user->phone_number = $phone_number;
         $user->username = $phone_number;
         $user->username = $phone_number;
-        $user->name = $r->first_name . " " . $user->last_name;
-        $user->first_name = $r->first_name;
-        $user->last_name = $r->last_name;
+        $user->name = $r->name;
+        $user->first_name = $r->name; 
         $user->password = password_hash(trim($r->password), PASSWORD_DEFAULT);
         if (!$user->save()) {
             return $this->error('Failed to create account. Please try again.');
