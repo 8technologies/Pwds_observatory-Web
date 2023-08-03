@@ -150,10 +150,13 @@ class ApiAuthController extends Controller
             'password' => $r->password,
         ]);
 
-        $u = Administrator::where('phone_number', $phone_number)
-        ->orWhere('username', $phone_number)->first(); 
-
         if ($token == null) {
+            return $this->error('Wrong credentials.');
+        } 
+
+        $u = Administrator::where('username', $phone_number)->first(); 
+
+        if ($u == null) {
             return $this->error('Registered successfully. Now you can login.');
         } 
  
@@ -167,8 +170,8 @@ class ApiAuthController extends Controller
             'password' => trim($r->password),
         ]);
 
-        $new_user->token = $token;
+        $u->token = $token;
         $u->remember_token = $token;
-        return $this->success($new_user, 'Account created successfully.');
+        return $this->success($u, 'Account created successfully.');
     }
 }
