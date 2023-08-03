@@ -147,7 +147,24 @@ class ApiAuthController extends Controller
         if ($new_user == null) {
             return $this->error('Account created successfully but failed to log you in.');
         }
-        Config::set('jwt.ttl', 60 * 24 * 30 * 365);
+
+
+        JWTAuth::factory()->setTTL(60 * 24 * 30 * 365);
+        
+        $token = auth('api')->attempt([
+            'username' => $phone_number,
+            'password' => trim($r->password),
+        ]);
+
+
+        if ($token == null) {
+            return $this->error('Registered successfully. Now you can login.');
+        } 
+ 
+        $u->token = $token;
+        $u->remember_token = $token;
+
+        return $this->success($u, 'Registered successfully.');
 
         $token = auth('api')->attempt([
             'username' => $phone_number,
