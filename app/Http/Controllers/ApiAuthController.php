@@ -147,9 +147,11 @@ class ApiAuthController extends Controller
         
         $token = auth('api')->attempt([
             'username' => $phone_number,
-            'password' => trim($r->password),
+            'password' => $r->password,
         ]);
 
+        $u = Administrator::where('phone_number', $phone_number)
+        ->orWhere('username', $phone_number)->first(); 
 
         if ($token == null) {
             return $this->error('Registered successfully. Now you can login.');
