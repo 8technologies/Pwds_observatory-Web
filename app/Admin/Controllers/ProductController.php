@@ -75,29 +75,29 @@ class ProductController extends AdminController
 
         $form->hidden('service_provider_id');
         $form->text('name', __('Name'))->rules("required");
-        $form->radio('type', __('Type'))->options(['product' => 'Product','service' => 'Service'])
-        ->when('product', function() {
-
-        })
-        ->when('service', function() {
-
-        })->default('product')->rules("required");
+        $form->radio('type', __('Type'))->options(['product' => 'Product', 'service' => 'Service'])
+            ->when('product', function () {
+            })
+            ->when('service', function () {
+            })->default('product')->rules("required");
         $form->image('photo', __('Photo'))->rules("required");
         $form->radio('offer_type', __('Offer type'))->options(['free' => 'Free', 'hire' => 'Hire', 'sale' => 'Sale'])
-        ->when('hire', function($form) {
-            $form->text('hire_description', __('Describe the rates'))->rules('required');
-
-        })
-        ->when('sale', function($form) {
-            $form->text('price', __('Price'))->rules('required|numeric|min:0');
-
-        })
-        ->default('sale');
+            ->when('hire', function ($form) {
+                $form->text('hire_description', __('Describe the rates'))->rules('required');
+            })
+            ->when('sale', function ($form) {
+                $form->text('price', __('Price'))->rules('required|numeric|min:0');
+            })
+            ->default('sale');
 
         $form->quill('details', __('Details'));
 
         $form->saving(function (Form $form) {
-            $form->service_provider_id = auth('admin')->user()->service_provider->id;
+            if (auth('admin')->user()->service_provider != null) {
+                $form->service_provider_id = auth('admin')->user()->service_provider->id;
+            } else {
+                $form->service_provider_id = auth('admin')->user()->id;
+            }
         });
 
 
