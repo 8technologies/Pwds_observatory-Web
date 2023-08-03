@@ -142,13 +142,7 @@ class ApiAuthController extends Controller
         if (!$user->save()) {
             return $this->error('Failed to create account. Please try again.');
         }
-
-        $new_user = Administrator::find($user->id);
-        if ($new_user == null) {
-            return $this->error('Account created successfully but failed to log you in.');
-        }
-
-
+ 
         JWTAuth::factory()->setTTL(60 * 24 * 30 * 365);
         
         $token = auth('api')->attempt([
