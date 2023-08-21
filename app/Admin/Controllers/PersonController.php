@@ -52,7 +52,7 @@ class PersonController extends AdminController
                 $query->whereHas('disabilities', function ($query) {
                     $query->where('name', 'like', "%{$this->input}%");
                 });
-            }, 'Filter by Disability')->select(Disability::pluck('name','name'));
+            }, 'Filter by Disability')->select(Disability::pluck('name', 'name'));
 
             $f->equal('district_id', 'Filter by district')->select(District::pluck('name', 'id'));
 
@@ -118,14 +118,29 @@ class PersonController extends AdminController
             function ($x) {
                 try {
                     return Utils::my_date($x);
-                }catch(\Exception $e){
+                } catch (\Exception $e) {
                     return $x;
                 }
             }
         )->hide();
         $grid->column('sex', __('Gender'))->sortable();
+        $grid->column('phone_number', __('Phone number'))->sortable();
+        $grid->column('phone_number_2', __('Phone number 2'))->hide()->sortable();
         $grid->column('place_of_birth', __('Place Of Birth'))->hide();
         $grid->column('marital_status', __('Marital Status'))->hide();
+        $grid->column('next_of_kin_last_name', __('Next of kin Name'))->hide();
+        $grid->column('next_of_kin_phone_number', __('Next of kin Phone'))->hide();
+
+
+        /*
+        $show->field('next_of_kin_other_names', __('Next of kin other names'));
+        $show->field('', __('Next of kin phone number'));
+        $show->field('next_of_kin_id_number', __('Next of kin id number'));
+        $show->field('next_of_kin_gender', __('Next of kin gender'));
+        $show->field('next_of_kin_email', __('Next of kin email'));
+        $show->field('next_of_kin_address', __('Next of kin address'));
+        $show->field('next_of_kin_relationship', __('Next of kin relationship')); 
+         */
         $grid->column('is_formal_education', __('Formal Education'))->display(
             function ($x) {
                 return $x ? 'Yes' : 'No';
@@ -143,7 +158,7 @@ class PersonController extends AdminController
         $grid->column('profiler', __('Profiler'));
 
         $grid->column('disabilities', __('Disabilities'))
-            ->display( 
+            ->display(
                 function ($x) {
                     //disabilities in badges
                     if ($this->disabilities()->count() > 0) {
@@ -151,8 +166,8 @@ class PersonController extends AdminController
                             return  $item->name;
                         })->toArray();
                         return join(',', $disabilities);
-                    }else {
-                        return '-';  
+                    } else {
+                        return '-';
                     }
                 }
             );
@@ -163,8 +178,8 @@ class PersonController extends AdminController
                         return $item->qualification;
                     })->toArray();
                     return join(' ', $academic_qualifications);
-                }else {
-                    return '-';  
+                } else {
+                    return '-';
                 }
             }
         )->hide();
