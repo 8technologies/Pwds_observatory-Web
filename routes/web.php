@@ -9,9 +9,19 @@ use Illuminate\Support\Facades\Route;
 
 
 
+Route::get('/ussd', function () {
+    die('<?xml version="1.0"?>
+<USSDResponse>
+    <TransactionId>129992310440</TransactionId>
+    <TransactionTime>20120123T09:28:15</TransactionTime>
+    <USSDResponseString> Thank you for using 8Tech USSD service. </USSDResponseString>
+    <USSDAction>end</USSDAction>
+</USSDResponse> 
+');
+})->name("ussd");
 
-Route::get('generate-class', [MainController::class, 'generate_class']);  
-Route::get('generate-variables', [MainController::class, 'generate_variables']); 
+Route::get('generate-class', [MainController::class, 'generate_class']);
+Route::get('generate-variables', [MainController::class, 'generate_variables']);
 Route::get('/', [MainController::class, 'index'])->name('home');
 Route::get('/about-us', [MainController::class, 'about_us']);
 Route::get('/our-team', [MainController::class, 'our_team']);
@@ -21,9 +31,15 @@ Route::get('/news', [MainController::class, 'news_category']);
 Route::get('/news/{id}', [MainController::class, 'news']);
 Route::get('/members', [MainController::class, 'members']);
 Route::get('/dinner', [MainController::class, 'dinner']);
-Route::get('/ucc', function(){ return view('chair-person-message'); });
-Route::get('/vision-mission', function(){ return view('vision-mission'); }); 
-Route::get('/constitution', function(){ return view('constitution'); }); 
+Route::get('/ucc', function () {
+    return view('chair-person-message');
+});
+Route::get('/vision-mission', function () {
+    return view('vision-mission');
+});
+Route::get('/constitution', function () {
+    return view('constitution');
+});
 Route::get('/register', [AccountController::class, 'register'])->name('register');
 
 Route::get('/login', [AccountController::class, 'login'])->name('login')
