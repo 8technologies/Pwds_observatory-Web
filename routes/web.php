@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/ussd', function () {
+Route::match(['get', 'post'], '/ussd', function () {
+    header('Content-Type: application/xml');
     die('<?xml version="1.0"?>
 <USSDResponse>
     <TransactionId>129992310440</TransactionId>
