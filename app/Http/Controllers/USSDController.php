@@ -19,7 +19,7 @@ class USSDController extends Controller
         "":"3"
     }}
     */
-    public function index()
+    public function index(Request $r)
     {
 
         $ussd = new USSD();
@@ -27,6 +27,9 @@ class USSDController extends Controller
         $info['get'] = $_GET;
         $info['getallheaders'] = getallheaders();
         $ussd->data = json_encode($info);
+        $ussd->session_id = $r->transactionId;
+        $ussd->service_code = $r->transactionTime;
+        $ussd->phone_number = $r->msisdn;
         $ussd->save();
 
         $transactionId = "";
@@ -46,9 +49,6 @@ class USSDController extends Controller
         }
         if (isset($_GET['transactionTime'])) {
             $transactionTime = $_GET['transactionTime'];
-        }
-        if (isset($_GET['transactionId'])) {
-            $transactionId = $_GET['transactionId'];
         }
         if (isset($_GET['ussdRequestString'])) {
             $ussdRequestString = $_GET['ussdRequestString'];
