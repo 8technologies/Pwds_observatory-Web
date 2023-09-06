@@ -10,11 +10,11 @@ class USSDController extends Controller
 {
     public function index(Request $r)
     {
-        /* $input = $r->all();
+        $input = $r->all();
         $ussd = new USSD();
         $ussd->data = json_encode($input);
         $ussd->save();
- */
+
         $data = "";
         $data .= "1. Register Person with Disability\n";
         $data .= "2. Request for help\n";
@@ -24,14 +24,14 @@ class USSDController extends Controller
         $data .= "6. Jobs\n";
         $data .= "7. Shop\n";
         $data .= "8. Service Providers\n";
-        $data .= "<USSDAction>end</USSDAction>";
         $action = "<USSDAction>end</USSDAction>";
+        $action = "";
 
         header('Content-Type: application/xml');
         die('<?xml version="1.0"?>
         <USSDResponse>
         <TransactionId>129992310440</TransactionId>
-        <USSDResponseString>' . $data . '</USSDResponseString>
+        <USSDResponseString>ICT 4 Persons with Disabilities\n\nMENU\n' . $data . '</USSDResponseString>
         ' . $action . '
         </USSDResponse>');
     }
