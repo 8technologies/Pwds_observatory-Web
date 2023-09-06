@@ -69,7 +69,7 @@ class USSDController extends Controller
         if (strlen($transactionId) < 1) {
             $transactionId = "";
         } else {
-            $transactionId = "<TransactionId>' . $transactionId . '</TransactionId>";
+            $transactionId = '<TransactionId>' . $transactionId . '</TransactionId>';
         }
         if (strlen($transactionTime) < 1) {
             $transactionTime = "";
