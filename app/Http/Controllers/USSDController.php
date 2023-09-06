@@ -28,7 +28,7 @@ class USSDController extends Controller
         $ussd->data = json_encode($info);
         $ussd->save();
 
-        $data = "";
+        $data = "=>".$r->transactionId."\n";
         $data .= "1. Register Person with Disability\n";
         $data .= "2. Request for help\n";
         $data .= "3. Gudance and Canceling\n";
@@ -37,20 +37,16 @@ class USSDController extends Controller
         $data .= "6. Jobs\n";
         $data .= "7. Shop\n";
         $data .= "8. Service Providers\n";
-        $action = "<USSDAction>end</USSDAction>";
-        $action = "<USSDAction>request</USSDAction>";
+        $action = "end";
+        $action = "request";
 
         header('Content-Type: application/xml');
         die('<?xml version="1.0"?>
         <USSDResponse>' .
             '<TransactionId>' . $r->transactionId . '</TransactionId>' .
             '<TransactionTime>' . $r->transactionTime . '</TransactionTime>' .
-            '<USSDServiceCode>' . $r->ussdServiceCode . '</USSDServiceCode>' .
-            '<USSDRequestString>' . $r->ussdRequestString . '</USSDRequestString>' .
-            '<USSDResponseString>' .
-            $data .
-            '</USSDResponseString>' .
-            $action .
+            '<USSDResponseString>' . $data . '</USSDResponseString>' .
+            '<USSDAction>' . $action . '</USSDAction>' .
             '</USSDResponse>');
     }
 }
