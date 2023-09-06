@@ -67,7 +67,7 @@ class USSDController extends Controller
         $action = "end";
         $action = "request";
         if (strlen($transactionId) < 1) {
-            $action = "start";
+            $transactionId = "";
         } else {
             $transactionId = "<TransactionId>' . $transactionId . '</TransactionId>";
         }
