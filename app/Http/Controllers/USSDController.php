@@ -38,7 +38,7 @@ class USSDController extends Controller
         $data .= "7. Shop\n";
         $data .= "8. Service Providers\n";
         $action = "<USSDAction>end</USSDAction>";
-        $action = "<USSDAction></USSDAction>";
+        $action = "";
 
         header('Content-Type: application/xml');
         die('<?xml version="1.0"?>
