@@ -66,11 +66,16 @@ class USSDController extends Controller
         $data .= "8. Service Providers\n";
         $action = "end";
         $action = "request";
+        if (strlen($transactionId) < 1) {
+            $action = "start";
+        } else {
+            $transactionId = "<TransactionId>' . $transactionId . '</TransactionId>";
+        }
 
         header('Content-Type: application/xml');
         die('<?xml version="1.0"?>
         <USSDResponse>' .
-            '<TransactionId>' . $transactionId . '</TransactionId>' .
+            $transactionId .
             '<TransactionTime>' . $transactionTime . '</TransactionTime>' .
             '<USSDResponseString>' . $data . '</USSDResponseString>' .
             '<USSDAction>' . $action . '</USSDAction>' .
