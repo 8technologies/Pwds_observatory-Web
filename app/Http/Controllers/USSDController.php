@@ -71,12 +71,17 @@ class USSDController extends Controller
         } else {
             $transactionId = "<TransactionId>' . $transactionId . '</TransactionId>";
         }
+        if (strlen($transactionTime) < 1) {
+            $transactionTime = "";
+        } else {
+            $transactionTime =             '<TransactionTime>' . $transactionTime . '</TransactionTime>';
+        }
 
         header('Content-Type: application/xml');
         die('<?xml version="1.0"?>
         <USSDResponse>' .
             $transactionId .
-            '<TransactionTime>' . $transactionTime . '</TransactionTime>' .
+            $transactionTime .
             '<USSDResponseString>' . $data . '</USSDResponseString>' .
             '<USSDAction>' . $action . '</USSDAction>' .
             '</USSDResponse>');
