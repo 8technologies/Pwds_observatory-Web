@@ -24,7 +24,7 @@ class USSDController extends Controller
         $data .= "6. Jobs\n";
         $data .= "7. Shop\n";
         $data .= "8. Service Providers\n";
-        $data .= "<USSDAction></USSDAction>";
+        $data .= "<USSDAction>end</USSDAction>";
 
         header('Content-Type: application/xml');
         die('<?xml version="1.0"?><USSDResponse>' . $data . '</USSDResponse>');
