@@ -10,8 +10,14 @@ class USSDController extends Controller
 {
     /* 
     {"post":[],
-        "get":{"ussdServiceCode":"255",
-            "msisdn":"256783204665","transactionTime":"20230906T00:05:48","transactionId":"16939839342592573","response":"true","ussdRequestString":"3"}}
+    "get":{
+        "ussdServiceCode":"255",
+        "msisdn":"256783204665",
+        "transactionTime":"20230906T00:05:48",
+        "transactionId":"16939839342592573",
+        "response":"true",
+        "ussdRequestString":"3"
+    }}
     */
     public function index(Request $r)
     {
@@ -36,7 +42,7 @@ class USSDController extends Controller
         header('Content-Type: application/xml');
         die('<?xml version="1.0"?>
         <USSDResponse>
-        <TransactionId>129992310440</TransactionId>
+        <TransactionId>' . $r->transactionId . '</TransactionId>
         <USSDResponseString>Welcome to ICT 4 Persons with Disabilities\n' .
             'MENU' .
             $data .
