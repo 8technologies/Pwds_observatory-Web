@@ -42,9 +42,7 @@ class USSDController extends Controller
         header('Content-Type: application/xml');
         die('<?xml version="1.0"?>
         <USSDResponse>
-        <TransactionId>' . $r->transactionId . '</TransactionId>
-        <USSDResponseString>Welcome to ICT 4 Persons with Disabilities\n' .
-            'MENU' .
+        <TransactionId>' . $r->transactionId . '</TransactionId>' .
             $data .
             '</USSDResponseString>' .
             $action .
