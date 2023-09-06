@@ -37,17 +37,20 @@ class USSDController extends Controller
         $data .= "6. Jobs\n";
         $data .= "7. Shop\n";
         $data .= "8. Service Providers\n";
-        $action = "<USSDAction>end</USSDAction>"; 
-        $action = "<USSDAction>request</USSDAction>"; 
+        $action = "<USSDAction>end</USSDAction>";
+        $action = "<USSDAction>request</USSDAction>";
 
         header('Content-Type: application/xml');
         die('<?xml version="1.0"?>
-        <USSDResponse>
-        <TransactionId>' . $r->transactionId . '</TransactionId>' .
+        <USSDResponse>' .
+            '<TransactionId>' . $r->transactionId . '</TransactionId>' .
+            '<TransactionTime>' . $r->transactionTime . '</TransactionTime>' .
+            '<USSDServiceCode>' . $r->ussdServiceCode . '</USSDServiceCode>' .
+            '<USSDRequestString>' . $r->ussdRequestString . '</USSDRequestString>' .
             '<USSDResponseString>' .
             $data .
             '</USSDResponseString>' .
             $action .
             '</USSDResponse>');
     }
-} 
+}
