@@ -13,6 +13,7 @@ class CreateInnovationsTable extends Migration
      */
     public function up()
     {
+        return;
         Schema::create('innovations', function (Blueprint $table) {
             $table->id();
             $table->string('title');
