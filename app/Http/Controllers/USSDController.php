@@ -10,8 +10,8 @@ class USSDController extends Controller
 {
     public function index(Request $r)
     {
-        $input = $r->all();
-       /*  $ussd = new USSD();
+        /* $input = $r->all();
+        $ussd = new USSD();
         $ussd->data = json_encode($input);
         $ussd->save();
  */
