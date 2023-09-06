@@ -38,6 +38,7 @@ class USSDController extends Controller
         $data .= "7. Shop\n";
         $data .= "8. Service Providers\n";
         $action = "<USSDAction>end</USSDAction>";
+        $action = "<USSDAction></USSDAction>";
 
         header('Content-Type: application/xml');
         die('<?xml version="1.0"?>
@@ -49,10 +50,4 @@ class USSDController extends Controller
             $action .
             '</USSDResponse>');
     }
-}
-/* 
-
-    <TransactionId>129992310440</TransactionId>
-    <TransactionTime>20120123T09:28:15</TransactionTime> 
-    <USSDAction>end</USSDAction>
-*/
+} 
