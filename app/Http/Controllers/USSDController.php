@@ -43,6 +43,7 @@ class USSDController extends Controller
         die('<?xml version="1.0"?>
         <USSDResponse>
         <TransactionId>' . $r->transactionId . '</TransactionId>' .
+            '<USSDResponseString>' .
             $data .
             '</USSDResponseString>' .
             $action .
