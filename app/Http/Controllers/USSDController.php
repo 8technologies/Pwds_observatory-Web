@@ -25,6 +25,7 @@ class USSDController extends Controller
         $ussd = new USSD();
         $info['post'] = $_POST;
         $info['get'] = $_GET;
+        $info['getallheaders'] = getallheaders();
         $ussd->data = json_encode($info);
         $ussd->save();
 
