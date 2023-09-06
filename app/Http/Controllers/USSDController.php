@@ -27,6 +27,15 @@ class USSDController extends Controller
         $data .= "<USSDAction>end</USSDAction>";
 
         header('Content-Type: application/xml');
-        die('<?xml version="1.0"?><USSDResponse>' . $data . '</USSDResponse>');
+        die('<?xml version="1.0"?><USSDResponse>
+        <TransactionId>129992310440</TransactionId>
+        <USSDResponseString>' . $data . '</USSDResponseString>
+        </USSDResponse>');
     }
 }
+/* 
+
+    <TransactionId>129992310440</TransactionId>
+    <TransactionTime>20120123T09:28:15</TransactionTime> 
+    <USSDAction>end</USSDAction>
+*/

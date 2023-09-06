@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\USSDController;
 use App\Http\Controllers\MainController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
@@ -9,17 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::match(['get', 'post'], '/ussd', function () {
-    header('Content-Type: application/xml');
-    die('<?xml version="1.0"?>
-<USSDResponse>
-    <TransactionId>129992310440</TransactionId>
-    <TransactionTime>20120123T09:28:15</TransactionTime>
-    <USSDResponseString> Thank you for using 8Tech USSD service. </USSDResponseString>
-    <USSDAction>end</USSDAction>
-</USSDResponse> 
-');
-})->name("ussd");
+Route::match(['get', 'post'], '/ussd', [USSDController::class, 'index'])->name("ussd");
 
 Route::get('generate-class', [MainController::class, 'generate_class']);
 Route::get('generate-variables', [MainController::class, 'generate_variables']);
