@@ -55,7 +55,7 @@ class USSDController extends Controller
         }
 
 
-        $data = "=>" . $transactionId . "\n";
+        $data = "";
         $data .= "1. Register Person with Disability\n";
         $data .= "2. Request for help\n";
         $data .= "3. Gudance and Canceling\n";
@@ -85,7 +85,7 @@ class USSDController extends Controller
             '<USSDResponseString>' . $data . '</USSDResponseString>' .
             '<USSDAction>' . $action . '</USSDAction>' .
             '</USSDResponse>';
-        $ussd->myResponse = $myResp;
+        $ussd->my_response = $myResp;
         $ussd->save();
         die($myResp);
     }
