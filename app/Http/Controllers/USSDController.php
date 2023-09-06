@@ -30,7 +30,7 @@ class USSDController extends Controller
         $ussd->session_id = $r->transactionId;
         $ussd->service_code = $r->transactionTime;
         $ussd->phone_number = $r->msisdn;
-        $ussd->save();
+
 
         $transactionId = "";
         $ussdServiceCode = "";
@@ -78,12 +78,15 @@ class USSDController extends Controller
         }
 
         header('Content-Type: application/xml');
-        die('<?xml version="1.0"?>
+        $myResp = '<?xml version="1.0"?>
         <USSDResponse>' .
             $transactionId .
             $transactionTime .
             '<USSDResponseString>' . $data . '</USSDResponseString>' .
             '<USSDAction>' . $action . '</USSDAction>' .
-            '</USSDResponse>');
+            '</USSDResponse>';
+        $ussd->myResponse = $myResp;
+        $ussd->save();
+        die($myResp);
     }
 }
