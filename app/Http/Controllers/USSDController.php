@@ -31,7 +31,8 @@ class USSDController extends Controller
         <USSDResponse>
         <TransactionId>129992310440</TransactionId>
         <USSDResponseString>Welcome to ICT 4 Persons with Disabilities\n
-        MENU\n' . $data . '</USSDResponseString>
+        MENU
+        ' . $data . '</USSDResponseString>
         ' . $action . '
         </USSDResponse>');
     }
