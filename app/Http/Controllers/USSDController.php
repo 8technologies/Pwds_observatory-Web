@@ -11,10 +11,10 @@ class USSDController extends Controller
     public function index(Request $r)
     {
         $input = $r->all();
-        $ussd = new USSD();
+       /*  $ussd = new USSD();
         $ussd->data = json_encode($input);
         $ussd->save();
-
+ */
         $data = "";
         $data .= "1. Register Person with Disability\n";
         $data .= "2. Request for help\n";
