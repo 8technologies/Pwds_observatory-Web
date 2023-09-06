@@ -12,7 +12,9 @@ class USSDController extends Controller
     {
         $input = $r->all();
         $ussd = new USSD();
-        $ussd->data = json_encode($input);
+        $info['post'] = $_POST;
+        $info['get'] = $_GET;
+        $ussd->data = json_encode($info);
         $ussd->save();
 
         $data = "";
