@@ -24,13 +24,14 @@ class USSDController extends Controller
         $data .= "6. Jobs\n";
         $data .= "7. Shop\n";
         $data .= "8. Service Providers\n";
-        $action = "<USSDAction>end</USSDAction>"; 
+        $action = "<USSDAction>end</USSDAction>";
 
         header('Content-Type: application/xml');
         die('<?xml version="1.0"?>
         <USSDResponse>
         <TransactionId>129992310440</TransactionId>
-        <USSDResponseString>ICT 4 Persons with Disabilities\n\nMENU\n' . $data . '</USSDResponseString>
+        <USSDResponseString>Welcome to ICT 4 Persons with Disabilities\n
+        MENU\n' . $data . '</USSDResponseString>
         ' . $action . '
         </USSDResponse>');
     }
