@@ -55,7 +55,7 @@ class USSDController extends Controller
         $ussd = USSD::where('session_id', $transactionId)->first(); 
         if ($ussd == null) {
             $ussd = new USSD();
-            $ussd->$info = json_encode($info);
+            $ussd->response = json_encode($info);
             $ussd->session_id = $transactionId;
             $ussd->data = 'home';
             $ussd->session_id = $r->transactionId;
