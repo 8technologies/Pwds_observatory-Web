@@ -53,6 +53,7 @@ class USSDController extends Controller
             $ussd = USSD::where('session_id', $transactionId)->first();
             if ($ussd == null) {
                 $ussd = new USSD();
+                $ussd->$info = json_encode($info);
                 $ussd->session_id = $transactionId;
                 $ussd->data = 'home';
                 $ussd->session_id = $r->transactionId;
@@ -64,7 +65,7 @@ class USSDController extends Controller
 
         $data = "";
         $home = "";
-        $home .= "NUDIPU USSD Service\n:";
+        $home .= "NUDIPU USSD\n";
         $home .= "1. Register Person with Disability\n";
         $home .= "2. Request for help\n";
         $home .= "3. Gudance and Canceling\n";
