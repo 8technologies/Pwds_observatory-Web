@@ -22,16 +22,9 @@ class USSDController extends Controller
     public function index(Request $r)
     {
 
-        $ussd = new USSD();
         $info['post'] = $_POST;
         $info['get'] = $_GET;
         $info['getallheaders'] = getallheaders();
-        $ussd->data = json_encode($info);
-        $ussd->session_id = $r->transactionId;
-        $ussd->service_code = $r->transactionTime;
-        $ussd->phone_number = $r->msisdn;
-
-
         $transactionId = "";
         $ussdServiceCode = "";
         $transactionId = "";
@@ -55,17 +48,77 @@ class USSDController extends Controller
         }
 
 
+        $ussd = null;
+        if (strlen($transactionId) > 3) {
+            $ussd = USSD::where('session_id', $transactionId)->first();
+            if ($ussd == null) {
+                $ussd = new USSD();
+                $ussd->session_id = $transactionId;
+                $ussd->data = 'home';
+                $ussd->session_id = $r->transactionId;
+                $ussd->service_code = $r->transactionTime;
+                $ussd->phone_number = $r->msisdn;
+                $ussd->save();
+            }
+        }
+
         $data = "";
-        $data .= "1. Register Person with Disability\n";
-        $data .= "2. Request for help\n";
-        $data .= "3. Gudance and Canceling\n";
-        $data .= "4. Events\n";
-        $data .= "5. News\n";
-        $data .= "6. Jobs\n";
-        $data .= "7. Shop\n";
-        $data .= "8. Service Providers\n";
+        $home = "";
+        $home .= "1. Register Person with Disability\n";
+        $home .= "2. Request for help\n";
+        $home .= "3. Gudance and Canceling\n";
+        $home .= "4. Events\n";
+        $home .= "5. News\n";
+        $home .= "6. Jobs\n";
+        $home .= "7. Shop\n";
+        $home .= "8. Service Providers\n";
+        $home .= "9. About Us\n";
+        $data = $home;
+
+        if (strlen($ussdRequestString) > 0) {
+            if ($ussd->data == 'home') {
+                if ($ussdRequestString == '1') {
+                    $ussd->data = 'register-first-name';
+                    $ussd->save();
+                    $data = "Enter First Name";
+                } else if ($ussdRequestString == '2') {
+                    $ussd->data = 'request';
+                    $ussd->save();
+                } else if ($ussdRequestString == '3') {
+                    $ussd->data = 'gudance';
+                    $ussd->save();
+                } else if ($ussdRequestString == '4') {
+                    $ussd->data = 'events';
+                    $ussd->save();
+                } else if ($ussdRequestString == '5') {
+                    $ussd->data = 'news';
+                    $ussd->save();
+                } else if ($ussdRequestString == '6') {
+                    $ussd->data = 'jobs';
+                    $ussd->save();
+                } else if ($ussdRequestString == '7') {
+                    $ussd->data = 'shop';
+                    $ussd->save();
+                } else if ($ussdRequestString == '8') {
+                    $ussd->data = 'service_providers';
+                    $ussd->save();
+                }
+            } else if ($ussd->data == 'register') {
+                $ussd->data = 'register_name';
+                $ussd->save();
+            } else if ($ussd->data == 'register_name') {
+            }
+        }
+
+
+
+
+
+
+
         $action = "end";
         $action = "request";
+
         if (strlen($transactionId) < 1) {
             $transactionId = "";
         } else {
@@ -82,11 +135,9 @@ class USSDController extends Controller
         <USSDResponse>' .
             $transactionId .
             $transactionTime .
-            '<USSDResponseString>' . $data . '</USSDResponseString>' .
+            '<USSDResponseString>NUDIPU USSD Service\n' . $data . '</USSDResponseString>' .
             '<USSDAction>' . $action . '</USSDAction>' .
             '</USSDResponse>';
-        $ussd->my_response = $myResp;
-        $ussd->save();
         die($myResp);
     }
 }
