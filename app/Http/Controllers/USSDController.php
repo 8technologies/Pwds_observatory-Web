@@ -84,89 +84,86 @@ class USSDController extends Controller
 
         $action = "request";
 
-        if (strlen($ussdRequestString) > 0) {
-            if ($ussd->data == 'home') {
-                if ($ussdRequestString == '1') {
-                    $ussd->data = 'register-first-name';
+        if ($ussd != null) {
+            if (strlen($ussdRequestString) > 0) {
+                if ($ussd->data == 'home') {
+                    if ($ussdRequestString == '1') {
+                        $ussd->data = 'register-first-name';
+                        $ussd->save();
+                        $data = "Enter First Name";
+                    } else if ($ussdRequestString == '2') {
+                        $ussd->data = 'request';
+                        $ussd->save();
+                    } else if ($ussdRequestString == '3') {
+                        $ussd->data = 'gudance';
+                        $ussd->save();
+                    } else if ($ussdRequestString == '4') {
+                        $ussd->data = 'events';
+                        $ussd->save();
+                    } else if ($ussdRequestString == '5') {
+                        $ussd->data = 'news';
+                        $ussd->save();
+                    } else if ($ussdRequestString == '6') {
+                        $ussd->data = 'jobs';
+                        $ussd->save();
+                    } else if ($ussdRequestString == '7') {
+                        $ussd->data = 'shop';
+                        $ussd->save();
+                    } else if ($ussdRequestString == '8') {
+                        $ussd->data = 'service_providers';
+                        $ussd->save();
+                    }
+                } else if ($ussd->data == 'register-first-name') {
+                    $ussd->data = 'register-last-name';
                     $ussd->save();
-                    $data = "Enter First Name";
-                } else if ($ussdRequestString == '2') {
-                    $ussd->data = 'request';
+                    $data = "Enter Last Name";
+                } else if ($ussd->data == 'register-last-name') {
+                    $ussd->data = 'register-sex';
                     $ussd->save();
-                } else if ($ussdRequestString == '3') {
-                    $ussd->data = 'gudance';
+                    $data = "Select Gender\n";
+                    $data .= "1. Male\n";
+                    $data .= "2. Female\n";
+                } else if ($ussd->data == 'register-sex') {
+                    $ussd->data = 'register-disability';
                     $ussd->save();
-                } else if ($ussdRequestString == '4') {
-                    $ussd->data = 'events';
+                    $data = "Select Disability\n";
+                    $data .= "1. Autism\n";
+                    $data .= "2. Bind\n";
+                    $data .= "3. Deaf\n";
+                    $data .= "4. Physical disability\n";
+                    $data .= "5. Mental health conditions\n";
+                    $data .= "6. Albinism\n";
+                } else if ($ussd->data == 'register-disability') {
+                    $ussd->data = 'register-district-letters';
                     $ussd->save();
-                } else if ($ussdRequestString == '5') {
-                    $ussd->data = 'news';
+                    $data = "Enter at least 3 leters of your district\n";
+                } else if ($ussd->data == 'register-district-letters') {
+                    $ussd->data = 'register-district-select';
                     $ussd->save();
-                } else if ($ussdRequestString == '6') {
-                    $ussd->data = 'jobs';
+                    $data = "Select District\n";
+                    $data .= "1. Kasese\n";
+                    $data .= "2. Kampala\n";
+                    $data .= "3. Mbarara\n";
+                    $data .= "4. Jinja\n";
+                } else if ($ussd->data == 'register-district-select') {
+                    $ussd->data = 'register-education';
                     $ussd->save();
-                } else if ($ussdRequestString == '7') {
-                    $ussd->data = 'shop';
+                    $data = "Education Level\n";
+                    $data .= "1. Primary\n";
+                    $data .= "2. Secondary\n";
+                    $data .= "3. A-Level\n";
+                    $data .= "4. Bachelors\n";
+                    $data .= "5. P.h.D\n";
+                    $data .= "6. None\n";
+                } else if ($ussd->data == 'register-education') {
+                    $ussd->data = 'register-education';
                     $ussd->save();
-                } else if ($ussdRequestString == '8') {
-                    $ussd->data = 'service_providers';
-                    $ussd->save();
+                    $data = "You have successfully registered a person with disability.\n";
+                    $data .= "THANK YOU!";
+                    $action = "end";
                 }
-            } else if ($ussd->data == 'register-first-name') {
-                $ussd->data = 'register-last-name';
-                $ussd->save();
-                $data = "Enter Last Name";
-            } else if ($ussd->data == 'register-last-name') {
-                $ussd->data = 'register-sex';
-                $ussd->save();
-                $data = "Select Gender\n";
-                $data .= "1. Male\n";
-                $data .= "2. Female\n";
-            } else if ($ussd->data == 'register-sex') {
-                $ussd->data = 'register-disability';
-                $ussd->save();
-                $data = "Select Disability\n";
-                $data .= "1. Autism\n";
-                $data .= "2. Bind\n";
-                $data .= "3. Deaf\n";
-                $data .= "4. Physical disability\n";
-                $data .= "5. Mental health conditions\n";
-                $data .= "6. Albinism\n";
-            } else if ($ussd->data == 'register-disability') {
-                $ussd->data = 'register-district-letters';
-                $ussd->save();
-                $data = "Enter at least 3 leters of your district\n";
-            } else if ($ussd->data == 'register-district-letters') {
-                $ussd->data = 'register-district-select';
-                $ussd->save();
-                $data = "Select District\n";
-                $data .= "1. Kasese\n";
-                $data .= "2. Kampala\n";
-                $data .= "3. Mbarara\n";
-                $data .= "4. Jinja\n";
-            } else if ($ussd->data == 'register-district-select') {
-                $ussd->data = 'register-education';
-                $ussd->save();
-                $data = "Education Level\n";
-                $data .= "1. Primary\n";
-                $data .= "2. Secondary\n";
-                $data .= "3. A-Level\n";
-                $data .= "4. Bachelors\n";
-                $data .= "5. P.h.D\n";
-                $data .= "6. None\n";
-            } else if ($ussd->data == 'register-education') {
-                $ussd->data = 'register-education';
-                $ussd->save();
-                $data = "You have successfully registered a person with disability.\n";
-                $data .= "THANK YOU!";
-                $action = "end";
             }
         }
-
-
-
-
-
 
 
 
