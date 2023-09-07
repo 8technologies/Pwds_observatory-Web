@@ -52,21 +52,16 @@ class USSDController extends Controller
             $ussdRequestString = $_GET['ussdRequestString'];
         }
 
-
-        $ussd = null;
-        $ussd = USSD::where('session_id', $transactionId)->first();
-        if (strlen($transactionId) > 1) {
-            $ussd = USSD::where('session_id', $transactionId)->first();
-            if ($ussd == null) {
-                $ussd = new USSD();
-                $ussd->$info = json_encode($info);
-                $ussd->session_id = $transactionId;
-                $ussd->data = 'home';
-                $ussd->session_id = $r->transactionId;
-                $ussd->service_code = $r->transactionTime;
-                $ussd->phone_number = $r->msisdn;
-                $ussd->save();
-            }
+        $ussd = USSD::where('session_id', $transactionId)->first(); 
+        if ($ussd == null) {
+            $ussd = new USSD();
+            $ussd->$info = json_encode($info);
+            $ussd->session_id = $transactionId;
+            $ussd->data = 'home';
+            $ussd->session_id = $r->transactionId;
+            $ussd->service_code = $r->transactionTime;
+            $ussd->phone_number = $r->msisdn;
+            $ussd->save();
         }
 
         $data = "";
