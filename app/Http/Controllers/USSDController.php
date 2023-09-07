@@ -59,7 +59,7 @@ class USSDController extends Controller
             $ussd->session_id = $transactionId;
             $ussd->data = 'home';
             $ussd->session_id = $r->transactionId;
-            $ussd->service_code = $r->transactionTime;
+            $ussd->service_code = (string)($r->transactionTime);
             $ussd->phone_number = $r->msisdn;
             $ussd->save();
         }
