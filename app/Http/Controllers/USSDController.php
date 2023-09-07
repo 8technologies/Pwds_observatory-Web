@@ -135,7 +135,8 @@ class USSDController extends Controller
         <USSDResponse>' .
             $transactionId .
             $transactionTime .
-            '<USSDResponseString>NUDIPU USSD Service\n' . $data . '</USSDResponseString>' .
+            '<USSDResponseString>' .
+            "NUDIPU USSD Service\n" . $data . '</USSDResponseString>' .
             '<USSDAction>' . $action . '</USSDAction>' .
             '</USSDResponse>';
         die($myResp);
