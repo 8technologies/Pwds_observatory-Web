@@ -49,7 +49,7 @@ class USSDController extends Controller
 
 
         $ussd = null;
-        if (strlen($transactionId) > 3) {
+        if (strlen($transactionId) > 1) {
             $ussd = USSD::where('session_id', $transactionId)->first();
             if ($ussd == null) {
                 $ussd = new USSD();
@@ -64,6 +64,7 @@ class USSDController extends Controller
 
         $data = "";
         $home = "";
+        $home .= "NUDIPU USSD Service\n:";
         $home .= "1. Register Person with Disability\n";
         $home .= "2. Request for help\n";
         $home .= "3. Gudance and Canceling\n";
@@ -72,8 +73,9 @@ class USSDController extends Controller
         $home .= "6. Jobs\n";
         $home .= "7. Shop\n";
         $home .= "8. Service Providers\n";
-        $home .= "9. About Us\n";
         $data = $home;
+
+        $action = "request";
 
         if (strlen($ussdRequestString) > 0) {
             if ($ussd->data == 'home') {
@@ -103,10 +105,54 @@ class USSDController extends Controller
                     $ussd->data = 'service_providers';
                     $ussd->save();
                 }
-            } else if ($ussd->data == 'register') {
-                $ussd->data = 'register_name';
+            } else if ($ussd->data == 'register-first-name') {
+                $ussd->data = 'register-last-name';
                 $ussd->save();
-            } else if ($ussd->data == 'register_name') {
+                $data = "Enter Last Name";
+            } else if ($ussd->data == 'register-last-name') {
+                $ussd->data = 'register-sex';
+                $ussd->save();
+                $data = "Select Gender\n";
+                $data .= "1. Male\n";
+                $data .= "2. Female\n";
+            } else if ($ussd->data == 'register-sex') {
+                $ussd->data = 'register-disability';
+                $ussd->save();
+                $data = "Select Disability\n";
+                $data .= "1. Autism\n";
+                $data .= "2. Bind\n";
+                $data .= "3. Deaf\n";
+                $data .= "4. Physical disability\n";
+                $data .= "5. Mental health conditions\n";
+                $data .= "6. Albinism\n";
+            } else if ($ussd->data == 'register-disability') {
+                $ussd->data = 'register-district-letters';
+                $ussd->save();
+                $data = "Enter at least 3 leters of your district\n";
+            } else if ($ussd->data == 'register-district-letters') {
+                $ussd->data = 'register-district-select';
+                $ussd->save();
+                $data = "Select District\n";
+                $data .= "1. Kasese\n";
+                $data .= "2. Kampala\n";
+                $data .= "3. Mbarara\n";
+                $data .= "4. Jinja\n";
+            } else if ($ussd->data == 'register-district-select') {
+                $ussd->data = 'register-education';
+                $ussd->save();
+                $data = "Education Level\n";
+                $data .= "1. Primary\n";
+                $data .= "2. Secondary\n";
+                $data .= "3. A-Level\n";
+                $data .= "4. Bachelors\n";
+                $data .= "5. P.h.D\n";
+                $data .= "6. None\n";
+            } else if ($ussd->data == 'register-education') {
+                $ussd->data = 'register-education';
+                $ussd->save();
+                $data = "You have successfully registered a person with disability.\n";
+                $data .= "THANK YOU!";
+                $action = "end";
             }
         }
 
@@ -116,8 +162,7 @@ class USSDController extends Controller
 
 
 
-        $action = "end";
-        $action = "request";
+
 
         if (strlen($transactionId) < 1) {
             $transactionId = "";
@@ -136,7 +181,7 @@ class USSDController extends Controller
             $transactionId .
             $transactionTime .
             '<USSDResponseString>' .
-            "NUDIPU USSD Service\n" . $data . '</USSDResponseString>' .
+            "" . $data . '</USSDResponseString>' .
             '<USSDAction>' . $action . '</USSDAction>' .
             '</USSDResponse>';
         die($myResp);
