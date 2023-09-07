@@ -54,7 +54,8 @@ class USSDController extends Controller
 
 
         $ussd = null;
-        if (strlen($ussdRequestString) > 1) {
+        $ussd = USSD::where('session_id', $transactionId)->first();
+        if (strlen($transactionId) > 1) {
             $ussd = USSD::where('session_id', $transactionId)->first();
             if ($ussd == null) {
                 $ussd = new USSD();
