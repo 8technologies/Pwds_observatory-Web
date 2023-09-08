@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\USSD;
 use Illuminate\Http\Request;
+use SimpleXMLElement;
 
 class USSDController extends Controller
 {
@@ -24,47 +25,54 @@ class USSDController extends Controller
 
         $info['post'] = $_POST;
         $info['get'] = $_GET;
-        $info['server'] = $_SERVER;
         $raw = isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : file_get_contents('php://input');
         $info['raw'] = $raw;
-       
-        $info['getallheaders'] = getallheaders();
+        $post = new SimpleXMLElement($raw);
+
 
         $ussd = new USSD();
         $ussd->response = json_encode($info);
         $ussd->save();
 
-        $transactionId = "";
-        $ussdServiceCode = "";
-        $transactionId = "";
-        $msisdn = "";
-        $transactionTime = "";
-        $ussdRequestString = "";
-        if (isset($_GET['transactionId'])) {
-            $transactionId = $_GET['transactionId'];
+        $TransactionId = "";
+        $USSDServiceCode = "";
+        $TransactionId = "";
+        $MSISDN = "";
+        $TransactionTime = "";
+        $USSDRequestString = "";
+        $ussdDailedCode = "";
+        if (isset($post->TransactionId)) {
+            $TransactionId = $post->TransactionId;
         }
-        if (isset($_GET['ussdServiceCode'])) {
-            $ussdServiceCode = $_GET['ussdServiceCode'];
+        if (isset($post->TransactionTime)) {
+            $TransactionTime = $post->TransactionTime;
         }
-        if (isset($_GET['msisdn'])) {
-            $msisdn = $_GET['msisdn'];
+        if (isset($post->MSISDN)) {
+            $MSISDN = $post->MSISDN;
         }
-        if (isset($_GET['transactionTime'])) {
-            $transactionTime = $_GET['transactionTime'];
+        if (isset($post->USSDServiceCode)) {
+            $USSDServiceCode = $post->USSDServiceCode;
         }
-        if (isset($_GET['ussdRequestString'])) {
-            $ussdRequestString = $_GET['ussdRequestString'];
+        if (isset($post->USSDRequestString)) {
+            $USSDRequestString = $post->USSDRequestString;
+        }
+        if (isset($post->ussdDailedCode)) {
+            $ussdDailedCode = $post->ussdDailedCode;
         }
 
-        $ussd = USSD::where('session_id', $transactionId)->first();
+        if (isset($_GET['USSDRequestString'])) {
+            $USSDRequestString = $_GET['USSDRequestString'];
+        }
+
+        $ussd = USSD::where('session_id', $TransactionId)->first();
         if ($ussd == null) {
             $ussd = new USSD();
             $ussd->response = json_encode($info);
-            $ussd->session_id = $transactionId;
+            $ussd->session_id = $TransactionId;
             $ussd->data = 'home';
-            $ussd->session_id = $r->transactionId;
-            $ussd->service_code = (string)($r->transactionTime);
-            $ussd->phone_number = $r->msisdn;
+            $ussd->session_id = $r->TransactionId;
+            $ussd->service_code = (string)($r->TransactionTime);
+            $ussd->phone_number = $r->MSISDN;
             $ussd->save();
         }
 
@@ -84,31 +92,31 @@ class USSDController extends Controller
         $action = "request";
 
         if ($ussd != null) {
-            if (strlen($ussdRequestString) > 0) {
+            if (strlen($USSDRequestString) > 0) {
                 if ($ussd->data == 'home') {
-                    if ($ussdRequestString == '1') {
+                    if ($USSDRequestString == '1') {
                         $ussd->data = 'register-first-name';
                         $ussd->save();
                         $data = "Enter First Name";
-                    } else if ($ussdRequestString == '2') {
+                    } else if ($USSDRequestString == '2') {
                         $ussd->data = 'request';
                         $ussd->save();
-                    } else if ($ussdRequestString == '3') {
+                    } else if ($USSDRequestString == '3') {
                         $ussd->data = 'gudance';
                         $ussd->save();
-                    } else if ($ussdRequestString == '4') {
+                    } else if ($USSDRequestString == '4') {
                         $ussd->data = 'events';
                         $ussd->save();
-                    } else if ($ussdRequestString == '5') {
+                    } else if ($USSDRequestString == '5') {
                         $ussd->data = 'news';
                         $ussd->save();
-                    } else if ($ussdRequestString == '6') {
+                    } else if ($USSDRequestString == '6') {
                         $ussd->data = 'jobs';
                         $ussd->save();
-                    } else if ($ussdRequestString == '7') {
+                    } else if ($USSDRequestString == '7') {
                         $ussd->data = 'shop';
                         $ussd->save();
-                    } else if ($ussdRequestString == '8') {
+                    } else if ($USSDRequestString == '8') {
                         $ussd->data = 'service_providers';
                         $ussd->save();
                     }
@@ -167,22 +175,22 @@ class USSDController extends Controller
 
 
 
-        if (strlen($transactionId) < 1) {
-            $transactionId = "";
+        if (strlen($TransactionId) < 1) {
+            $TransactionId = "";
         } else {
-            $transactionId = '<TransactionId>' . $transactionId . '</TransactionId>';
+            $TransactionId = '<TransactionId>' . $TransactionId . '</TransactionId>';
         }
-        if (strlen($transactionTime) < 1) {
-            $transactionTime = "";
+        if (strlen($TransactionTime) < 1) {
+            $TransactionTime = "";
         } else {
-            $transactionTime =             '<TransactionTime>' . $transactionTime . '</TransactionTime>';
+            $TransactionTime =             '<TransactionTime>' . $TransactionTime . '</TransactionTime>';
         }
 
         header('Content-Type: application/xml');
         $myResp = '<?xml version="1.0"?>
         <USSDResponse>' .
-            $transactionId .
-            $transactionTime .
+            $TransactionId .
+            $TransactionTime .
             '<USSDResponseString>' .
             "" . $data . '</USSDResponseString>' .
             '<USSDAction>' . $action . '</USSDAction>' .
