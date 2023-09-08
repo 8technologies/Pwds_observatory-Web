@@ -24,6 +24,10 @@ class USSDController extends Controller
 
         $info['post'] = $_POST;
         $info['get'] = $_GET;
+        $info['server'] = $_SERVER;
+        $raw = isset($HTTP_RAW_POST_DATA) ? $HTTP_RAW_POST_DATA : file_get_contents('php://input');
+        $info['raw'] = $raw;
+       
         $info['getallheaders'] = getallheaders();
 
         $ussd = new USSD();
@@ -52,7 +56,7 @@ class USSDController extends Controller
             $ussdRequestString = $_GET['ussdRequestString'];
         }
 
-        $ussd = USSD::where('session_id', $transactionId)->first(); 
+        $ussd = USSD::where('session_id', $transactionId)->first();
         if ($ussd == null) {
             $ussd = new USSD();
             $ussd->response = json_encode($info);
