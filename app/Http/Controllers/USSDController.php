@@ -315,7 +315,6 @@ class USSDController extends Controller
                             $person->district_id = $d->id;
                             $person->district_search = $d->name;
                             $person->save();
-                            die($d->name);
                             $found = true;
                             break;
                         }
