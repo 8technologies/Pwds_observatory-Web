@@ -386,6 +386,7 @@ class USSDController extends Controller
         }
 
 
+
         $myResp = '<?xml version="1.0"?>
         <USSDResponse>' .
             $TransactionId .
@@ -394,6 +395,10 @@ class USSDController extends Controller
             "NUDIPU USSD\n" . $data . '</USSDResponseString>' .
             '<USSDAction>' . $action . '</USSDAction>' .
             '</USSDResponse>';
+        if ($ussd != null) {
+            $ussd->my_response = $myResp;
+            $ussd->save();
+        }
         die($myResp);
     }
 }
