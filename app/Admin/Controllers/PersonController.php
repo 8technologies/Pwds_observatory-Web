@@ -473,10 +473,20 @@ class PersonController extends AdminController
                     $form->text('email', __('Email'));
                 })->default(0);
             $form->divider();
-            $form->html('
-                    <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
-                    <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
-                ');
+
+            if (Admin::user()->inRoles(['district-union', 'opd', 'administrator', 'nudipu'])) {
+                $form->html('
+                <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+                <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+            ');
+            } else {
+
+                $form->html('
+                <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+                <button type="submit" class="btn btn-primary float-right">Submit</button>');
+
+                $form->hidden('profiler')->default('Self');
+            }
         });
         if (Admin::user()->inRoles(['district-union', 'opd'])) {
             $form->tab('Profiler Name', function ($form) {
@@ -501,7 +511,7 @@ class PersonController extends AdminController
         }
         $form->hidden('district_id');
         $form->hidden('opd_id');
-        $form->hidden('is_approved');
+        $form->hidden('is_approved')->default(0);
 
         // Check if district union is doing the registration and send credentials else do not send
         if (auth("admin")->user()->inRoles(['district-union', 'opd'])) {
@@ -575,6 +585,18 @@ class PersonController extends AdminController
                             // Mail::to($form->pwd_email)->send(new NextOfKin("$form->name $form->other_names", $form->next_of_kin_email, $user_password));
                         }
                     }
+                }
+            });
+        }
+        else {
+            $form->saving(function (Form $form) {
+
+                if ($form->isCreating()) {
+
+                $current_user = User::find(auth("admin")->user()->id);
+                $current_user->assignRole('pwd');
+
+                $form->is_approved = 0; //Require approval if registered by self
                 }
             });
         }

@@ -52,9 +52,13 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(ServiceProvider::class, 'user_id');
     }
 
-    public function assignRole(String $role)
+    public function assignRole(String $role, bool $clearPrevious = true)
     {
         $role = AdminRole::where('slug', $role)->first();
+
+        if ($clearPrevious) {
+            DB::table('admin_role_users')->where('user_id', $this->id)->delete();
+        }
         DB::table('admin_role_users')->insert([
             'role_id' => $role->id,
             'user_id' => $this->id
