@@ -114,6 +114,7 @@ class AuthController extends Controller
             } else {
                 $admin = new Administrator();
                 $admin->username = $r->email;
+                $admin->email = $r->email;
                 $admin->name = $r->name;
                 //$admin->avatar = 'user.png';
                 $admin->password = password_hash($r->password, PASSWORD_DEFAULT);
