@@ -324,7 +324,7 @@ class PersonController extends AdminController
             $form->text('other_names', __('Other Names'))->rules('required');
             $form->text('id_number', __('ID Number'))
                 ->help("NIN, Passport Number, Driving Permit Number");
-            $form->date('dob', __('Date of Birth'))->rules("required");
+            $form->date('dob', __('Date of Birth')); //TODO: make this nullable
             $form->radio('sex', __('Gender'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
             $form->radio('marital_status', __('Marital Status'))->options([
                 'Single' => 'Single',
