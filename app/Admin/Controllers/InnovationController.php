@@ -32,7 +32,7 @@ class InnovationController extends AdminController
             $filter->like('innovation_type', 'Innovation type');
             $filter->like('innovation_status', 'Innovation status');
         });
-        
+
         $grid->column('title', __('Name'));
         $grid->column('innovation_type', __('Innovation type'));
         // $grid->column('photo', __('Photo'));
@@ -89,7 +89,7 @@ class InnovationController extends AdminController
         $form->multipleSelect('disabilities', __('Select Targeted Disabilities'))->options(\App\Models\Disability::all()->pluck('name', 'id'));
         $form->image('photo', __('Photo'));
 
-        $form->divider('Innovators');
+        $form->divider('Innovators (Required)');
         $form->table('innovators', function ($table) {
             $table->text('name');
             $table->text('email');
