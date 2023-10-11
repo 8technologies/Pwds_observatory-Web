@@ -25,6 +25,14 @@ class InnovationController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Innovation());
+
+        $grid->filter(function ($filter) {
+            $filter->disableIdFilter();
+            $filter->like('title', 'Name');
+            $filter->like('innovation_type', 'Innovation type');
+            $filter->like('innovation_status', 'Innovation status');
+        });
+        
         $grid->column('title', __('Name'));
         $grid->column('innovation_type', __('Innovation type'));
         // $grid->column('photo', __('Photo'));
@@ -76,8 +84,8 @@ class InnovationController extends AdminController
     {
         $form = new Form(new Innovation());
 
-        $form->text('title', __('Title'));
-        $form->text('innovation_type', __('Innovation type'));
+        $form->text('title', __('Title'))->rules('required');
+        $form->text('innovation_type', __('Innovation type'))->rules('required');
         $form->multipleSelect('disabilities', __('Select Targeted Disabilities'))->options(\App\Models\Disability::all()->pluck('name', 'id'));
         $form->image('photo', __('Photo'));
 
@@ -86,9 +94,9 @@ class InnovationController extends AdminController
             $table->text('name');
             $table->text('email');
             $table->text('url');
-        });
+        })->rules('required');
 
-        $form->text('innovation_status', __('Innovation status'));
+        $form->text('innovation_status', __('Innovation status'))->rules('required');
         $form->quill('description', __('Description'));
 
         return $form;
