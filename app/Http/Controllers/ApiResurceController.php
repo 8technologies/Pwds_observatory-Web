@@ -15,6 +15,7 @@ use App\Models\ServiceProvider;
 use App\Models\Utils;
 use App\Traits\ApiResponser;
 use Carbon\Carbon;
+use Dflydev\DotAccessData\Util;
 use Encore\Admin\Auth\Database\Administrator;
 use Exception;
 use Illuminate\Http\Request;
@@ -27,15 +28,13 @@ class ApiResurceController extends Controller
 
     public function people(Request $r)
     {
-        $u = auth('api')->user();
-        if ($u == null) {
-            return $this->error('User not found.');
-        }
+        $u = Utils::user($r);
+
 
         return $this->success(
             Person::where([])
                 ->limit(100)
-                ->orderBy('id', 'desc')
+                ->orderBy('photo', 'asc')
                 ->get(),
             $message = "Sussesfully",
             200
@@ -43,10 +42,6 @@ class ApiResurceController extends Controller
     }
     public function jobs(Request $r)
     {
-        $u = auth('api')->user();
-        if ($u == null) {
-            return $this->error('User not found.');
-        }
 
         return $this->success(
             Job::where([])
@@ -59,14 +54,10 @@ class ApiResurceController extends Controller
 
     public function person_create(Request $r)
     {
-        $u = auth('api')->user();
-        if ($u == null) {
-            return $this->error('User not found.');
-        }
+
         if (
             $r->name == null ||
-            $r->sex == null ||
-            $r->subcounty_id == null
+            $r->sex == null
         ) {
             return $this->error('Some Information is still missing. Fill the missing information and try again.');
         }
@@ -82,9 +73,7 @@ class ApiResurceController extends Controller
 
         $obj = new Person();
         $obj->id = $r->id;
-        $obj->created_at = $r->created_at;
-        $obj->association_id = $r->association_id;
-        $obj->administrator_id = $u->id;
+        $obj->created_at = $r->created_at; 
         $obj->group_id = $r->group_id;
         $obj->name = $r->name;
         $obj->address = $r->address;
@@ -107,7 +96,11 @@ class ApiResurceController extends Controller
         $obj->caregiver_age = $r->caregiver_age;
         $obj->caregiver_relationship = $r->caregiver_relationship;
         $obj->photo = $image;
-        $obj->save();
+        try {
+            $obj->save();
+        } catch (Throwable $t) {
+            return $this->success(null, $message = $t, 200);
+        }
 
 
         return $this->success(null, $message = "Sussesfully registered!", 200);

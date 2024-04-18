@@ -13,6 +13,7 @@ class CreateTestimoniesTable extends Migration
      */
     public function up()
     {
+        return; 
         Schema::create('testimonies', function (Blueprint $table) {
             $table->id();
             $table->string('title');

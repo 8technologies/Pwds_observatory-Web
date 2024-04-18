@@ -247,6 +247,15 @@ deleted_at
             $row->column(3, function (Column $column) {
                 $column->append(view('widgets.box-5', [
                     'is_dark' => false,
+                    'title' => 'Total members',
+                    'sub_title' => 'Persons With Disabilities.',
+                    'number' => Person::count(),
+                    'link' => 'javascript:;'
+                ]));
+            });
+            $row->column(3, function (Column $column) {
+                $column->append(view('widgets.box-5', [
+                    'is_dark' => false,
                     'title' => 'Service providers',
                     'sub_title' => 'All time.',
                     'number' => ServiceProvider::count(),
@@ -254,15 +263,15 @@ deleted_at
                 ]));
             });
 
-            $row->column(3, function (Column $column) {
-                $column->append(view('widgets.box-5', [
-                    'is_dark' => false,
-                    'title' => 'Products & Services',
-                    'sub_title' => 'All time.',
-                    'number' => Product::count(),
-                    'link' => admin_url('products'),
-                ]));
-            });
+            // $row->column(3, function (Column $column) {
+            //     $column->append(view('widgets.box-5', [
+            //         'is_dark' => false,
+            //         'title' => 'Products & Services',
+            //         'sub_title' => 'All time.',
+            //         'number' => Product::count(),
+            //         'link' => admin_url('products'),
+            //     ]));
+            // });
             $row->column(3, function (Column $column) {
                 $jobs = Job::where('created_at', '>', Carbon::now()->subDays(7))->count();
                 $column->append(view('widgets.box-5', [

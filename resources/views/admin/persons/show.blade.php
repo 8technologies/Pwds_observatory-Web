@@ -51,7 +51,7 @@
             ])
 
             @include('components.detail-item', [
-                't' => 'Ethnicity',
+                't' => 'Tribe',
                 's' => $pwd->ethnicity,
             ])
 

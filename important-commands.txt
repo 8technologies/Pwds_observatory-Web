@@ -26,6 +26,7 @@ php artisan make:migration create_counselling_centres_table
 php artisan make:migration create_job_applications_table 
 php artisan make:migration create_products_table 
 php artisan make:migration create_product_orders_table 
+php artisan make:migration create_ussds_table
 
 Encore\Admin\Auth\Database\Administrator::class,
 php artisan admin:make FormSr4Controller --model=App\FormSr4
@@ -92,20 +93,7 @@ php artisan make:model Job
 php artisan make:model JobApplication
 php artisan make:model Product
 php artisan make:model ProductOrder
-
-->photo      
-
+php artisan make:model USSD
 
 
-ethnicity
-religion
-birth_hospital
-languages
-dob
-sex
-marital_status         
-district_of_origin
-place_of_birth            
-birth_no_hospital_description
-disabilities
- 
+

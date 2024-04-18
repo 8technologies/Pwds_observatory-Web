@@ -13,6 +13,7 @@ class CreateDisabilityInnovationTable extends Migration
      */
     public function up()
     {
+        return;
         Schema::create('disability_innovation', function (Blueprint $table) {
             $table->id();
             $table->foreignId('disability_id')->constrained('disabilities')->onDelete('cascade');

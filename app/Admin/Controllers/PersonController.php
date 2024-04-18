@@ -52,7 +52,7 @@ class PersonController extends AdminController
                 $query->whereHas('disabilities', function ($query) {
                     $query->where('name', 'like', "%{$this->input}%");
                 });
-            }, 'Filter by Disability');
+            }, 'Filter by Disability')->select(Disability::pluck('name', 'name'));
 
             $f->equal('district_id', 'Filter by district')->select(District::pluck('name', 'id'));
 
@@ -103,7 +103,7 @@ class PersonController extends AdminController
         //     $grid->model()->orderBy('id', 'desc');
         // }
 
-        $grid->exporter(new PersonsExcelExporter());
+        // $grid->exporter(new PersonsExcelExporter());
         $grid->disableBatchActions();
 
         // $grid->column('id', __('Id'))->sortable();
@@ -114,12 +114,95 @@ class PersonController extends AdminController
         )->sortable();
         $grid->column('name', __('Name'))->sortable();
         $grid->column('other_names', __('Other Names'))->sortable();
+        $grid->column('dob', __('Date of Birth'))->display(
+            function ($x) {
+                try {
+                    return Utils::my_date($x);
+                } catch (\Exception $e) {
+                    return $x;
+                }
+            }
+        )->hide();
         $grid->column('sex', __('Gender'))->sortable();
+        $grid->column('phone_number', __('Phone number'))->sortable();
+        $grid->column('phone_number_2', __('Phone number 2'))->hide()->sortable();
+        $grid->column('place_of_birth', __('Place Of Birth'))->hide();
+        $grid->column('marital_status', __('Marital Status'))->hide();
+        $grid->column('next_of_kin_last_name', __('Next of kin Name'))->hide();
+        $grid->column('next_of_kin_phone_number', __('Next of kin Phone'))->hide();
+
+
+        /*
+        $show->field('next_of_kin_other_names', __('Next of kin other names'));
+        $show->field('', __('Next of kin phone number'));
+        $show->field('next_of_kin_id_number', __('Next of kin id number'));
+        $show->field('next_of_kin_gender', __('Next of kin gender'));
+        $show->field('next_of_kin_email', __('Next of kin email'));
+        $show->field('next_of_kin_address', __('Next of kin address'));
+        $show->field('next_of_kin_relationship', __('Next of kin relationship')); 
+         */
         $grid->column('is_formal_education', __('Formal Education'))->display(
             function ($x) {
                 return $x ? 'Yes' : 'No';
             }
         )->sortable();
+        $grid->column('district_of_origin', __('District of Origin'))->display(
+            function ($x) {
+                if ($this->district_of_origin == null) {
+                    return '-';
+                }
+                return $this->districtOfOrigin->name;
+            }
+        )->hide();
+
+        $grid->column('profiler', __('Profiler'));
+
+        $grid->column('disabilities', __('Disabilities'))
+            ->display(
+                function ($x) {
+                    //disabilities in badges
+                    if ($this->disabilities()->count() > 0) {
+                        $disabilities = $this->disabilities->map(function ($item) {
+                            return  $item->name;
+                        })->toArray();
+                        return join(',', $disabilities);
+                    } else {
+                        return '-';
+                    }
+                }
+            );
+        $grid->column('academic_qualifications', __('Academic Qualifications'))->display(
+            function ($x) {
+                if ($this->academic_qualifications()->count() > 0) {
+                    $academic_qualifications = $this->academic_qualifications->map(function ($item) {
+                        return $item->qualification;
+                    })->toArray();
+                    return join(' ', $academic_qualifications);
+                } else {
+                    return '-';
+                }
+            }
+        )->hide();
+
+        $grid->column('is_member', __('Membership'))->display(
+            function ($x) {
+                return $this->select_opd_or_du != 'NULL' ? 'Yes' : 'No';
+            }
+        )->hide();
+        $grid->column('select_opd_or_du', __('Organisation Type'))->display(
+            function ($x) {
+                return $x == 'opd' ? 'OPD' : 'DU';
+            }
+        )->hide();
+
+        $grid->column('opd_id', __('Attached OPD'))->display(
+            function ($x) {
+                if ($this->opd == null) {
+                    return '-';
+                }
+                return $this->opd->name;
+            }
+        )->hide();
 
         $grid->column('district_id', __('Attached District'))->display(
             function ($x) {
@@ -129,24 +212,6 @@ class PersonController extends AdminController
                 return $this->district->name;
             }
         )->sortable();
-
-        $grid->column('profiler', __('Profiler'));
-
-        $grid->column('disabilities', __('Disabilities'))
-            ->display( 
-                function ($x) {
-                    //disabilities in badges
-                    if ($this->disabilities()->count() > 0) {
-                        $disabilities = $this->disabilities->map(function ($item) {
-                            return "<span class='badge badge-success'>" . $item->name . "</span>";
-                        })->toArray();
-                        return join(' ', $disabilities);
-                    }else {
-                        return '-';  
-                    }
-                }
-            );
-
         return $grid;
     }
 
@@ -171,7 +236,7 @@ class PersonController extends AdminController
         $show->field('id_number', __('Id number'));
         $show->field('dob', __('Dob'));
         $show->field('sex', __('Gender'));
-        $show->field('ethnicity', __('Ethnicity'));
+        $show->field('ethnicity', __('Tribe'));
         $show->field('religion', __('Religion'));
         $show->field('marital_status', __('Marital status'));
         $show->field('place_of_birth', __('Place of birth'));
@@ -259,7 +324,7 @@ class PersonController extends AdminController
             $form->text('other_names', __('Other Names'))->rules('required');
             $form->text('id_number', __('ID Number'))
                 ->help("NIN, Passport Number, Driving Permit Number");
-            $form->date('dob', __('Date of Birth'))->rules("required");
+            $form->date('dob', __('Date of Birth')); //TODO: make this nullable
             $form->radio('sex', __('Gender'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
             $form->radio('marital_status', __('Marital Status'))->options([
                 'Single' => 'Single',
@@ -267,8 +332,8 @@ class PersonController extends AdminController
                 'Divorced' => 'Divorced',
                 'Widowed' => 'Widowed'
             ])->rules('required');
-            $form->text('ethnicity', __('Ethnicity'))->rules('required')
-                ->help('Your Tribe');
+            $form->text('ethnicity', __('Tribe'))->rules('required')
+                ->help('Enter Your Tribe');
             $form->text('religion', __('Religion'))->rules('required');
             $form->select('district_of_origin', __('District Origin'))->options(District::pluck('name', 'id'))->rules("required");
             $form->radio('place_of_birth', __('Place Of Birth'))->options(['Hospital' => 'Hospital', 'Other' => 'Other'])
@@ -371,9 +436,9 @@ class PersonController extends AdminController
             });
         }
 
-        $form->tab('Next of Kin', function ($form) {
+        $form->tab('Immediate Contact Persons', function ($form) {
 
-            $form->hasMany('next_of_kins', ' Add New Next of Kin', function (Form\NestedForm $form) {
+            $form->hasMany('next_of_kins', ' Add New Contact Person', function (Form\NestedForm $form) {
                 $form->text('next_of_kin_last_name', __('Surname'))->rules('required');
                 $form->text('next_of_kin_other_names', __('Other Names'))->rules('required');
                 $form->radio('next_of_kin_gender', __('Gender'))->options(['Male' => 'Male', 'Female' => 'Female'])->rules('required');
@@ -408,10 +473,20 @@ class PersonController extends AdminController
                     $form->text('email', __('Email'));
                 })->default(0);
             $form->divider();
-            $form->html('
-                    <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
-                    <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
-                ');
+
+            if (Admin::user()->inRoles(['district-union', 'opd', 'administrator', 'nudipu'])) {
+                $form->html('
+                <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+                <a type="button" class="btn btn-primary btn-next float-right" data-toggle="tab" aria-expanded="true">Next</a>
+            ');
+            } else {
+
+                $form->html('
+                <a type="button" class="btn btn-info btn-prev float-left" data-toggle="tab" aria-expanded="true">Previous</a>
+                <button type="submit" class="btn btn-primary float-right">Submit</button>');
+
+                $form->hidden('profiler')->default('Self');
+            }
         });
         if (Admin::user()->inRoles(['district-union', 'opd'])) {
             $form->tab('Profiler Name', function ($form) {
@@ -436,7 +511,7 @@ class PersonController extends AdminController
         }
         $form->hidden('district_id');
         $form->hidden('opd_id');
-        $form->hidden('is_approved');
+        $form->hidden('is_approved')->default(0);
 
         // Check if district union is doing the registration and send credentials else do not send
         if (auth("admin")->user()->inRoles(['district-union', 'opd'])) {
@@ -510,6 +585,18 @@ class PersonController extends AdminController
                             // Mail::to($form->pwd_email)->send(new NextOfKin("$form->name $form->other_names", $form->next_of_kin_email, $user_password));
                         }
                     }
+                }
+            });
+        }
+        else {
+            $form->saving(function (Form $form) {
+
+                if ($form->isCreating()) {
+
+                $current_user = User::find(auth("admin")->user()->id);
+                $current_user->assignRole('pwd');
+
+                $form->is_approved = 0; //Require approval if registered by self
                 }
             });
         }

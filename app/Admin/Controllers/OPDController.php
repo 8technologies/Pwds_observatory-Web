@@ -314,7 +314,8 @@ class OPDController extends AdminController
                 $organisation = Organisation::where('user_id', Admin::user()->id)->first();
                 $form->parent_organisation_id = $organisation ? $organisation->id : null;
 
-                assignRole($admin, 'opd', true); // re-assign role to opd
+                $admin->assignRole('opd'); // assign role to opd
+
             }
 
             if($form->isEditing()) {
