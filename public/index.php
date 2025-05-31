@@ -1,4 +1,5 @@
 <?php
+die('This file is not meant to be accessed directly. Please use the appropriate entry point for your application.');
 
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
